@@ -5,6 +5,8 @@
 #
 #   bash app8-dsl/scripts/release-train.sh 0.4.0
 #
+# Release notes come from releases/<version>.md on app8-dsl origin/main.
+#
 # Tags each repo's origin/main (local checkouts may have unrelated work in
 # progress; they are not touched). Checks that EngineVersion, SDKVersion and
 # dsl.lock on origin/main already say <version>.
@@ -35,10 +37,7 @@ $3"
   echo "released $ORG/$1 $V"
 }
 
-NOTES="First release on the shared iOS + Android train (spec: https://github.com/$ORG/app8-dsl/releases/tag/$V).
-- Android SDK (Jetpack Compose) with the same DSL, layout semantics and component set as iOS
-- DSL 1.1: per-node ios/android overrides, platforms lists, platform floors (iOS 18, Android 12)
-- iOS fixes found during the port: date/time pickers keep the time, textView onTextChange, resetVariables restores initial values, setMultipleValues is atomic, array literals keep variables, toString of collections, stackView corner clipping, fillsBar search crash"
+NOTES=$(git -C "$ROOT/app8-dsl" show "origin/main:releases/$V.md" 2>/dev/null) || die "missing releases/$V.md on app8-dsl origin/main"
 
 say "Preflight"
 for r in app8-dsl app8-android-sdk app8-ios-sdk app8-android-cloud-sdk; do check_main "$r"; done
@@ -56,7 +55,7 @@ tag_and_release app8-android-sdk "App8 Android SDK" "$NOTES"
 say "3/5 app8-ios-sdk"
 tag_and_release app8-ios-sdk "App8Engine (iOS)" "$NOTES"
 
-say "4/5 app8-ios-cloud-sdk (merge the 0.4.0 bump PR, then tag)"
+say "4/5 app8-ios-cloud-sdk (merge the $V bump PR, then tag)"
 pr=$(gh pr list -R "$ORG/app8-ios-cloud-sdk" --head "release/$V" --json number -q '.[0].number')
 [[ -n "$pr" ]] && gh pr merge "$pr" -R "$ORG/app8-ios-cloud-sdk" --squash --delete-branch
 check_main app8-ios-cloud-sdk
