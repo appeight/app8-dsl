@@ -100,11 +100,17 @@ A new DSL feature lands only when both columns are filled (see
 |---|---|---|---|
 | `view`, `label`, `image`, `icon`, `button`, `shape` | ✓ | planned | |
 | `stackView`, `scrollView`, `collection`, `pageControl` | ✓ | planned | |
-| `textField`, `textView`, `toggle`, `slider`, `picker`, `datePicker` | ✓ | planned | Android pickers use Material 3 pickers |
-| `activityIndicator`, `shimmer` | ✓ | planned | |
-| `video` | ✓ | planned | Media3 |
+| `textField`, `textView` | ✓ | ✓ | Brand look from DSL styles on both. Android: `BasicTextField`, IME `keyboardType`/`returnKeyType`, `textContentType` → autofill hints, `focus`/`blur` triggers, Material selection handles. See [Input controls](#input-controls) |
+| `toggle`, `slider` | ✓ | ✓ | Android: Material 3 `Switch` / `Slider` tinted by the DSL colors, laid out at the iOS size (51×31, 31pt tall) |
+| `picker` | ✓ | ✓ | `menu`: pop-up button + Material 3 exposed dropdown menu; `segmented`: Material 3 segmented buttons |
+| `datePicker` | ✓ | ✓ | `compact`: pills opening the Material 3 date / time picker dialogs; `inline`: Material 3 `DatePicker`; `wheels`: snapping wheel columns |
+| `activityIndicator` | ✓ | ✓ | Android: Material 3 `CircularProgressIndicator` at the iOS sizes (20pt, 37pt `large`), gray by default |
+| `shimmer` | ✓ | ✓ | Same sweep on both: 0 → 30% → 0% white band, linear, `duration` (1.5s) |
+| `video` | ✓ | ✓ | Android: Media3 ExoPlayer; same events, marks, posters and end behaviors |
+| `focus`, `focusNext`, `focusPrevious`, `dismissKeyboard` actions | ✓ | ✓ | |
+| `keyboard` layout target | ✓ | ✓ | Android tracks the IME insets |
 | `tableView` | ✓ | planned | Rendered as a lazy list with grouped sections |
-| `map` | ✓ | planned | Google Maps Compose |
+| `map` | ✓ | ✓ | iOS: MapKit. Android: a pluggable `App8MapProvider`; the optional `engine-maps` module draws Google Maps (host supplies the API key). Without a provider: a static tile with pins and a `map.provider.missing` warning |
 | Layout constraints, priorities, hugging, compression | ✓ | planned | Android solves the same constraints with a Cassowary solver |
 | `button` system styles `glass`, `prominentGlass` | ✓ | planned | Android draws glass with blur + tint |
 | `material.visualEffect` blur | ✓ | planned | |
@@ -113,3 +119,26 @@ A new DSL feature lands only when both columns are filled (see
 | `haptic` styles | ✓ | planned | Nearest `HapticFeedbackConstants` |
 | Per-node `ios` / `android` overrides | planned | planned | DSL 1.1 |
 | `app.platforms` floors | planned | planned | DSL 1.1 |
+
+## Input controls
+
+Text inputs are brand content: their fill, border, corners, fonts, colors, padding
+and placeholder come from DSL styles on both platforms. Everything the operating
+system owns follows the platform:
+
+| Concern | iOS | Android |
+|---|---|---|
+| Keyboard | `keyboardType` → `UIKeyboardType` | `keyboardType` → IME keyboard type (`numberPad` → number, `decimalPad` → decimal, `URL`/`webSearch` → URI, `phonePad` → phone, `emailAddress` → email) |
+| Return key | `returnKeyType` | IME action (`next`, `done`, `go`/`join`/`route`/`continue` → go, `search`/`google`/`yahoo` → search, `send`) |
+| Return pressed | `tap` actions, then the field resigns | Same; focus stays wherever the actions moved it |
+| Autofill | `textContentType` | Android autofill content types (`username`, `password`, `newPassword`, `oneTimeCode` → SMS OTP, names, address, card, birth date) |
+| Secure entry | Dots | Dots (password transformation) |
+| Clear button | `clearButtonMode` | Same modes, drawn like the iOS button |
+| Cursor color | `tintColor` | `tintColor` |
+| Keyboard avoidance | `keyboard` constraint target | `keyboard` constraint target, from IME insets |
+| Toggle, slider | `UISwitch`, `UISlider` | Material 3 `Switch`, `Slider` (steps finer than 10 stops slide without tick marks) |
+| Pickers | `UIMenu` pop-up button, `UISegmentedControl` | Exposed dropdown menu, segmented buttons |
+| Date picker | `UIDatePicker` compact / inline / wheels | Pills + Material 3 dialogs / Material 3 `DatePicker` / wheel columns |
+
+A `datePicker` writes `yyyy-MM-dd` to its `bindVariable` in every mode on both
+platforms (iOS behavior; time-of-day is not written).
