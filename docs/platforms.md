@@ -138,6 +138,57 @@ A new DSL feature lands only when both columns are filled (see
 | Per-node `ios` / `android` overrides | planned | planned | DSL 1.1 |
 | `app.platforms` floors | planned | planned | DSL 1.1 |
 
+## Android system colors
+
+Material 3 chrome on Android (top app bar search field, `tabBarScreen`
+navigation bar, sheets, dialogs, pickers, pull-to-refresh, ripple) takes its
+colors from the app, never from Material's baseline scheme (purple seed
+`#6750A4`, lavender surfaces like `#F3EDF7`). Both Android renderers (the
+native SDK and Shoppu Studio) build the same M3 `ColorScheme` with the same
+function, so one JSON gives one brand look.
+
+**Accent** (primary, secondary, tertiary), first match wins:
+
+1. The component's own DSL color: `navigationBar.tintColor`, then
+   `navigationBar.search.tintColor` re-theme that screen's chrome; a
+   `tabBarScreen` `tintColor` re-themes its tabs.
+2. The app's accent: the tab bar `tintColor` (the DSL has no app-level tint),
+   which also themes chrome outside the tabs (sheets, dialogs).
+3. None: a neutral near-black (`#262626`; `#D9D9D9` in dark). No purple.
+
+**Surfaces** are neutral steps from the system background (white, or black in
+dark) toward the label color, the same hue as the background:
+
+| Role | Light | Dark |
+|---|---|---|
+| `surface`, `background` | `#FFFFFF` | `#000000` |
+| `surfaceContainerLow` | `#F7F7F7` (3%) | `#121212` (7%) |
+| `surfaceContainer` (navigation bar) | `#F2F2F2` (5%) | `#1C1C1C` (11%) |
+| `surfaceContainerHigh` (search field) | `#EBEBEB` (8%) | `#262626` (15%) |
+| `surfaceContainerHighest` | `#E3E3E3` (11%) | `#303030` (19%) |
+| `onSurface` | label `#000000` | label `#FFFFFF` |
+| `onSurfaceVariant` (search icon, placeholder) | `#666666` (60%) | `#999999` (60%) |
+| `primaryContainer`, `secondaryContainer` | accent 14% from the background | same |
+| `error` | `systemRed` | `systemRed` |
+
+Mixing is per sRGB channel, rounded to 8 bits; `onPrimary` is black or white
+by the accent's luminance. Elevation adds no tint (`surfaceTint` is clear).
+
+**Navigation bar items** keep the DSL tab colors, like iOS: selected
+`tintColor` (default system blue), unselected `unselectedColor` (default
+system gray). The selected indicator pill is the selected color at 14% alpha.
+
+**Light and dark** follow the app's appearance (`userInterfaceStyle`, then
+`defaultUserInterfaceStyle`, then the system); `{light, dark}` DSL colors
+resolve for that appearance before the scheme is built.
+
+**Dynamic color** (wallpaper palette) is off. A native host can opt in with
+`App8Config(dynamicColor = true)`; the app's tints then no longer re-theme
+chrome. Studio always draws the app's colors.
+
+Where the DSL sets a color explicitly (tab bar tint and unselected color,
+navigation bar and search tint), Android uses that exact color, as iOS does.
+
 ## Input controls
 
 Text inputs are brand content: their fill, border, corners, fonts, colors, padding
