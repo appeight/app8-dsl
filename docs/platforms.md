@@ -14,6 +14,8 @@ conventions, so the app feels at home on each:
 | Concern | iOS | Android |
 |---|---|---|
 | Navigation bar | `UINavigationBar`, large titles, chevron back button | Material 3 top app bar, arrow back button |
+| Navigation bar search (`navigationBar.search`) | `UISearchController` (iOS 26 integrated field) | Material 3 search input field in the top app bar (title slot, own row for `stacked`, expanding action for `integratedButton`) |
+| Screen transitions (`transition`) | Custom `UIViewControllerAnimatedTransitioning` | Navigation 3 entry animations; predictive back scrubs the authored pop |
 | Back navigation | Edge swipe | System back gesture with predictive back preview |
 | Tab bar (`tabBarScreen`) | `UITabBar` (floating glass capsule on iOS 26) | Material 3 `NavigationBar` |
 | Press feedback (`button`) | Highlight and dim | Ripple |
@@ -118,6 +120,15 @@ A new DSL feature lands only when both columns are filled (see
 | `keyboard` layout target | ✓ | ✓ | Android tracks the IME insets |
 | `tableView` | ✓ | planned | Rendered as a lazy list with grouped sections |
 | `map` | ✓ | ✓ | iOS: MapKit. Android: a pluggable `App8MapProvider`; the optional `engine-maps` module draws Google Maps (host supplies the API key). Without a provider: a static tile with pins and a `map.provider.missing` warning |
+| `navigationBar.search` | ✓ | ✓ | `bindVariable` written on every edit, `onSubmit` on the search key. `hidesWhenScrolling` not yet on Android |
+| Screen transitions: presets, custom keyframes, `raise`, `reverse`, registry, screen/app defaults | ✓ | ✓ | Android: per-entry keyframes on Navigation 3; `system` keeps the platform animation; predictive back seeks the pop animation |
+| Shared-element transitions (`shared`, element `key`, `morph`, `stagger`) | ✓ | ✓ | Android: `SharedTransitionLayout` `sharedBounds` (`frameFade`) / `sharedElement` (`frame`) |
+| Custom modals (`mode: modal`): `dimming`, `interactive`, sized `presentation` (`popup`, `sheet`) | ✓ | ✓ | Android: drag tracks 1:1, edge sheets stretch, system back scrubs the dismissal. The presenting screen's `from` keyframes do not animate under a modal yet |
+| `hidesTabBar` | ✓ | ✓ | |
+| `scrollView` `pagingEnabled`, `autoScroll` | ✓ | ✓ | Android: page-snapping fling; marquee drawn as a second copy after `loopGap` |
+| Focused input scrolls above the keyboard | ✓ | ✓ | 20pt gap; Android also extends scroll content by the covered part (hosts use `adjustResize`) |
+| Streaming (`streamScreen`, `streamDatasource`, `streamStyles`) | ✓ | ✓ | Datasource updates recompose only readers; screen updates keep variable state |
+| `layout.conflict` diagnostics (broken required constraint) | ✓ | ✓ | Names the views the broken constraint relates |
 | Layout constraints, priorities, hugging, compression | ✓ | planned | Android solves the same constraints with a Cassowary solver |
 | `button` system styles `glass`, `prominentGlass` | ✓ | planned | Android draws glass with blur + tint |
 | `material.visualEffect` blur | ✓ | planned | |
