@@ -305,7 +305,8 @@ Configure the navigation bar for each screen.
 | `rightAction` | BarAction | Single right bar button (kept for backward compatibility) |
 | `rightActions` | BarAction[] | Multiple right bar buttons — takes priority over `rightAction` |
 | `tintColor` | Color | Back chevron and bar-button tint while this screen is on top (system tint when omitted) |
-| `topEdgeEffect` | string | iOS 26 scroll-edge effect under the bar: `automatic` (default), `soft`, `hard`, or `hidden` (e.g. an edge-to-edge hero image under a transparent bar) |
+| `topEdgeEffect` | string | iOS 26 scroll-edge effect under the bar: `automatic` (default), `soft`, `hard`, or `hidden` (e.g. an edge-to-edge hero image under a transparent bar). Android: `hidden` keeps the top app bar transparent over the hero, with icons on legibility circles, until the hero scrolls away; other values turn the bar `surfaceContainer` as soon as content scrolls under it |
+| `topAppBar` | string | Android only (iOS ignores it): Material 3 top app bar variant, `small` (default, 64dp), `centerAligned`, `medium` (112dp, collapses to 64dp on scroll) or `large` (152dp, collapses to 64dp). Write it in an `android` override when the iOS bar should stay the same |
 | `search` | SearchBar | System search field in the bar — see [Search](#search) |
 
 ### Search

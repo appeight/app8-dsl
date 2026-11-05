@@ -13,11 +13,11 @@ conventions, so the app feels at home on each:
 
 | Concern | iOS | Android |
 |---|---|---|
-| Navigation bar | `UINavigationBar`, large titles, chevron back button | Material 3 top app bar, arrow back button |
-| Navigation bar search (`navigationBar.search`) | `UISearchController` (iOS 26 integrated field) | Material 3 search input field in the top app bar (title slot, own row for `stacked`, expanding action for `integratedButton`) |
-| Screen transitions (`transition`) | Custom `UIViewControllerAnimatedTransitioning` | Navigation 3 entry animations; predictive back scrubs the authored pop |
+| Navigation bar | `UINavigationBar`, large titles, chevron back button | Material 3 top app bar (64dp; `navigationBar.topAppBar` picks `small`, `centerAligned`, `medium` or `large`), arrow back button. Transparent at rest, `surfaceContainer` once content scrolls under it (no blur, no shadow). Over a hero (`topEdgeEffect: hidden`): icons on legibility circles until the hero scrolls away |
+| Navigation bar search (`navigationBar.search`) | `UISearchController` (iOS 26 integrated field) | Material 3 app bar with search (56dp field, 4dp above and below, `surfaceContainer` once content scrolls under it; with `hidesWhenScrolling: true` it hides on scroll down and returns on scroll up); own row for `stacked`; expanding action for `integratedButton` |
+| Screen transitions (`transition`) | Custom `UIViewControllerAnimatedTransitioning` | Authored transitions on Navigation 3; `system` is Material shared axis X (450ms); predictive back scrubs the authored pop, or previews `system` at 90% scale |
 | Back navigation | Edge swipe | System back gesture with predictive back preview |
-| Tab bar (`tabBarScreen`) | `UITabBar` (floating glass capsule on iOS 26) | Material 3 `NavigationBar` |
+| Tab bar (`tabBarScreen`) | `UITabBar` (floating glass capsule on iOS 26) | Material 3 Expressive short navigation bar (64dp; icon beside label from 600dp wide) |
 | Press feedback (`button`) | Highlight and dim | Ripple |
 | Scroll edges | Rubber band and bounce | Stretch overscroll |
 | Scroll indicators | Thin overlay bars that fade | None by default |
@@ -127,7 +127,7 @@ A new DSL feature lands only when both columns are filled (see
 | `keyboard` layout target | ✓ | ✓ | Android tracks the IME insets |
 | `tableView` | ✓ | planned | Rendered as a lazy list with grouped sections |
 | `map` | ✓ | ✓ | iOS: MapKit. Android: a pluggable `App8MapProvider`; the optional `engine-maps` module draws Google Maps (host supplies the API key). Without a provider: a static tile with pins and a `map.provider.missing` warning |
-| `navigationBar.search` | ✓ | ✓ | `bindVariable` written on every edit, `onSubmit` on the search key. `hidesWhenScrolling` not yet on Android |
+| `navigationBar.search` | ✓ | ✓ | `bindVariable` written on every edit, `onSubmit` on the search key. Android: `hidesWhenScrolling: true` hides the search app bar on scroll (enterAlways); a stacked search row does not hide yet |
 | Screen transitions: presets, custom keyframes, `raise`, `reverse`, registry, screen/app defaults | ✓ | ✓ | Android: per-entry keyframes on Navigation 3; `system` keeps the platform animation; predictive back seeks the pop animation |
 | Shared-element transitions (`shared`, element `key`, `morph`, `stagger`) | ✓ | ✓ | Android: `SharedTransitionLayout` `sharedBounds` (`frameFade`) / `sharedElement` (`frame`) |
 | Custom modals (`mode: modal`): `dimming`, `interactive`, sized `presentation` (`popup`, `sheet`) | ✓ | ✓ | Android: drag tracks 1:1, edge sheets stretch, system back scrubs the dismissal. The presenting screen's `from` keyframes do not animate under a modal yet |
@@ -144,6 +144,10 @@ A new DSL feature lands only when both columns are filled (see
 | `haptic` styles | ✓ | planned | Nearest `HapticFeedbackConstants` |
 | Per-node `ios` / `android` overrides | planned | planned | DSL 1.1 |
 | `app.platforms` floors | planned | planned | DSL 1.1 |
+
+Exact Android chrome numbers (heights, paddings, icon sizes, motion) and their
+Material sources: `docs/android-chrome-spec.md` in app8-android-sdk. Studio's
+Android preview draws the same numbers.
 
 ## Android system colors
 
