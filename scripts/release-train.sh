@@ -64,7 +64,12 @@ show app8-ios-cloud-sdk Sources/App8Cloud/Internal/SDKVersion.swift | grep -q "c
 tag_and_release app8-ios-cloud-sdk "App8Cloud (iOS)" "$NOTES"
 
 say "5/5 app8-android-cloud-sdk (waits for the engine package to be published)"
-run=$(gh run list -R "$ORG/app8-android-sdk" --workflow release.yml -L 1 --json databaseId -q '.[0].databaseId')
+run=""
+for _ in $(seq 1 30); do # the tag push starts release.yml; give it a moment to appear
+  run=$(gh run list -R "$ORG/app8-android-sdk" --workflow release.yml --branch "$V" -L 1 --json databaseId -q '.[0].databaseId' 2>/dev/null || true)
+  [[ -n "$run" ]] && break; sleep 10
+done
+[[ -n "$run" ]] || die "no release.yml run for $V on app8-android-sdk"
 gh run watch "$run" -R "$ORG/app8-android-sdk" --exit-status >/dev/null || die "Android engine release workflow failed: gh run view $run -R $ORG/app8-android-sdk"
 tag_and_release app8-android-cloud-sdk "App8 Cloud (Android)" "$NOTES"
 
