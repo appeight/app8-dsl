@@ -90,6 +90,13 @@ draws them. An `icon` with `type: "symbol"` resolves on Android in this order:
 3. Nothing: the icon renders empty and the SDK reports a diagnostics warning
    `icon.unmapped`.
 
+## Image formats
+
+PNG, JPEG, WebP and GIF work everywhere. AVIF decodes on iOS 16+ and on
+Android 14+ only: Android 12 and 13 cannot decode it, and the image stays
+empty with an `image` diagnostics warning. Ship PNG, JPEG or WebP for apps
+that support the Android floor.
+
 ## Feature matrix
 
 `✓` supported, `—` not on this platform, `planned` designed but not built yet.
