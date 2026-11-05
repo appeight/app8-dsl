@@ -1,0 +1,405 @@
+{
+  "source": "Hardware values from the stock framework overlays (LineageOS device trees mirroring Google's vendor overlays; AOSP device/google/shusky), per model in pixel-hardware.json with source URLs. Navigation bar heights measured with ProbeActivity on Android 17 emulators (app8-android-sdk/scripts/probe-pixels.sh). Units: dp, at each model's out-of-box resolution. Collected 2026-11-05.",
+  "devices": [
+    {
+      "id": "pixel-6",
+      "name": "Pixel 6",
+      "width": 411.43,
+      "height": 914.29,
+      "density": 2.625,
+      "pixels": {
+        "width": 1080,
+        "height": 2400
+      },
+      "statusBar": 48.76,
+      "navigationBar": {
+        "gesture": 24,
+        "threeButton": 48
+      },
+      "cornerRadius": 10.67,
+      "cutout": {
+        "kind": "punchHole",
+        "centerX": 205.71,
+        "centerY": 24.38,
+        "diameter": 25.14,
+        "insetTop": 48.76
+      },
+      "confidence": "high"
+    },
+    {
+      "id": "pixel-6-pro",
+      "name": "Pixel 6 Pro",
+      "width": 411.43,
+      "height": 891.43,
+      "density": 3.5,
+      "pixels": {
+        "width": 1440,
+        "height": 3120
+      },
+      "statusBar": 41.43,
+      "navigationBar": {
+        "gesture": 24,
+        "threeButton": 48
+      },
+      "cornerRadius": 19.14,
+      "cutout": {
+        "kind": "punchHole",
+        "centerX": 205.43,
+        "centerY": 20.57,
+        "diameter": 24.0,
+        "insetTop": 41.43
+      },
+      "confidence": "medium"
+    },
+    {
+      "id": "pixel-6a",
+      "name": "Pixel 6a",
+      "width": 411.43,
+      "height": 914.29,
+      "density": 2.625,
+      "pixels": {
+        "width": 1080,
+        "height": 2400
+      },
+      "statusBar": 50.29,
+      "navigationBar": {
+        "gesture": 24,
+        "threeButton": 48
+      },
+      "cornerRadius": 17.9,
+      "cutout": {
+        "kind": "punchHole",
+        "centerX": 205.71,
+        "centerY": 25.14,
+        "diameter": 25.14,
+        "insetTop": 50.29
+      },
+      "confidence": "high"
+    },
+    {
+      "id": "pixel-7",
+      "name": "Pixel 7",
+      "width": 411.43,
+      "height": 914.29,
+      "density": 2.625,
+      "pixels": {
+        "width": 1080,
+        "height": 2400
+      },
+      "statusBar": 51.81,
+      "navigationBar": {
+        "gesture": 24,
+        "threeButton": 48
+      },
+      "cornerRadius": 17.9,
+      "cutout": {
+        "kind": "punchHole",
+        "centerX": 205.71,
+        "centerY": 25.9,
+        "diameter": 25.9,
+        "insetTop": 51.81
+      },
+      "confidence": "high"
+    },
+    {
+      "id": "pixel-7-pro",
+      "name": "Pixel 7 Pro",
+      "width": 411.43,
+      "height": 891.43,
+      "density": 2.625,
+      "pixels": {
+        "width": 1080,
+        "height": 2340
+      },
+      "statusBar": 41.14,
+      "navigationBar": {
+        "gesture": 24,
+        "threeButton": 48
+      },
+      "cornerRadius": 19.14,
+      "cutout": {
+        "kind": "punchHole",
+        "centerX": 205.71,
+        "centerY": 20.57,
+        "diameter": 24.57,
+        "insetTop": 41.14
+      },
+      "confidence": "high"
+    },
+    {
+      "id": "pixel-7a",
+      "name": "Pixel 7a",
+      "width": 411.43,
+      "height": 914.29,
+      "density": 2.625,
+      "pixels": {
+        "width": 1080,
+        "height": 2400
+      },
+      "statusBar": 44.95,
+      "navigationBar": {
+        "gesture": 24,
+        "threeButton": 48
+      },
+      "cornerRadius": 17.9,
+      "cutout": {
+        "kind": "punchHole",
+        "centerX": 205.71,
+        "centerY": 25.14,
+        "diameter": 25.14,
+        "insetTop": 44.95
+      },
+      "confidence": "high"
+    },
+    {
+      "id": "pixel-8",
+      "name": "Pixel 8",
+      "width": 411.43,
+      "height": 914.29,
+      "density": 2.625,
+      "pixels": {
+        "width": 1080,
+        "height": 2400
+      },
+      "statusBar": 50.29,
+      "navigationBar": {
+        "gesture": 24,
+        "threeButton": 48
+      },
+      "cornerRadius": 38.86,
+      "cutout": {
+        "kind": "punchHole",
+        "centerX": 205.62,
+        "centerY": 25.05,
+        "diameter": 27.62,
+        "insetTop": 50.29
+      },
+      "confidence": "high"
+    },
+    {
+      "id": "pixel-8-pro",
+      "name": "Pixel 8 Pro",
+      "width": 448.0,
+      "height": 997.33,
+      "density": 2.25,
+      "pixels": {
+        "width": 1008,
+        "height": 2244
+      },
+      "statusBar": 50.33,
+      "navigationBar": {
+        "gesture": 24,
+        "threeButton": 48
+      },
+      "cornerRadius": 30.33,
+      "cutout": {
+        "kind": "punchHole",
+        "centerX": 224.0,
+        "centerY": 25.0,
+        "diameter": 28.83,
+        "insetTop": 50.33
+      },
+      "confidence": "high"
+    },
+    {
+      "id": "pixel-8a",
+      "name": "Pixel 8a",
+      "width": 411.43,
+      "height": 914.29,
+      "density": 2.625,
+      "pixels": {
+        "width": 1080,
+        "height": 2400
+      },
+      "statusBar": 57.52,
+      "navigationBar": {
+        "gesture": 24,
+        "threeButton": 48
+      },
+      "cornerRadius": 48.76,
+      "cutout": {
+        "kind": "punchHole",
+        "centerX": 205.53,
+        "centerY": 26.18,
+        "diameter": 25.69,
+        "insetTop": 46.1
+      },
+      "confidence": "high"
+    },
+    {
+      "id": "pixel-9",
+      "name": "Pixel 9",
+      "width": 411.43,
+      "height": 923.43,
+      "density": 2.625,
+      "pixels": {
+        "width": 1080,
+        "height": 2424
+      },
+      "statusBar": 66.0,
+      "navigationBar": {
+        "gesture": 24,
+        "threeButton": 48
+      },
+      "cornerRadius": 50.29,
+      "cutout": {
+        "kind": "punchHole",
+        "centerX": 205.52,
+        "centerY": 32.95,
+        "diameter": 32.0,
+        "insetTop": 65.9
+      },
+      "confidence": "high"
+    },
+    {
+      "id": "pixel-9-pro",
+      "name": "Pixel 9 Pro",
+      "width": 426.67,
+      "height": 952.0,
+      "density": 2.25,
+      "pixels": {
+        "width": 960,
+        "height": 2142
+      },
+      "statusBar": 68.0,
+      "navigationBar": {
+        "gesture": 24,
+        "threeButton": 48
+      },
+      "cornerRadius": 52.33,
+      "cutout": {
+        "kind": "punchHole",
+        "centerX": 213.33,
+        "centerY": 34.0,
+        "diameter": 32.67,
+        "insetTop": 68.0
+      },
+      "confidence": "high"
+    },
+    {
+      "id": "pixel-9-pro-xl",
+      "name": "Pixel 9 Pro XL",
+      "width": 448.0,
+      "height": 997.33,
+      "density": 2.25,
+      "pixels": {
+        "width": 1008,
+        "height": 2244
+      },
+      "statusBar": 66.0,
+      "navigationBar": {
+        "gesture": 24,
+        "threeButton": 48
+      },
+      "cornerRadius": 51.0,
+      "cutout": {
+        "kind": "punchHole",
+        "centerX": 224.0,
+        "centerY": 33.17,
+        "diameter": 31.33,
+        "insetTop": 66.33
+      },
+      "confidence": "high"
+    },
+    {
+      "id": "pixel-9a",
+      "name": "Pixel 9a",
+      "width": 411.43,
+      "height": 923.43,
+      "density": 2.625,
+      "pixels": {
+        "width": 1080,
+        "height": 2424
+      },
+      "statusBar": 52.0,
+      "navigationBar": {
+        "gesture": 24,
+        "threeButton": 48
+      },
+      "cornerRadius": 43.81,
+      "cutout": {
+        "kind": "punchHole",
+        "centerX": 205.71,
+        "centerY": 32.76,
+        "diameter": 31.62,
+        "insetTop": 57.9
+      },
+      "confidence": "high"
+    },
+    {
+      "id": "pixel-10",
+      "name": "Pixel 10",
+      "width": 411.43,
+      "height": 923.43,
+      "density": 2.625,
+      "pixels": {
+        "width": 1080,
+        "height": 2424
+      },
+      "statusBar": 66.0,
+      "navigationBar": {
+        "gesture": 24,
+        "threeButton": 48
+      },
+      "cornerRadius": 52.57,
+      "cutout": {
+        "kind": "punchHole",
+        "centerX": 205.52,
+        "centerY": 32.76,
+        "diameter": 32.0,
+        "insetTop": 65.9
+      },
+      "confidence": "high"
+    },
+    {
+      "id": "pixel-10-pro",
+      "name": "Pixel 10 Pro",
+      "width": 426.67,
+      "height": 952.0,
+      "density": 2.5312,
+      "pixels": {
+        "width": 1080,
+        "height": 2410
+      },
+      "statusBar": 68.0,
+      "navigationBar": {
+        "gesture": 24,
+        "threeButton": 48
+      },
+      "cornerRadius": 52.33,
+      "cutout": {
+        "kind": "punchHole",
+        "centerX": 213.33,
+        "centerY": 34.0,
+        "diameter": 32.67,
+        "insetTop": 68.0
+      },
+      "confidence": "medium"
+    },
+    {
+      "id": "pixel-10-pro-xl",
+      "name": "Pixel 10 Pro XL",
+      "width": 448.0,
+      "height": 997.33,
+      "density": 2.4106,
+      "pixels": {
+        "width": 1080,
+        "height": 2404
+      },
+      "statusBar": 72.0,
+      "navigationBar": {
+        "gesture": 24,
+        "threeButton": 48
+      },
+      "cornerRadius": 51.0,
+      "cutout": {
+        "kind": "punchHole",
+        "centerX": 223.83,
+        "centerY": 33.33,
+        "diameter": 32.0,
+        "insetTop": 66.67
+      },
+      "confidence": "medium"
+    }
+  ]
+}

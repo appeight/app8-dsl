@@ -1,0 +1,623 @@
+{
+  "source": "Stock Pixel vendor RRO values as mirrored in LineageOS device trees (branch lineage-24.0, extracted from factory images), corroborated with AOSP device/google/* where available. Overlay px values are authored at the panel's max resolution; the framework scales them by physicalPixelDisplaySizeRatio at lower modes, so the dp values are the same in every mode. Dp values = px / (maxDensity/160). Cutout centerX is measured from the left edge ('@left').",
+  "generated": "2026-11-05",
+  "devices": {
+    "pixel-6": {
+      "codename": "oriole",
+      "defaultResolutionPx": {
+        "width": 1080,
+        "height": 2400
+      },
+      "maxResolutionPx": {
+        "width": 1080,
+        "height": 2400
+      },
+      "densityDpi": 420.0,
+      "maxResolutionDensityDpi": 420,
+      "widthDp": 411.43,
+      "heightDp": 914.29,
+      "cornerRadiusPx": 28.0,
+      "cornerRadiusPxAtDefaultResolution": 28.0,
+      "cornerRadiusDp": 10.67,
+      "cutout": {
+        "centerXdp": 205.71,
+        "centerYdp": 24.38,
+        "diameterDp": 25.14,
+        "centerXpx": 540.0,
+        "centerYpx": 64.0,
+        "diameterPx": 66.0,
+        "insetTopDp": 48.76,
+        "svgPathRaw": "M 507,64 a 33,33 0 1 0 66,0 33,33 0 1 0 -66,0 Z @left",
+        "rectApproximationRaw": "M 492,0 h 118 v 128 h -118 Z @left"
+      },
+      "statusBarHeightDp": 48.76,
+      "statusBarHeightRaw": "128px",
+      "sources": [
+        "https://github.com/LineageOS/android_device_google_raviole/blob/lineage-24.0/oriole/overlay/FrameworkResOverlayVendorOriole/res/values/dimens.xml",
+        "https://github.com/LineageOS/android_device_google_raviole/blob/lineage-24.0/oriole/overlay/FrameworkResOverlayVendorOriole/res/values/config.xml",
+        "https://github.com/LineageOS/android_device_google_raviole/blob/lineage-24.0/oriole/BoardConfig.mk"
+      ],
+      "confidence": "high",
+      "notes": "Rect approximation height (top cutout inset) = 128px = 48.76dp."
+    },
+    "pixel-6-pro": {
+      "codename": "raven",
+      "defaultResolutionPx": {
+        "width": 1440,
+        "height": 3120
+      },
+      "maxResolutionPx": {
+        "width": 1440,
+        "height": 3120
+      },
+      "densityDpi": 560.0,
+      "maxResolutionDensityDpi": 560,
+      "widthDp": 411.43,
+      "heightDp": 891.43,
+      "cornerRadiusPx": 67.0,
+      "cornerRadiusPxAtDefaultResolution": 67.0,
+      "cornerRadiusDp": 19.14,
+      "cutout": {
+        "centerXdp": 205.43,
+        "centerYdp": 20.57,
+        "diameterDp": 24.0,
+        "centerXpx": 719.0,
+        "centerYpx": 72.0,
+        "diameterPx": 84.0,
+        "insetTopDp": 41.43,
+        "svgPathRaw": "M 677,72 a 42,42 0 1 0 84,0 a 42,42 0 1 0 -84,0 Z @left",
+        "rectApproximationRaw": "M 653,0 h 130 v 145 h -130 Z @left"
+      },
+      "statusBarHeightDp": 41.43,
+      "statusBarHeightRaw": "41.42857143dp",
+      "sources": [
+        "https://github.com/LineageOS/android_device_google_raviole/blob/lineage-24.0/raven/overlay/FrameworkResOverlayVendorRaven/res/values/dimens.xml",
+        "https://github.com/LineageOS/android_device_google_raviole/blob/lineage-24.0/raven/overlay/FrameworkResOverlayVendorRaven/res/values/config.xml",
+        "https://github.com/LineageOS/android_device_google_raviole/blob/lineage-24.0/raven/vendor.prop",
+        "https://github.com/LineageOS/android_device_google_raviole/blob/lineage-24.0/raven/BoardConfig.mk"
+      ],
+      "confidence": "medium",
+      "notes": "raven vendor.prop persist.vendor.display.primary.boot_config=1440x3120@120, i.e. boots at QHD+ (unlike 7 Pro onward). The in-Settings resolution switch for 6 Pro arrived later; out-of-box mode on current builds not independently confirmed. corner top=67px, bottom=66px. Rect approximation height (top cutout inset) = 145px = 41.43dp. The emulator's 14.29dp equals 50px, which is 67px scaled to 1080-wide but divided by the 1440-wide density 3.5. That looks like an emulator artifact; the true value is 67px@560dpi = 19.14dp."
+    },
+    "pixel-6a": {
+      "codename": "bluejay",
+      "defaultResolutionPx": {
+        "width": 1080,
+        "height": 2400
+      },
+      "maxResolutionPx": {
+        "width": 1080,
+        "height": 2400
+      },
+      "densityDpi": 420.0,
+      "maxResolutionDensityDpi": 420,
+      "widthDp": 411.43,
+      "heightDp": 914.29,
+      "cornerRadiusPx": 47.0,
+      "cornerRadiusPxAtDefaultResolution": 47.0,
+      "cornerRadiusDp": 17.9,
+      "cutout": {
+        "centerXdp": 205.71,
+        "centerYdp": 25.14,
+        "diameterDp": 25.14,
+        "centerXpx": 540.0,
+        "centerYpx": 66.0,
+        "diameterPx": 66.0,
+        "insetTopDp": 50.29,
+        "svgPathRaw": "M 507,66 a 33,33 0 1 0 66,0 33,33 0 1 0 -66,0 Z @left",
+        "rectApproximationRaw": "M 480,0 h 145 v 132 h -145 Z @left"
+      },
+      "statusBarHeightDp": 50.29,
+      "statusBarHeightRaw": "132px",
+      "sources": [
+        "https://github.com/LineageOS/android_device_google_bluejay/blob/lineage-24.0/overlay/FrameworkResOverlayVendorBluejay/res/values/dimens.xml",
+        "https://github.com/LineageOS/android_device_google_bluejay/blob/lineage-24.0/overlay/FrameworkResOverlayVendorBluejay/res/values/config.xml",
+        "https://github.com/LineageOS/android_device_google_bluejay/blob/lineage-24.0/BoardConfig.mk"
+      ],
+      "confidence": "high",
+      "notes": "corner top=47px, bottom=48px. Rect approximation height (top cutout inset) = 132px = 50.29dp."
+    },
+    "pixel-7": {
+      "codename": "panther",
+      "defaultResolutionPx": {
+        "width": 1080,
+        "height": 2400
+      },
+      "maxResolutionPx": {
+        "width": 1080,
+        "height": 2400
+      },
+      "densityDpi": 420.0,
+      "maxResolutionDensityDpi": 420,
+      "widthDp": 411.43,
+      "heightDp": 914.29,
+      "cornerRadiusPx": 47.0,
+      "cornerRadiusPxAtDefaultResolution": 47.0,
+      "cornerRadiusDp": 17.9,
+      "cutout": {
+        "centerXdp": 205.71,
+        "centerYdp": 25.9,
+        "diameterDp": 25.9,
+        "centerXpx": 540.0,
+        "centerYpx": 68.0,
+        "diameterPx": 68.0,
+        "insetTopDp": 51.81,
+        "svgPathRaw": "M 506,68 a 34,34 0 1 0 68,0 34,34 0 1 0 -68,0 Z @left",
+        "rectApproximationRaw": "M 480,0 h 145 v 136 h -145 Z @left"
+      },
+      "statusBarHeightDp": 51.81,
+      "statusBarHeightRaw": "136px",
+      "sources": [
+        "https://github.com/LineageOS/android_device_google_pantah/blob/lineage-24.0/panther/overlay/FrameworkResOverlayVendorPanther/res/values/dimens.xml",
+        "https://github.com/LineageOS/android_device_google_pantah/blob/lineage-24.0/panther/overlay/FrameworkResOverlayVendorPanther/res/values/config.xml",
+        "https://github.com/LineageOS/android_device_google_pantah/blob/lineage-24.0/panther/BoardConfig.mk"
+      ],
+      "confidence": "high",
+      "notes": "corner top=47px, bottom=48px. Rect approximation height (top cutout inset) = 136px = 51.81dp."
+    },
+    "pixel-7-pro": {
+      "codename": "cheetah",
+      "defaultResolutionPx": {
+        "width": 1080,
+        "height": 2340
+      },
+      "maxResolutionPx": {
+        "width": 1440,
+        "height": 3120
+      },
+      "densityDpi": 420.0,
+      "maxResolutionDensityDpi": 560,
+      "widthDp": 411.43,
+      "heightDp": 891.43,
+      "cornerRadiusPx": 67.0,
+      "cornerRadiusPxAtDefaultResolution": 50.2,
+      "cornerRadiusDp": 19.14,
+      "cutout": {
+        "centerXdp": 205.71,
+        "centerYdp": 20.57,
+        "diameterDp": 24.57,
+        "centerXpx": 720.0,
+        "centerYpx": 72.0,
+        "diameterPx": 86.0,
+        "insetTopDp": 41.14,
+        "svgPathRaw": "M 677,72 a 43,43 0 1 0 86,0 a 43,43 0 1 0 -86,0 Z @left",
+        "rectApproximationRaw": "M 653,0 h 145 v 144 h -145 Z @left"
+      },
+      "statusBarHeightDp": 41.14,
+      "statusBarHeightRaw": "41.142857143dp",
+      "sources": [
+        "https://github.com/LineageOS/android_device_google_pantah/blob/lineage-24.0/cheetah/overlay/FrameworkResOverlayVendorCheetah/res/values/dimens.xml",
+        "https://github.com/LineageOS/android_device_google_pantah/blob/lineage-24.0/cheetah/overlay/FrameworkResOverlayVendorCheetah/res/values/config.xml",
+        "https://github.com/LineageOS/android_device_google_pantah/blob/lineage-24.0/cheetah/vendor.prop",
+        "https://github.com/LineageOS/android_device_google_pantah/blob/lineage-24.0/cheetah/BoardConfig.mk"
+      ],
+      "confidence": "high",
+      "notes": "Default boot/preferred mode 1080x2340 (vendor.prop boot_config/preferred_mode); max 1440x3120@560dpi. Overlay px values are authored at max resolution and scaled by the framework (physicalPixelDisplaySizeRatio), so dp values are resolution-independent. corner top=67px, bottom=66px. Rect approximation height (top cutout inset) = 144px = 41.14dp. Default-mode density 420.0 dpi is derived as maxDensity*defaultWidth/maxWidth, which keeps the dp width constant; it was not read from a prop. The emulator's 14.29dp equals 50px, which is 67px scaled to 1080-wide but divided by the 1440-wide density 3.5. That looks like an emulator artifact; the true value is 67px@560dpi = 19.14dp."
+    },
+    "pixel-7a": {
+      "codename": "lynx",
+      "defaultResolutionPx": {
+        "width": 1080,
+        "height": 2400
+      },
+      "maxResolutionPx": {
+        "width": 1080,
+        "height": 2400
+      },
+      "densityDpi": 420.0,
+      "maxResolutionDensityDpi": 420,
+      "widthDp": 411.43,
+      "heightDp": 914.29,
+      "cornerRadiusPx": 47.0,
+      "cornerRadiusPxAtDefaultResolution": 47.0,
+      "cornerRadiusDp": 17.9,
+      "cutout": {
+        "centerXdp": 205.71,
+        "centerYdp": 25.14,
+        "diameterDp": 25.14,
+        "centerXpx": 540.0,
+        "centerYpx": 66.0,
+        "diameterPx": 66.0,
+        "insetTopDp": 44.95,
+        "svgPathRaw": "M 507,66 a 33,33 0 1 0 66,0 33,33 0 1 0 -66,0 Z @left",
+        "rectApproximationRaw": "M 480,0 h 145 v 118 h -145 Z @left"
+      },
+      "statusBarHeightDp": 44.95,
+      "statusBarHeightRaw": "118px",
+      "sources": [
+        "https://github.com/LineageOS/android_device_google_lynx/blob/lineage-24.0/overlay/FrameworkResOverlayVendorLynx/res/values/dimens.xml",
+        "https://github.com/LineageOS/android_device_google_lynx/blob/lineage-24.0/overlay/FrameworkResOverlayVendorLynx/res/values/config.xml",
+        "https://github.com/LineageOS/android_device_google_lynx/blob/lineage-24.0/BoardConfig.mk"
+      ],
+      "confidence": "high",
+      "notes": "corner top=47px, bottom=48px. Rect approximation height (top cutout inset) = 118px = 44.95dp."
+    },
+    "pixel-8": {
+      "codename": "shiba",
+      "defaultResolutionPx": {
+        "width": 1080,
+        "height": 2400
+      },
+      "maxResolutionPx": {
+        "width": 1080,
+        "height": 2400
+      },
+      "densityDpi": 420.0,
+      "maxResolutionDensityDpi": 420,
+      "widthDp": 411.43,
+      "heightDp": 914.29,
+      "cornerRadiusPx": 102.0,
+      "cornerRadiusPxAtDefaultResolution": 102.0,
+      "cornerRadiusDp": 38.86,
+      "cutout": {
+        "centerXdp": 205.62,
+        "centerYdp": 25.05,
+        "diameterDp": 27.62,
+        "centerXpx": 539.75,
+        "centerYpx": 65.75,
+        "diameterPx": 72.5,
+        "insetTopDp": 50.29,
+        "svgPathRaw": "m 576,65.75 a 36.25,36.25 0 0 0 -72.5,0 36.25,36.25 0 0 0 72.5,0 z @left",
+        "rectApproximationRaw": "M 478.5,0 h 122 v 132 h -122 Z @left"
+      },
+      "statusBarHeightDp": 50.29,
+      "statusBarHeightRaw": "132px",
+      "sources": [
+        "https://github.com/LineageOS/android_device_google_shusky/blob/lineage-24.0/shiba/overlay/FrameworkResOverlayVendorShiba/res/values/dimens.xml",
+        "https://github.com/LineageOS/android_device_google_shusky/blob/lineage-24.0/shiba/overlay/FrameworkResOverlayVendorShiba/res/values/config.xml",
+        "https://github.com/LineageOS/android_device_google_shusky/blob/lineage-24.0/shiba/BoardConfig.mk"
+      ],
+      "confidence": "high",
+      "notes": "rounded_corner_radius=102px, _top=104px, _bottom=102px. corner top=104px, bottom=102px. Rect approximation height (top cutout inset) = 132px = 50.29dp. The emulator's 39.62dp equals the top radius (104px)."
+    },
+    "pixel-8-pro": {
+      "codename": "husky",
+      "defaultResolutionPx": {
+        "width": 1008,
+        "height": 2244
+      },
+      "maxResolutionPx": {
+        "width": 1344,
+        "height": 2992
+      },
+      "densityDpi": 360.0,
+      "maxResolutionDensityDpi": 480,
+      "widthDp": 448.0,
+      "heightDp": 997.33,
+      "cornerRadiusPx": 91.0,
+      "cornerRadiusPxAtDefaultResolution": 68.2,
+      "cornerRadiusDp": 30.33,
+      "cutout": {
+        "centerXdp": 224.0,
+        "centerYdp": 25.0,
+        "diameterDp": 28.83,
+        "centerXpx": 672.0,
+        "centerYpx": 75.0,
+        "diameterPx": 86.5,
+        "insetTopDp": 50.33,
+        "svgPathRaw": "M 628.75,75 a 43.25,43.25 0 1 0 86.5,0 a 43.25,43.25 0 1 0 -86.5,0 Z @left",
+        "rectApproximationRaw": "M 615.5,0 h 110 v 151 h -110 Z @left"
+      },
+      "statusBarHeightDp": 50.33,
+      "statusBarHeightRaw": "151px",
+      "sources": [
+        "https://github.com/LineageOS/android_device_google_shusky/blob/lineage-24.0/husky/overlay/FrameworkResOverlayVendorHusky/res/values/dimens.xml",
+        "https://github.com/LineageOS/android_device_google_shusky/blob/lineage-24.0/husky/overlay/FrameworkResOverlayVendorHusky/res/values/config.xml",
+        "https://github.com/LineageOS/android_device_google_shusky/blob/lineage-24.0/husky/vendor.prop",
+        "https://github.com/LineageOS/android_device_google_shusky/blob/lineage-24.0/husky/BoardConfig.mk",
+        "https://android.googlesource.com/device/google/shusky/+/refs/heads/main/husky/overlay/frameworks/base/core/res/res/values/dimens.xml"
+      ],
+      "confidence": "high",
+      "notes": "Default boot/preferred mode 1008x2244; max 1344x2992@480dpi. Corner 91px is confirmed in AOSP device/google/shusky too; the 115-118px figure is not in either tree. The emulator value (30.33dp) matches. Rect approximation height (top cutout inset) = 151px = 50.33dp. Default-mode density 360.0 dpi is derived as maxDensity*defaultWidth/maxWidth, which keeps the dp width constant; it was not read from a prop."
+    },
+    "pixel-8a": {
+      "codename": "akita",
+      "defaultResolutionPx": {
+        "width": 1080,
+        "height": 2400
+      },
+      "maxResolutionPx": {
+        "width": 1080,
+        "height": 2400
+      },
+      "densityDpi": 420.0,
+      "maxResolutionDensityDpi": 420,
+      "widthDp": 411.43,
+      "heightDp": 914.29,
+      "cornerRadiusPx": 128.0,
+      "cornerRadiusPxAtDefaultResolution": 128.0,
+      "cornerRadiusDp": 48.76,
+      "cutout": {
+        "centerXdp": 205.53,
+        "centerYdp": 26.18,
+        "diameterDp": 25.69,
+        "centerXpx": 539.505,
+        "centerYpx": 68.71,
+        "diameterPx": 67.44,
+        "insetTopDp": 46.1,
+        "svgPathRaw": "m 573.22,68.71 a 33.72,33.72 0 0 0 -67.43,0 33.72,33.72 0 0 0 67.43,0 z @left",
+        "rectApproximationRaw": "m 485.5,0 h 110 v 121 h -110 Z @left"
+      },
+      "statusBarHeightDp": 57.52,
+      "statusBarHeightRaw": "151px",
+      "sources": [
+        "https://github.com/LineageOS/android_device_google_akita/blob/lineage-24.0/overlay/FrameworkResOverlayVendorAkita/res/values/dimens.xml",
+        "https://github.com/LineageOS/android_device_google_akita/blob/lineage-24.0/overlay/FrameworkResOverlayVendorAkita/res/values/config.xml",
+        "https://github.com/LineageOS/android_device_google_akita/blob/lineage-24.0/BoardConfig.mk"
+      ],
+      "confidence": "high",
+      "notes": "Rect approximation height (top cutout inset) = 121px = 46.1dp."
+    },
+    "pixel-9": {
+      "codename": "tokay",
+      "defaultResolutionPx": {
+        "width": 1080,
+        "height": 2424
+      },
+      "maxResolutionPx": {
+        "width": 1080,
+        "height": 2424
+      },
+      "densityDpi": 420.0,
+      "maxResolutionDensityDpi": 420,
+      "widthDp": 411.43,
+      "heightDp": 923.43,
+      "cornerRadiusPx": 132.0,
+      "cornerRadiusPxAtDefaultResolution": 132.0,
+      "cornerRadiusDp": 50.29,
+      "cutout": {
+        "centerXdp": 205.52,
+        "centerYdp": 32.95,
+        "diameterDp": 32.0,
+        "centerXpx": 539.5,
+        "centerYpx": 86.5,
+        "diameterPx": 84.0,
+        "insetTopDp": 65.9,
+        "svgPathRaw": "m 581.5,86.5 a 42,42 0 0 0 -84,0 42,42 0 0 0 84,0 z @left",
+        "rectApproximationRaw": "m 484.5,0 h 110 v 173 h -110 z @left"
+      },
+      "statusBarHeightDp": 66.0,
+      "statusBarHeightRaw": "66dp",
+      "sources": [
+        "https://github.com/LineageOS/android_device_google_caimito/blob/lineage-24.0/tokay/overlay/FrameworkResOverlayVendorTokay/res/values/dimens.xml",
+        "https://github.com/LineageOS/android_device_google_caimito/blob/lineage-24.0/tokay/overlay/FrameworkResOverlayVendorTokay/res/values/config.xml",
+        "https://github.com/LineageOS/android_device_google_caimito/blob/lineage-24.0/tokay/BoardConfig.mk"
+      ],
+      "confidence": "high",
+      "notes": "Rect approximation height (top cutout inset) = 173px = 65.9dp."
+    },
+    "pixel-9-pro": {
+      "codename": "caiman",
+      "defaultResolutionPx": {
+        "width": 960,
+        "height": 2142
+      },
+      "maxResolutionPx": {
+        "width": 1280,
+        "height": 2856
+      },
+      "densityDpi": 360.0,
+      "maxResolutionDensityDpi": 480,
+      "widthDp": 426.67,
+      "heightDp": 952.0,
+      "cornerRadiusPx": 157.0,
+      "cornerRadiusPxAtDefaultResolution": 117.8,
+      "cornerRadiusDp": 52.33,
+      "cutout": {
+        "centerXdp": 213.33,
+        "centerYdp": 34.0,
+        "diameterDp": 32.67,
+        "centerXpx": 640.0,
+        "centerYpx": 102.0,
+        "diameterPx": 98.0,
+        "insetTopDp": 68.0,
+        "svgPathRaw": "m 689,102 a 49,49 0 0 0 -98,0 49,49 0 0 0 98,0 z @left",
+        "rectApproximationRaw": "m 586,0 h 108.5 v 204 H 586 Z @left"
+      },
+      "statusBarHeightDp": 68.0,
+      "statusBarHeightRaw": "68dp",
+      "sources": [
+        "https://github.com/LineageOS/android_device_google_caimito/blob/lineage-24.0/caiman/overlay/FrameworkResOverlayVendorCaiman/res/values/dimens.xml",
+        "https://github.com/LineageOS/android_device_google_caimito/blob/lineage-24.0/caiman/overlay/FrameworkResOverlayVendorCaiman/res/values/config.xml",
+        "https://github.com/LineageOS/android_device_google_caimito/blob/lineage-24.0/caiman/vendor.prop",
+        "https://github.com/LineageOS/android_device_google_caimito/blob/lineage-24.0/caiman/BoardConfig.mk"
+      ],
+      "confidence": "high",
+      "notes": "Default boot/preferred mode 960x2142; max 1280x2856@480dpi. Rect approximation height (top cutout inset) = 204px = 68.0dp. Default-mode density 360.0 dpi is derived as maxDensity*defaultWidth/maxWidth, which keeps the dp width constant; it was not read from a prop."
+    },
+    "pixel-9-pro-xl": {
+      "codename": "komodo",
+      "defaultResolutionPx": {
+        "width": 1008,
+        "height": 2244
+      },
+      "maxResolutionPx": {
+        "width": 1344,
+        "height": 2992
+      },
+      "densityDpi": 360.0,
+      "maxResolutionDensityDpi": 480,
+      "widthDp": 448.0,
+      "heightDp": 997.33,
+      "cornerRadiusPx": 153.0,
+      "cornerRadiusPxAtDefaultResolution": 114.8,
+      "cornerRadiusDp": 51.0,
+      "cutout": {
+        "centerXdp": 224.0,
+        "centerYdp": 33.17,
+        "diameterDp": 31.33,
+        "centerXpx": 672.0,
+        "centerYpx": 99.5,
+        "diameterPx": 94.0,
+        "insetTopDp": 66.33,
+        "svgPathRaw": "m 719,99.5 a 47,47 0 0 0 -94,0 47,47 0 0 0 94,0 z @left",
+        "rectApproximationRaw": "m 614.53715,0 h 115 v 199 h -115 z @left"
+      },
+      "statusBarHeightDp": 66.0,
+      "statusBarHeightRaw": "66dp",
+      "sources": [
+        "https://github.com/LineageOS/android_device_google_caimito/blob/lineage-24.0/komodo/overlay/FrameworkResOverlayVendorKomodo/res/values/dimens.xml",
+        "https://github.com/LineageOS/android_device_google_caimito/blob/lineage-24.0/komodo/overlay/FrameworkResOverlayVendorKomodo/res/values/config.xml",
+        "https://github.com/LineageOS/android_device_google_caimito/blob/lineage-24.0/komodo/vendor.prop",
+        "https://github.com/LineageOS/android_device_google_caimito/blob/lineage-24.0/komodo/BoardConfig.mk"
+      ],
+      "confidence": "high",
+      "notes": "Default boot/preferred mode 1008x2244; max 1344x2992@480dpi. Rect approximation height (top cutout inset) = 199px = 66.33dp. Default-mode density 360.0 dpi is derived as maxDensity*defaultWidth/maxWidth, which keeps the dp width constant; it was not read from a prop."
+    },
+    "pixel-9a": {
+      "codename": "tegu",
+      "defaultResolutionPx": {
+        "width": 1080,
+        "height": 2424
+      },
+      "maxResolutionPx": {
+        "width": 1080,
+        "height": 2424
+      },
+      "densityDpi": 420.0,
+      "maxResolutionDensityDpi": 420,
+      "widthDp": 411.43,
+      "heightDp": 923.43,
+      "cornerRadiusPx": 115.0,
+      "cornerRadiusPxAtDefaultResolution": 115.0,
+      "cornerRadiusDp": 43.81,
+      "cutout": {
+        "centerXdp": 205.71,
+        "centerYdp": 32.76,
+        "diameterDp": 31.62,
+        "centerXpx": 540.0,
+        "centerYpx": 86.0,
+        "diameterPx": 83.0,
+        "insetTopDp": 57.9,
+        "svgPathRaw": "m 581.5,86 a 41.5,41.5 0 0 0 -83,0 41.5,41.5 0 0 0 83,0 z @left",
+        "rectApproximationRaw": "m 484,0 h 112 v 152 h -112 z @left"
+      },
+      "statusBarHeightDp": 52.0,
+      "statusBarHeightRaw": "52dp",
+      "sources": [
+        "https://github.com/LineageOS/android_device_google_tegu/blob/lineage-24.0/overlay/FrameworkResOverlayVendorTegu/res/values/dimens.xml",
+        "https://github.com/LineageOS/android_device_google_tegu/blob/lineage-24.0/overlay/FrameworkResOverlayVendorTegu/res/values/config.xml",
+        "https://github.com/LineageOS/android_device_google_tegu/blob/lineage-24.0/BoardConfig.mk"
+      ],
+      "confidence": "high",
+      "notes": "Rect approximation height (top cutout inset) = 152px = 57.9dp. The emulator profile for 9a looks like a copy of Pixel 9 (identical corner and cutout values); the real tegu values differ."
+    },
+    "pixel-10": {
+      "codename": "frankel",
+      "defaultResolutionPx": {
+        "width": 1080,
+        "height": 2424
+      },
+      "maxResolutionPx": {
+        "width": 1080,
+        "height": 2424
+      },
+      "densityDpi": 420.0,
+      "maxResolutionDensityDpi": 420,
+      "widthDp": 411.43,
+      "heightDp": 923.43,
+      "cornerRadiusPx": 138.0,
+      "cornerRadiusPxAtDefaultResolution": 138.0,
+      "cornerRadiusDp": 52.57,
+      "cutout": {
+        "centerXdp": 205.52,
+        "centerYdp": 32.76,
+        "diameterDp": 32.0,
+        "centerXpx": 539.5,
+        "centerYpx": 86.0,
+        "diameterPx": 84.0,
+        "insetTopDp": 65.9,
+        "svgPathRaw": "m 581.5,86 a 42,42 0 0 0 -84,0 42,42 0 0 0 84,0 z @left",
+        "rectApproximationRaw": "m 484.5,0 h 110 v 173 h -110 z @left"
+      },
+      "statusBarHeightDp": 66.0,
+      "statusBarHeightRaw": "66dp",
+      "sources": [
+        "https://github.com/LineageOS/android_device_google_muzel/blob/lineage-24.0/frankel/overlay/FrameworkResOverlayVendorFrankel/res/values/dimens.xml",
+        "https://github.com/LineageOS/android_device_google_muzel/blob/lineage-24.0/frankel/overlay/FrameworkResOverlayVendorFrankel/res/values/config.xml",
+        "https://github.com/LineageOS/android_device_google_muzel/blob/lineage-24.0/frankel/BoardConfig.mk"
+      ],
+      "confidence": "high",
+      "notes": "No preferred_mode prop; single resolution. Tree lives in device/google/muzel (frankel/blazer/mustang repos are stubs). Rect approximation height (top cutout inset) = 173px = 65.9dp."
+    },
+    "pixel-10-pro": {
+      "codename": "blazer",
+      "defaultResolutionPx": {
+        "width": 1080,
+        "height": 2410
+      },
+      "maxResolutionPx": {
+        "width": 1280,
+        "height": 2856
+      },
+      "densityDpi": 405.0,
+      "maxResolutionDensityDpi": 480,
+      "widthDp": 426.67,
+      "heightDp": 952.0,
+      "cornerRadiusPx": 157.0,
+      "cornerRadiusPxAtDefaultResolution": 132.5,
+      "cornerRadiusDp": 52.33,
+      "cutout": {
+        "centerXdp": 213.33,
+        "centerYdp": 34.0,
+        "diameterDp": 32.67,
+        "centerXpx": 640.0,
+        "centerYpx": 102.0,
+        "diameterPx": 98.0,
+        "insetTopDp": 68.0,
+        "svgPathRaw": "m 689,102 a 49,49 0 0 0 -98,0 49,49 0 0 0 98,0 z @left",
+        "rectApproximationRaw": "m 586,0 h 108.5 v 204 h -108.5 Z @left"
+      },
+      "statusBarHeightDp": 68.0,
+      "statusBarHeightRaw": "68dp",
+      "sources": [
+        "https://github.com/LineageOS/android_device_google_muzel/blob/lineage-24.0/blazer/overlay/FrameworkResOverlayVendorBlazer/res/values/dimens.xml",
+        "https://github.com/LineageOS/android_device_google_muzel/blob/lineage-24.0/blazer/overlay/FrameworkResOverlayVendorBlazer/res/values/config.xml",
+        "https://github.com/LineageOS/android_device_google_muzel/blob/lineage-24.0/blazer/vendor.prop",
+        "https://github.com/LineageOS/android_device_google_muzel/blob/lineage-24.0/blazer/BoardConfig.mk"
+      ],
+      "confidence": "medium",
+      "notes": "vendor.prop ro.vendor.primarydisplay.preferred_mode=1080x2410x120@flag, so the default is probably 1080x2410. The '@flag' suffix means it may sit behind a flag; treat the default resolution as medium confidence. Rect approximation height (top cutout inset) = 204px = 68.0dp. Default-mode density 405.0 dpi is derived as maxDensity*defaultWidth/maxWidth, which keeps the dp width constant; it was not read from a prop."
+    },
+    "pixel-10-pro-xl": {
+      "codename": "mustang",
+      "defaultResolutionPx": {
+        "width": 1080,
+        "height": 2404
+      },
+      "maxResolutionPx": {
+        "width": 1344,
+        "height": 2992
+      },
+      "densityDpi": 385.7,
+      "maxResolutionDensityDpi": 480,
+      "widthDp": 448.0,
+      "heightDp": 997.33,
+      "cornerRadiusPx": 153.0,
+      "cornerRadiusPxAtDefaultResolution": 122.9,
+      "cornerRadiusDp": 51.0,
+      "cutout": {
+        "centerXdp": 223.83,
+        "centerYdp": 33.33,
+        "diameterDp": 32.0,
+        "centerXpx": 671.5,
+        "centerYpx": 100.0,
+        "diameterPx": 96.0,
+        "insetTopDp": 66.67,
+        "svgPathRaw": "m 719.5,100 a 48,48 0 0 0 -96,0 48,48 0 0 0 96,0 z @left",
+        "rectApproximationRaw": "m 618,0 h 108.5 v 200 h -108.5 Z @left"
+      },
+      "statusBarHeightDp": 72.0,
+      "statusBarHeightRaw": "72dp",
+      "sources": [
+        "https://github.com/LineageOS/android_device_google_muzel/blob/lineage-24.0/mustang/overlay/FrameworkResOverlayVendorMustang/res/values/dimens.xml",
+        "https://github.com/LineageOS/android_device_google_muzel/blob/lineage-24.0/mustang/overlay/FrameworkResOverlayVendorMustang/res/values/config.xml",
+        "https://github.com/LineageOS/android_device_google_muzel/blob/lineage-24.0/mustang/vendor.prop",
+        "https://github.com/LineageOS/android_device_google_muzel/blob/lineage-24.0/mustang/BoardConfig.mk"
+      ],
+      "confidence": "medium",
+      "notes": "vendor.prop ro.vendor.primarydisplay.preferred_mode=1080x2404x120@flag, so the default is probably 1080x2404 (a non-integer 0.8036 scale). '@flag' caveat as for blazer. Rect approximation height (top cutout inset) = 200px = 66.67dp. Default-mode density 385.7 dpi is derived as maxDensity*defaultWidth/maxWidth, which keeps the dp width constant; it was not read from a prop."
+    }
+  },
+  "statusBarNote": "statusBarHeightDp is the stock status_bar_height_portrait overlay as of Android 16 QPR2/17 (LineageOS 23.2/24.0). The framework uses it as the status bar inset, falling back to max(resource, cutout safe inset). Earlier Android releases may have shipped smaller values (Pixel 9 family is 52dp in the Android 17 emulator vs 66-72dp in the stock overlay)."
+}
