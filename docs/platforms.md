@@ -92,6 +92,13 @@ draws them. An `icon` with `type: "symbol"` resolves on Android in this order:
 3. Nothing: the icon renders empty and the SDK reports a diagnostics warning
    `icon.unmapped`.
 
+The Android SDK bundles only the Material Symbols it maps, plus a short allowlist
+(`engine/extra-icons.txt` in app8-android-sdk: engine chrome and common names such
+as `more_vert`, `expand_more`, `menu`), not the full font. An `android` override that
+names a Material Symbol outside that set renders empty and reports
+`icon.unavailable`; add the name to `extra-icons.txt` and regenerate the font with
+`scripts/subset-icons.py` to ship it.
+
 ## Image formats
 
 PNG, JPEG, WebP and GIF work everywhere. AVIF decodes on iOS 16+ and on
