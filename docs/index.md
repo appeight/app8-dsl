@@ -206,6 +206,7 @@ See [variables.md](variables.md) for full expression documentation.
 - [forms.md](forms.md) - Inputs, two-way binding, validation, and loading states
 - [collections.md](collections.md) - Lists, grids, and carousels
 - [collections-best-practices.md](collections-best-practices.md) - Layout choice, insets, headers, templates, and common mistakes
+- [design-best-practices.md](design-best-practices.md) - Store app design rules: scrolling with the top bar, no item counts, brand-true buttons and colours, Added state, banners and gradients
 - [states.md](states.md) - Component states and animations
 - [animations.md](animations.md) - Animation primitive (timing, springs, registry, per-property)
 - [templates.md](templates.md) - Reusable component templates
