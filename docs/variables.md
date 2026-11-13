@@ -490,7 +490,7 @@ a cart, a wishlist, a chosen variant per product.
   is dropped, and `initialValue` is used (diagnostics: `variable.persist.typeMismatch`).
 - Writes are saved after each change (debounced, at most every 0.5s, and on
   app background).
-- Storage is per app (the app's `id`), as JSON:
+- Storage is per app, as JSON. The app id is `app.id` in app.json (`{"app": {"id": "demo-facetheory", "name": "Facetheory"}}`); without it the engine uses `app.bundleId`, then the host's bundle / package id:
   - iOS: `UserDefaults` suite `app8.<appId>`, key `var.<name>`.
   - Android: Jetpack DataStore (Preferences) file `app8_<appId>`, key `var.<name>`.
   - Web (Studio): `localStorage` key `app8:<appId>:var.<name>`.
