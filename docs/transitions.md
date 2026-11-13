@@ -183,6 +183,10 @@ Rules:
 - A key that matches nothing on the presenting screen (cell scrolled away) falls
   back to a cross-dissolve, both ways.
 - The source element is hidden while the incoming screen is up, as the system does.
+- A pull-down at the top of a scroll view with `stretchesTopChild` stretches its
+  first child and never starts the dismissal. Dismiss such a screen with a
+  horizontal drag (iOS: from anywhere outside a horizontal scroller; the leading
+  edge always works) or the back button.
 - A horizontal paging collection or a zoomed scroll view on the incoming screen
   keeps its own pans; dismissal starts from a pan its content cannot use (at
   scale 1, or a vertical pan in a horizontal pager).
