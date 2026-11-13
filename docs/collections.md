@@ -98,7 +98,7 @@ Horizontally scrolling list.
 | `itemHeight` | number | | Fixed item height |
 | `rows` | number | `1` | Number of rows in a multi-row horizontal carousel |
 | `pagingStyle` | string | `"continuous"` | `"continuous"` (free scroll), `"paging"` (page by item width), `"pagingCentered"` (page with centered item) |
-| `currentPageVariable` | string | | Plain variable name to write the current page index to (e.g., `"currentPage"`) |
+| `currentPageVariable` | string | | Plain variable name for the current page index. Two-way: paging writes it, and a write from elsewhere (another screen, an action) scrolls the collection to that page without animation while it is off screen, animated while visible. Can be an app variable, so a full-screen gallery and the product carousel stay on the same page |
 | `estimatedItemHeight` | number | | Hint for self-sizing items |
 | `contentInsets` | object | | Padding around content: `top`, `left`, `bottom`, `right` |
 | `showsScrollIndicator` | boolean | `false` | Show or hide the horizontal scroll indicator |
