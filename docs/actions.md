@@ -177,6 +177,7 @@ By index:
 |----------|------|-------------|
 | `variableName` | string | Variable to update |
 | `value` | any/expression | New value |
+| `key` | string/expression | Optional. With an `object` variable: set only this key, keep the others. E.g. `"key": "{{product.handle}}"` writes one product's chosen variant into `selectedVariants` |
 
 ### Increment Number
 
