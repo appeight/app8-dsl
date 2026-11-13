@@ -198,6 +198,7 @@ See [variables.md](variables.md) for full expression documentation.
 - [variables.md](variables.md) - Variables and expression syntax
 - [actions.md](actions.md) - Actions and event triggers
 - [gestures.md](gestures.md) - Continuous gesture → variable bindings (`pan`), and composing custom controls
+- [context-menu.md](context-menu.md) - Long-press preview and actions (iOS context menu, Android quick-view sheet)
 - [navigation.md](navigation.md) - Navigation and flow system
 - [transitions.md](transitions.md) - Screen transitions (presets, custom keyframes, registry, interactive), sized modal popups / sheets, and shared-element / hero / composite morphs
 

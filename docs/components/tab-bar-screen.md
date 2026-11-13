@@ -10,6 +10,8 @@ Tab-based navigation container.
 | `initialTab` | string | Initial tab ID |
 | `tintColor` | Color | Selected tab color |
 | `unselectedColor` | Color | Unselected tab color |
+| `badgeColor` | Color | Badge background (default system red) |
+| `badgeTextColor` | Color | Badge text (default white) |
 | `hidden` | boolean/expression | Hide component |
 
 ## Tab Structure
@@ -20,6 +22,8 @@ Tab-based navigation container.
 | `label` | string | Tab label text |
 | `icon` | string | SF Symbol name |
 | `screen` | string | Screen ID to display |
+| `badge` | string/expression | Badge value; empty or `0` hides it |
+| `badgeColor` | Color | This tab's badge background |
 
 ## Example
 
@@ -36,7 +40,9 @@ Tab-based navigation container.
     ],
     "initialTab": "home",
     "tintColor": "#007AFF",
-    "unselectedColor": "#8E8E93"
+    "unselectedColor": "#8E8E93",
+    "badgeColor": "#2D4D3A",
+    "badgeTextColor": "#FFFFFF"
   }
 }
 ```

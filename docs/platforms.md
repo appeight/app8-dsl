@@ -132,6 +132,14 @@ A new DSL feature lands only when both columns are filled (see
 | Shared-element transitions (`shared`, element `key`, `morph`, `stagger`) | ✓ | ✓ | Android: `SharedTransitionLayout` `sharedBounds` (`frameFade`) / `sharedElement` (`frame`) |
 | Custom modals (`mode: modal`): `dimming`, `interactive`, sized `presentation` (`popup`, `sheet`) | ✓ | ✓ | Android: drag tracks 1:1, edge sheets stretch, system back scrubs the dismissal. The presenting screen's `from` keyframes do not animate under a modal yet |
 | `hidesTabBar` | ✓ | ✓ | |
+| Tab `badgeColor`, `badgeTextColor` | ✓ | ✓ | iOS `UITabBarItem.badgeColor`; Android `Badge` colors |
+| `picker` menu look (`style.label`, `indicator`), `bindKey` | ✓ | ✓ | iOS plain `UIButton` pull-down with `UIMenu`; Android text + icon anchoring `DropdownMenu` |
+| `contextMenu` (preview, items, `onPreviewTap`) | ✓ | ✓ | iOS `UIContextMenuInteraction`; Android long press opens a quick-view `ModalBottomSheet` |
+| `scrollView` zoom (`minimumZoomScale`, `maximumZoomScale`, `doubleTapZoom`) | ✓ | ✓ | Android: telephoto `zoomable` |
+| `scrollView` `stretchesTopChild` | ✓ | — | Android keeps the system stretch overscroll (platform convention) |
+| `zoom` transition with `sourceKey` | ✓ | ✓ | iOS 18 `preferredTransition = .zoom`; Android `sharedBounds` + predictive back |
+| Persisted app variables (`persist`) | ✓ | ✓ | iOS `UserDefaults`; Android DataStore |
+| Object key access in expressions (`map[key]`) | ✓ | ✓ | |
 | `scrollView` `pagingEnabled`, `autoScroll` | ✓ | ✓ | Android: page-snapping fling; marquee drawn as a second copy after `loopGap` |
 | Focused input scrolls above the keyboard | ✓ | ✓ | 20pt gap; Android also extends scroll content by the covered part (hosts use `adjustResize`) |
 | Streaming (`streamScreen`, `streamDatasource`, `streamStyles`) | ✓ | ✓ | Datasource updates recompose only readers; screen updates keep variable state |
