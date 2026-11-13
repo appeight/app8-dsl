@@ -142,7 +142,7 @@ field on the transition overrides the preset's value.
 |--------|--------------|----------|
 | `slide` | push | Incoming enters from `edge` (default trailing); outgoing parallaxes the opposite way. The default tunable push. |
 | `fade` / `crossDissolve` | push | Incoming fades in over the outgoing. |
-| `scale` / `zoom` | modal | Incoming scales up from 92% while fading in (spring). |
+| `scale` / `zoom` | modal | Incoming scales up from 92% while fading in (spring). With `sourceKey`, `zoom` is the **native zoom** from a source element instead. See [Native zoom](#native-zoom-from-a-source-element). |
 | `cover` | modal | Incoming slides in from `edge` (default bottom); pairs well with `dimming`. |
 | `popup` | modal | **Sized** centered card (scale + fade, dimming, rounded). See [Sized modal presentation](#sized-modal-presentation-popups--sheets). |
 | `sheet` | modal | **Sized** bottom-anchored card (slides up, dimming, rounded top, swipe-to-dismiss). See [Sized modal presentation](#sized-modal-presentation-popups--sheets). |
@@ -153,6 +153,45 @@ field on the transition overrides the preset's value.
 ```jsonc
 { "type": "navigation", "nextScreen": "photo", "transition": { "preset": "cover", "edge": "bottom" } }
 ```
+
+---
+
+## Native zoom (from a source element)
+
+`zoom` with a `sourceKey` grows the **whole incoming screen** out of one element
+on the current screen (a product card image, a gallery thumbnail) and shrinks it
+back into that element on dismiss. It is the platform zoom transition, with the
+platform's interactive dismissal. Works for push and for modal presentation.
+
+```jsonc
+// card tap → product screen, zooming out of the card image
+{ "type": "navigation", "nextScreen": "product", "params": { "product": "{{item}}" },
+  "transition": { "preset": "zoom", "sourceKey": "{{'card-' + item.handle}}" } }
+
+// product image tap → full-screen gallery; on dismiss, zoom back into the image of the current page
+{ "type": "navigation", "nextScreen": "gallery", "presentation": "fullScreen",
+  "transition": { "preset": "zoom", "sourceKey": "{{'gallery-' + galleryPage}}", "alignmentKey": "{{'galleryPage-' + galleryPage}}" } }
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `sourceKey` | string/expression | Matches `content.transition.key` of an element on the **presenting** screen. Evaluated in the action's scope when the transition starts, and again in the presenting screen's scope when the dismissal starts, so the zoom can return to a different element (the current gallery page) |
+| `alignmentKey` | string/expression | Optional. An element on the **incoming** screen that the source lines up with (iOS `alignmentRectProvider`). Default: the whole screen |
+| `dismissGesture` | `any` / `down` / `none` | Default `any`. `any`: drag in any direction (and pinch in) shrinks the screen toward the source; `down`: vertical drag only; `none`: no interactive dismissal |
+
+Rules:
+- A key that matches nothing on the presenting screen (cell scrolled away) falls
+  back to a cross-dissolve, both ways.
+- The source element is hidden while the incoming screen is up, as the system does.
+- A horizontal paging collection or a zoomed scroll view on the incoming screen
+  keeps its own pans; dismissal starts from a pan its content cannot use (at
+  scale 1, or a vertical pan in a horizontal pager).
+
+| Platform | Native |
+|----------|--------|
+| iOS 18+ | `viewController.preferredTransition = .zoom(options:) { context in sourceView(for: sourceKey) }`. `UIZoomTransitionOptions.interactiveDismissShouldBegin` returns `false` for `dismissGesture: none` and for vertical-only when the pan is horizontal. `alignmentRectProvider` returns the `alignmentKey` element's frame. The same API serves push (inside the navigation controller) and modal present |
+| Android | Compose `SharedTransitionLayout`: the incoming screen is `sharedBounds` with the source element's key (container-transform look, `scaleInSharedContentToBounds`, rounded clip from the source corner). Dismiss: predictive back gesture scrubs the shrink; with `dismissGesture: any`, a drag on a modal follows the finger with scale (`Modifier.draggable2D`) and completes past 25% or a fling |
+| Studio (web) | The screen scales out of the source rect; drag-to-dismiss with rubber-banded scale |
 
 ---
 

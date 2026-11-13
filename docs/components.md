@@ -32,6 +32,7 @@ Every component shares the same envelope:
 | `layout` | Position and size constraints | [layout.md](layout.md) |
 | `actions` | Event handlers | [actions.md](actions.md) |
 | `gestures` | Continuous gesture → variable bindings | [gestures.md](gestures.md) |
+| `contextMenu` | Long-press preview and actions (view, stackView, image, button) | [context-menu.md](context-menu.md) |
 | `interaction` | Touch / clipping / z-order overrides | [Interaction](#interaction) below |
 | `accessibility` | VoiceOver metadata | [Accessibility](#accessibility) below |
 | `variables` | Component-scoped variables | [variables.md](variables.md) |
