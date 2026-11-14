@@ -521,6 +521,7 @@ Tab-based navigation using TabBarScreen.
 | `icon` | string | SF Symbol name |
 | `screen` | string | Screen ID to display |
 | `badge` | string | System badge on the tab item; usually an expression over app variables, e.g. `"{{sum(map(cart, item.quantity))}}"`. Empty or `0` hides it |
+| `badgeColor` | Color | This tab's badge background. Overrides the bar's `badgeColor` |
 
 ### TabBarScreen Properties
 
@@ -530,6 +531,8 @@ Tab-based navigation using TabBarScreen.
 | `initialTab` | string | First tab | Initial tab ID |
 | `tintColor` | Color | System blue | Selected tab color |
 | `unselectedColor` | Color | Gray | Unselected tab color |
+| `badgeColor` | Color | System red | Badge background on every tab. iOS `UITabBarItem.badgeColor`; Android `Badge(containerColor)` |
+| `badgeTextColor` | Color | White | Badge text color. iOS `setBadgeTextAttributes(_:for:)` (normal and selected); Android `Badge(contentColor)` |
 
 ### Programmatic Tab Selection
 

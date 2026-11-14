@@ -24,6 +24,7 @@ Variables hold dynamic data. Expressions evaluate to values at runtime.
 | `source` | string | No | Datasource path to load value from (e.g. `"datasources/listings"`) |
 | `schema` | string | No | Datasource path documenting the expected object shape for nav params |
 | `preview` | VariablePreview | No | Sample value used only during standalone `renderScreen()` — never in production flows |
+| `persist` | boolean | No | App scope only. Keep the value across app launches. See [Persisted Variables](#persisted-variables) |
 
 ---
 
@@ -130,6 +131,19 @@ Expressions use `{{...}}` syntax.
 "text": "{{items[0].title}}"
 "text": "{{users[selectedIndex].name}}"
 ```
+
+### Object Key Access
+
+Brackets with a string read an object's property by key. The key can be any
+expression, so it works for maps keyed by an item id:
+
+```json
+"text": "{{selectedVariants[item.handle]}}"
+"text": "{{selectedVariants[item.handle] != null ? selectedVariants[item.handle] : item.variant}}"
+```
+
+A missing key gives `null`. A number inside brackets on an object reads the key
+of that number as a string (`{{counts[3]}}` reads `counts["3"]`).
 
 ### Reserved `view` geometry
 
@@ -455,6 +469,36 @@ Use these to convert raw data values into human-readable display strings.
 > Date, number, and currency formatters (`formatDate`, `formatCurrency`, `formatNumber`) also follow the active locale automatically — see [localization.md](localization.md).
 
 ---
+
+## Persisted Variables
+
+An app-scope variable with `"persist": true` keeps its value across launches:
+a cart, a wishlist, a chosen variant per product.
+
+```json
+{
+  "variables": {
+    "cart": { "type": "array", "initialValue": [], "persist": true },
+    "wishlist": { "type": "array", "initialValue": [], "persist": true },
+    "selectedVariants": { "type": "object", "initialValue": {}, "persist": true }
+  }
+}
+```
+
+- The engine loads stored values before the first screen renders. A stored value
+  replaces `initialValue`. A stored value whose JSON type does not match `type`
+  is dropped, and `initialValue` is used (diagnostics: `variable.persist.typeMismatch`).
+- Writes are saved after each change (debounced, at most every 0.5s, and on
+  app background).
+- Storage is per app, as JSON. The app id is `app.id` in app.json (`{"app": {"id": "demo-demostore", "name": "DemoStore"}}`); without it the engine uses `app.bundleId`, then the host's bundle / package id:
+  - iOS: `UserDefaults` suite `app8.<appId>`, key `var.<name>`.
+  - Android: Jetpack DataStore (Preferences) file `app8_<appId>`, key `var.<name>`.
+  - Web (Studio): `localStorage` key `app8:<appId>:var.<name>`.
+- `persist` on a screen or component variable, or on a `computed` variable, is
+  ignored with a `variable.persist.scope` warning.
+- `resetVariables` resets a persisted variable to `initialValue` and clears its
+  stored value.
+- Do not persist secrets. Storage is not encrypted.
 
 ## Computed Variables
 
