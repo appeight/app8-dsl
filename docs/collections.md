@@ -131,6 +131,22 @@ Horizontally scrolling list.
 | `contentInsets` | object | | Padding around content: `top`, `left`, `bottom`, `right` |
 | `showsScrollIndicator` | boolean | `true` | Show or hide the scroll indicator |
 
+#### Self-sizing grid rows
+
+Without `itemHeight` or `aspectRatio`, grid items size to their content (`estimatedItemHeight` is the first guess). Each row is as tall as its tallest item, and every item in the row stretches to that height, so neighbours line up. To keep a footer (a button, a price) on the bottom edge, pin it to the bottom and give the content above it a `>=` gap:
+
+```json
+{ "type": "top", "target": "cardInfo", "attribute": "bottom", "constant": 14, "op": ">=" }
+```
+
+Renderers lay out items near the viewport first and the rest as they come into view, as `UICollectionView` does with estimated sizes.
+
+| Platform | Row height |
+|----------|------------|
+| iOS | Horizontal group with `.estimated` item and group heights; items take the group's height |
+| Android | Row measured at the tallest item, then every item measured again at that height |
+| Web | Same as Android |
+
 ---
 
 ## Mixed Layouts
