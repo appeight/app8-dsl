@@ -94,11 +94,11 @@ Horizontally scrolling list.
 |----------|------|---------|-------------|
 | `type` | string | | `"horizontal"` |
 | `itemSpacing` | number | `0` | Space between items |
-| `itemWidth` | number | | Fixed item width |
-| `itemHeight` | number | | Fixed item height |
+| `itemWidth` | number / `"fill"` | | Fixed item width. `"fill"`: the collection's width minus horizontal insets |
+| `itemHeight` | number / `"fill"` | | Fixed item height. `"fill"`: each item is as tall as the collection's frame minus vertical insets (a full-screen pager) |
 | `rows` | number | `1` | Number of rows in a multi-row horizontal carousel |
 | `pagingStyle` | string | `"continuous"` | `"continuous"` (free scroll), `"paging"` (page by item width), `"pagingCentered"` (page with centered item) |
-| `currentPageVariable` | string | | Plain variable name to write the current page index to (e.g., `"currentPage"`) |
+| `currentPageVariable` | string | | Plain variable name for the current page index. Two-way: paging writes it, and a write from elsewhere (another screen, an action) scrolls the collection to that page without animation while it is off screen, animated while visible. Can be an app variable, so a full-screen gallery and the product carousel stay on the same page |
 | `estimatedItemHeight` | number | | Hint for self-sizing items |
 | `contentInsets` | object | | Padding around content: `top`, `left`, `bottom`, `right` |
 | `showsScrollIndicator` | boolean | `false` | Show or hide the horizontal scroll indicator |
@@ -130,6 +130,22 @@ Horizontally scrolling list.
 | `estimatedItemHeight` | number | | Hint for self-sizing items |
 | `contentInsets` | object | | Padding around content: `top`, `left`, `bottom`, `right` |
 | `showsScrollIndicator` | boolean | `true` | Show or hide the scroll indicator |
+
+#### Self-sizing grid rows
+
+Without `itemHeight` or `aspectRatio`, grid items size to their content (`estimatedItemHeight` is the first guess). Each row is as tall as its tallest item, and every item in the row stretches to that height, so neighbours line up. To keep a footer (a button, a price) on the bottom edge, pin it to the bottom and give the content above it a `>=` gap:
+
+```json
+{ "type": "top", "target": "cardInfo", "attribute": "bottom", "constant": 14, "op": ">=" }
+```
+
+Renderers lay out items near the viewport first and the rest as they come into view, as `UICollectionView` does with estimated sizes.
+
+| Platform | Row height |
+|----------|------------|
+| iOS | Horizontal group with `.estimated` item and group heights; items take the group's height |
+| Android | Row measured at the tallest item, then every item measured again at that height |
+| Web | Same as Android |
 
 ---
 

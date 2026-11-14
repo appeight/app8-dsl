@@ -34,7 +34,7 @@ A trigger may also list **multiple actions** to run in JSON order:
 | Trigger | Components | When Fired |
 |---------|------------|------------|
 | `tap` | Button, View | User taps |
-| `longPress` | Button, View | User long-presses |
+| `longPress` | Button, View | User long-presses. A `contextMenu` on the same component replaces it ([context-menu.md](context-menu.md)) |
 | `onTextChange` | TextField, TextView | Text value changes |
 | `onItemTap` | Collection | Collection item tapped |
 | `onRefresh` | Collection | Pull-to-refresh triggered |
@@ -177,6 +177,7 @@ By index:
 |----------|------|-------------|
 | `variableName` | string | Variable to update |
 | `value` | any/expression | New value |
+| `key` | string/expression | Optional. With an `object` variable: set only this key, keep the others. E.g. `"key": "{{product.handle}}"` writes one product's chosen variant into `selectedVariants` |
 
 ### Increment Number
 
