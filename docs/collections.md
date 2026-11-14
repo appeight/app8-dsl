@@ -135,6 +135,7 @@ Horizontally scrolling list.
 
 Without `itemHeight` or `aspectRatio`, grid items size to their content (`estimatedItemHeight` is the first guess). Each row is as tall as its tallest item, and every item in the row stretches to that height, so neighbours line up. To keep a footer (a button, a price) on the bottom edge, pin it to the bottom and give the content above it a `>=` gap:
 
+<!-- @dsl-skip: constraint fragment -->
 ```json
 { "type": "top", "target": "cardInfo", "attribute": "bottom", "constant": 14, "op": ">=" }
 ```
