@@ -11,6 +11,7 @@ A screen that uses a module the host has not registered still renders: it shows 
 | `properties.module` | string | required | Name the host registered the module under, e.g. `"signaturePad"` |
 | `properties.props` | object | `{}` | Values handed to the host view. String values (at any depth) accept `{{expr}}`; see [Props](#props) |
 | `actions` | object | none | Actions keyed by **event name** emitted by the module; see [Events](#events) |
+| `analytics` | object | none | Analytics bindings keyed by **event name**; see [Analytics](#analytics) |
 | `fallback` | Component | none | Any DSL subtree, rendered in place of the native view when no host module is registered for `module` |
 | `layout` | Layout | | Normal [layout](../layout.md); the native view (or the fallback) fills the component's frame |
 | `style` | View style | | Same as [`view`](view.md) (background, corners, …), drawn behind the native view |
@@ -34,6 +35,39 @@ The module emits named events with a JSON payload (`completed { signature }`, `c
 2. **Is forwarded to the host event bus** as `native.<module>.<event>` (for example `native.signaturePad.completed`) with the payload unchanged, `componentId` set to the component's `id` and `componentType` `"native"`. Hosts observe it with the usual [subscribe API](../events.md); no DSL needed.
 
 Events without a matching key in `actions` are still forwarded to the bus. Event names are the module's contract; document them next to the module.
+
+## Analytics
+
+`analytics` takes the same keys as `actions`, the module's event names, with the
+usual [analytics binding](../analytics.md#author-declared-analytics) forms (a
+string event name, or `name` + `properties`). When the module emits an event that
+has a binding, the engine dispatches the analytics event on the analytics bus, with
+the payload in scope as `event` while `properties` resolve. A binding fires whether
+or not `actions` has a key for that event.
+
+<!-- @dsl-type: Component -->
+```json
+{
+  "id": "signature",
+  "type": "native",
+  "content": {
+    "properties": { "module": "signaturePad" },
+    "actions": {
+      "completed": { "type": "navigation", "nextScreen": "confirm" }
+    },
+    "analytics": {
+      "completed": { "name": "signatureCompleted", "properties": { "stroke_count": "{{event.strokeCount}}" } },
+      "cancelled": "signatureCancelled"
+    }
+  }
+}
+```
+
+The dispatched event carries `component_id` (the component's `id`) and
+`component_type` `"native"` like any other binding. The binding, the actions and
+the `native.<module>.<event>` bus post are independent; do not rely on their order.
+There is no auto `app8.component.tapped` event for native components: the module
+decides what its events mean.
 
 ## Fallback
 
@@ -149,7 +183,6 @@ function SignaturePad({ props, emit, width, height, platform }: NativeComponentP
 ## Notes
 
 - `native` belongs to the 0.6.0 release. Older SDKs do not know the type; ship the screen only to apps on 0.6.0 or later.
-- Author-declared `analytics` bindings are not supported on native events yet; observe `native.<module>.<event>` on the event bus instead.
 - A module is code in the host app, so changing a module needs an app release. Keep everything that may change over the air (copy, the screens around it, what happens after each event) in the DSL.
 - Data the module needs that should not live in the bundle (auth tokens, endpoints) belongs in the factory closure, not in props.
 - Feature packages that need a module (see [prefabs](../prefabs.md)) list it under `requires.nativeModules`.

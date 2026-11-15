@@ -135,6 +135,10 @@ Track which item the user tapped without hand-rolling instrumentation. Inside a 
 
 The auto `app8.component.tapped` event does **not** fire for individual cells inside a Collection (the Collection itself is the tappable component) — use `onItemTap` analytics if you want per-item tracking.
 
+### Native component events
+
+On a [`native`](components/native.md#analytics) component, the `analytics` keys are the module's event names (`completed`, `cancelled`, …), the same keys as its `actions`. The event payload is in scope as `event` while `properties` resolve: `"{{event.reason}}"`.
+
 ### TableView row analytics
 
 Static rows in a `tableView` can each carry their own `analytics` binding. The auto `app8.component.tapped` event fires per row with `componentId = row.id` and `componentType = "tableViewRow"`, even when no author-declared binding is present.
