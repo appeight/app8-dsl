@@ -11,7 +11,7 @@ Scrollable container.
 | `properties.outputVariable` | string | | Variable to write scroll offset to (0 at rest, positive when scrolled) |
 | `properties.contentInsetAdjustment` | ContentInsetAdjustment | `automatic` | How iOS adjusts content insets for safe areas |
 | `properties.contentInset` | EdgeInsets | | Explicit padding around the scroll content |
-| `properties.bounces` | boolean | true | Whether the scroll view bounces past its content edges |
+| `properties.bounces` | boolean | true | Whether the scroll view bounces past its content edges. A vertical scroll view bounces even when its content is shorter than the viewport (see [Bounce](#bounce)) |
 | `properties.pagingEnabled` | boolean | false | Snap scrolling to multiples of the scroll view's bounds |
 | `properties.keyboardDismissMode` | KeyboardDismissMode | `none` | How an on-screen keyboard is dismissed while scrolling |
 | `properties.decelerationRate` | DecelerationRate | `normal` | Deceleration rate after a scroll gesture ends |
@@ -50,6 +50,18 @@ Scrollable container.
 
 > **Note:** Use `never` for screens with `navigationBar.hidden: true` and `ignoresSafeArea: true` where the content is intended to fill the full screen (e.g., a photo/hero scroll).
 > Without `never`, the second-visit nav bar transition can cause a visible content jump.
+
+## Bounce
+
+Every vertically scrollable screen bounces: a drag past either edge stretches and springs back, also when the content fits the viewport (a short account or settings screen). Only `bounces: false` turns it off. Vertical `collection`s with scrolling enabled follow the same rule.
+
+| Platform | Behavior |
+|----------|----------|
+| iOS | `bounces` and `alwaysBounceVertical` both `true` (vertical); `UICollectionView` the same |
+| Android | Stretch overscroll on every vertical scroller (the content is always scrollable by its overscroll, also when it fits) |
+| Web | Rubber band (iOS mode) or stretch (Android mode) past both edges, also when the content fits |
+
+A screen whose children are placed directly on the screen does not scroll at all. Put a screen's content in a vertical `scrollView` (or a `collection`) whenever it could be taller than the smallest device, or should feel scrollable.
 
 ## outputVariable
 
