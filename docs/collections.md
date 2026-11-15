@@ -140,11 +140,13 @@ Without `itemHeight` or `aspectRatio`, grid items size to their content (`estima
 { "type": "top", "target": "cardInfo", "attribute": "bottom", "constant": 14, "op": ">=" }
 ```
 
+An item's natural height is the smallest one its constraints allow: a `>=` gap is measured at its minimum, never stretched to `estimatedItemHeight` or to a height the item had before. There is no fixed card height to keep in sync with the content.
+
 Renderers lay out items near the viewport first and the rest as they come into view, as `UICollectionView` does with estimated sizes.
 
 | Platform | Row height |
 |----------|------------|
-| iOS | Horizontal group with `.estimated` item and group heights; items take the group's height |
+| iOS | Horizontal group with `.estimated` item and group heights; each cell is measured from a compressed height (`UIView.layoutFittingCompressedSize`) and reports its row's tallest natural height (the group alone leaves shorter items short) |
 | Android | Row measured at the tallest item, then every item measured again at that height |
 | Web | Same as Android |
 
