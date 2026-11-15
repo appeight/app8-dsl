@@ -20,7 +20,7 @@ Multi-line text input.
 | `properties.autoGrow` | boolean | false | Auto-expand height |
 | `properties.minHeight` | number | | Minimum height when autoGrow |
 | `properties.maxHeight` | number | | Maximum height when autoGrow |
-| `hidden` | boolean/expression | | Hide component |
+| `properties.isHidden` | boolean/expression | | Hide component; see [Visibility](../components.md#visibility) |
 
 ## Triggers
 

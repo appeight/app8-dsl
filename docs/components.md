@@ -41,6 +41,34 @@ Every component shares the same envelope:
 
 ---
 
+## Visibility
+
+`properties.isHidden` hides **any** component: view, label, icon, button, image,
+collection, stackView, scrollView, native, inputs and the rest. It takes a boolean
+or a `{{expression}}` and re-evaluates when a variable it reads changes.
+
+<!-- @dsl-type: Component -->
+```json
+{
+  "type": "button",
+  "content": {
+    "properties": {
+      "text": "Remove",
+      "isHidden": "{{selectedIds.length == 0}}"
+    }
+  }
+}
+```
+
+A hidden component is not drawn, does not receive touches, and is skipped by
+accessibility. Inside a [`stackView`](components/stack-view.md) it also takes no
+space: the stack lays out as if it were not there, spacing included (as
+`UIStackView` does with hidden arranged subviews). Outside a stack it keeps its
+frame, so constraints that point at it still resolve. Its children are hidden
+with it.
+
+---
+
 ## Interaction
 
 The optional `content.interaction` block overrides touch handling, clipping, and

@@ -14,7 +14,6 @@ Text display component.
 | `style` | LabelStyle | Text styling |
 | `layout` | Layout | Position and size |
 | `states` | States | State definitions |
-| `hidden` | boolean/expression | Hide component |
 
 ## Spans
 

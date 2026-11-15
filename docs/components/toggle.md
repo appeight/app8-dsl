@@ -9,7 +9,7 @@ A native on/off switch (`UISwitch`). Two-way bound to a boolean variable.
 | `properties.isOn` | boolean/expression | `false` | Current on/off state. Accepts an expression, e.g. `"{{darkMode}}"` |
 | `properties.bindVariable` | string | | Variable name for two-way binding (no `{{}}`) |
 | `properties.isEnabled` | boolean/expression | `true` | Whether the toggle accepts input. Accepts an expression |
-| `hidden` | boolean/expression | | Hide component |
+| `properties.isHidden` | boolean/expression | | Hide component; see [Visibility](../components.md#visibility) |
 
 > **Binding vs. value**: set `bindVariable` to the bare variable **name** (`"darkMode"`); set `isOn` to an **expression** (`"{{darkMode}}"`). Most toggles only need `bindVariable` — the engine reads the current value and writes user changes back automatically. See [variables.md → Variable Binding](../variables.md#variable-binding).
 

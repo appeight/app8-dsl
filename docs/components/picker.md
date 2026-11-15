@@ -13,7 +13,7 @@ A single-choice selector. Renders as a tap-to-open menu (`UIMenu`) or an inline 
 | `properties.displayMode` | DisplayMode | `menu` | `menu` or `segmented` |
 | `properties.placeholder` | string | | Text shown in `menu` mode when nothing is selected |
 | `properties.isEnabled` | boolean/expression | `true` | Whether the picker accepts input |
-| `hidden` | boolean/expression | | Hide component |
+| `properties.isHidden` | boolean/expression | | Hide component; see [Visibility](../components.md#visibility) |
 
 > **Binding vs. value**: set `bindVariable` to the bare variable **name**; set `selectedValue` to an **expression**. The picker writes the selected option's `value` (not its `label`) back to the variable. See [variables.md → Variable Binding](../variables.md#variable-binding).
 

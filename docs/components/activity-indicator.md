@@ -10,7 +10,7 @@ Use it for indeterminate waits (a network call in flight). For content-shaped pl
 |----------|------|---------|-------------|
 | `properties.isAnimating` | boolean/expression | `false` | Whether the spinner spins. Accepts an expression, e.g. `"{{isLoading}}"` |
 | `properties.hidesWhenStopped` | boolean | `true` | Hide the view entirely while not animating |
-| `hidden` | boolean/expression | | Hide component |
+| `properties.isHidden` | boolean/expression | | Hide component; see [Visibility](../components.md#visibility) |
 
 > **Driving it**: bind `isAnimating` to a loading flag. With `hidesWhenStopped: true` (the default) the indicator both stops and disappears when the flag goes false, so you rarely need a separate `hidden`.
 

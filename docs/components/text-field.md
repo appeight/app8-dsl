@@ -20,7 +20,7 @@ Single-line text input.
 | `properties.inputMask` | string | | Regex pattern the input must match to be accepted |
 | `properties.allowedCharacters` | string | | Regex pattern; characters outside it are rejected |
 | `properties.clearButtonMode` | ClearButtonMode | `never` | When the clear (✕) button shows |
-| `hidden` | boolean/expression | | Hide component |
+| `properties.isHidden` | boolean/expression | | Hide component; see [Visibility](../components.md#visibility) |
 
 ## ClearButtonMode Values
 

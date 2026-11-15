@@ -20,7 +20,7 @@ Renders geometric shapes: arc progress rings, horizontal progress bars, filled/s
 | `points` | Point[] | No | Vertices for `polyline` kind — see [Polyline](#polyline) |
 | `smooth` | boolean | No | `polyline`: smooth the path with Catmull-Rom interpolation |
 | `closed` | boolean | No | `polyline`: close the path back to the first point |
-| `hidden` | boolean/expression | No | Hide component |
+| `properties.isHidden` | boolean/expression | No | Hide component; see [Visibility](../components.md#visibility) |
 
 ## Kind Reference
 

@@ -20,7 +20,7 @@ Linear layout container backed by `UIStackView`. Arranges children along a singl
 | `children` | Component[] | | Arranged subviews |
 | `style` | ViewStyle | | Container styling (material, alpha, etc.) |
 | `layout` | Layout | | Position and size of the stack itself |
-| `hidden` | boolean/expression | | Hide component |
+| `properties.isHidden` | boolean/expression | | Hide component; see [Visibility](../components.md#visibility) |
 
 ## Alignment Values
 

@@ -205,6 +205,37 @@ Hex color values with optional theme support.
 }
 ```
 
+### Color Expressions
+
+Every color-valued style field also accepts an expression string that evaluates to a
+hex color. This covers text `color`, fill `solid`, gradient stop colors, an outline's
+fill, shadow `color`, `tintColor` / `tint`, icon `color` and every other field typed
+Color on this page:
+
+```json
+"color": "{{isSelected ? '#FFFFFF' : '#0D1311'}}"
+```
+
+<!-- @dsl-type: Fill -->
+```json
+{
+  "solid": "{{isSelected ? '#0D1311' : '#F2F2F2'}}"
+}
+```
+
+- The expression resolves in the scope of the component that uses the style (its
+  item, screen and app variables), also when the style comes from a shared style
+  entity or a template.
+- It re-evaluates when a variable it reads changes, and the new color applies
+  without rebuilding the component.
+- The result must be a hex string in one of the formats above. `null`, an empty
+  string or text that is not a color leaves the field unset (as if it were absent)
+  and logs a `style.color.invalid` warning.
+- A themed color (`{ "light": …, "dark": … }`) takes plain hex values only; an
+  expression cannot return a themed pair. When both the state and the appearance
+  matter, put a themed color in each of two [states](states.md) and pick the state
+  with a `defaultStateName` expression.
+
 ---
 
 ## Fill

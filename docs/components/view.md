@@ -12,7 +12,7 @@ General-purpose container for grouping and layout.
 | `actions` | Actions | Tap actions |
 | `states` | States | State definitions |
 | `triggers` | Triggers | State triggers |
-| `hidden` | boolean/expression | Hide component |
+| `properties.isHidden` | boolean/expression | Hide component; see [Visibility](../components.md#visibility) |
 
 ## Style: ViewStyle
 
