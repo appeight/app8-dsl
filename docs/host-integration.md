@@ -22,6 +22,7 @@ Implement this protocol to feed the engine. Only the core reads are required; th
 | `getTranslations()` | `Data` | The i18n [translation bundle](localization.md#translation-bundle) |
 | `getAllScreenIds()` | `[String]?` | Optional — enables orphan-screen diagnostics |
 | `streamScreen(_:)` / `streamDatasource(...)` / `streamStyles()` | `AsyncStream<Data>?` | Optional — [live updates](#live-updates--streaming) |
+| `prepareRequest(_:)` | `URLRequest` | Optional — authorize, route or reject [`request` actions](#http-requests-from-the-dsl). Default: unchanged |
 
 Each method returns JSON `Data`. A bundle-backed implementation just reads files; a server-backed one makes network calls — the DSL is identical either way.
 
@@ -52,6 +53,37 @@ A **datasource** is an external JSON file of data that the DSL binds to without 
 ```
 
 The `data` value populates the variable. Use [`schema`](variables.md#object-variables-with-schema) on the variable to document the expected shape for navigation params and tooling.
+
+**App variables** may have a `source` too ([variables.md](variables.md#app-variables-with-a-source)). The engine loads them at app start with `getDatasource(screenId: "", datasourceId:)`: the empty `screenId` means "app scope".
+
+**Reloading.** The [`reloadDatasource`](actions.md#reloaddatasource) action calls `getDatasource` again for one `datasourceId` (with the id of the screen that runs it) and writes the result into every app and live-screen variable bound to that path. Return fresh data, not a cached copy, when the app may reload.
+
+---
+
+## HTTP Requests from the DSL
+
+The [`request`](actions.md#request) action sends HTTP requests itself, so the DSL can call an API (delete an item, save a note) without a host round trip. Every request first goes through the host's `prepareRequest` hook, the one place to add authorization, point requests at another host, or refuse them:
+
+| Platform | Hook | Default |
+|----------|------|---------|
+| iOS | `App8DataSource.prepareRequest(_ request: URLRequest) async throws -> URLRequest` | Returns `request` unchanged |
+| Android | `suspend fun App8DataSource.prepareRequest(request: App8HttpRequest): App8HttpRequest` | Returns `request` unchanged |
+| Web | `AppRuntime.prepareRequest?: (req: Request) => Promise<Request>` | Not set: the request is sent unchanged |
+
+```swift
+func prepareRequest(_ request: URLRequest) async throws -> URLRequest {
+    guard request.url?.host == "api.example.com" else { throw RequestNotAllowed() }
+    var request = request
+    request.setValue("Bearer \(try await session.accessToken())", forHTTPHeaderField: "Authorization")
+    return request
+}
+```
+
+The hook receives the request after the engine resolved the DSL (method, URL, headers, JSON body and `Content-Type`). Whatever it returns is sent. If it throws (Android: throws; web: the promise rejects), nothing is sent and the action's `onError` runs with `response.status` `0`.
+
+Android's request type is a plain value: `data class App8HttpRequest(val method: String, val url: String, val headers: Map<String, String>, val body: String?)`, where `body` is the JSON text or `null`; return a modified `copy(...)`.
+
+Keep tokens out of the bundle: the DSL names the endpoint, the host adds credentials here. A host that should not allow DSL requests at all rejects every request in the hook.
 
 ---
 
