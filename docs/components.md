@@ -121,5 +121,6 @@ Each component type has its own reference doc with its `properties`, styling, an
 | `activityIndicator` | Spinner for indeterminate waits | [components/activity-indicator.md](components/activity-indicator.md) |
 | `shimmer` | Skeleton loading placeholder | [components/shimmer.md](components/shimmer.md) |
 | `pageControl` | Page-indicator dots | [components/page-control.md](components/page-control.md) |
+| `native` | Host-registered native view with props, events and a DSL fallback | [components/native.md](components/native.md) |
 
 These cover the building blocks; [forms.md](forms.md) shows how to combine the input components, and [host-integration.md](host-integration.md) covers how the host feeds them data.

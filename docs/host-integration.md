@@ -97,7 +97,23 @@ To run host-side logic in response to a tap, the DSL author emits an event:
 "actions": { "tap": { "type": "emit", "name": "checkout.tapped", "payload": { "sku": "{{item.sku}}" } } }
 ```
 
-…and the host routes it by `event.name`. This `.emit` → event-bus path is the supported way for DSL to trigger native code. (`executeFunction` is a reserved action consumed by higher-level delivery SDKs, not the core engine.)
+…and the host routes it by `event.name`. This `.emit` → event-bus path is the supported way for DSL to trigger native code. (`executeFunction` is a reserved action consumed by higher-level delivery SDKs, not the core engine.) When the native code needs its own view inside the screen, use a [native component](#native-components).
+
+---
+
+## Native Components
+
+A [`native`](components/native.md) component embeds a view the host provides. The DSL names a `module`, passes `props` (expressions, re-resolved when variables change) and maps the module's events to actions; the host registers one factory per module:
+
+| Platform | Registration | The view gets |
+|----------|--------------|---------------|
+| iOS | `App8.registerNativeComponent("signaturePad") { context in UIView }` | `App8NativeContext`: `props`, `onPropsChange`, `emit(_:_:)`, `appId`, `screenId` |
+| Android | `App8Config(nativeComponents = mapOf("signaturePad" to App8NativeComponent { context, modifier -> … }))` | `App8NativeContext(props, emit, appId, screenId)` + `Modifier` |
+| Web | `registerNativeComponent("signaturePad", Component)` in the web renderer | `NativeComponentProps`: `props`, `emit`, `width`, `height`, `platform`, `appId` |
+
+When the module calls `emit("completed", payload)`, the engine runs the component's `actions.completed` with the payload in scope as `event`, and posts `native.signaturePad.completed` on the event bus, so the host can also observe it with `subscribe(to:)`. When no factory is registered for the module, the component renders its DSL `fallback` (or nothing, with a `native.module.missing` warning).
+
+Modules usually need data the engine does not have (an auth token, an upload endpoint). Give it to the module in the factory closure, not through props: props come from the bundle and are visible to every author.
 
 ---
 
@@ -111,6 +127,8 @@ The host owns the active locale. `getTranslations()` supplies the bundle once at
 
 - [README Quick Start](../../README.md#quick-start) — bootstrapping an instance
 - [events.md](events.md) — the `.emit` event bus and subscribe API
+- [components/native.md](components/native.md) — the `native` component: props, events, fallback
+- [prefabs.md](prefabs.md) — feature packages and the native modules they require
 - [analytics.md](analytics.md) — analytics events and handler wiring
 - [localization.md](localization.md) — translation bundle and locale resolution
 - [variables.md](variables.md) — `source` bindings and datasource-backed variables
