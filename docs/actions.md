@@ -712,8 +712,10 @@ Rules:
   on the response in `onSuccess` / `onError`.
 - **Lifetime.** `onSuccess` and `onError` run only while the screen that started the
   request is still alive (on a navigation stack or presented). When the screen has
-  been removed, the response is dropped. Work that must outlive the screen belongs in
-  the host: [`emit`](events.md) an event instead.
+  been removed, the callbacks are dropped, and so is a `resultVariable` write to a
+  screen or component variable. A `resultVariable` that is an **app** variable is
+  always written, even when the screen is gone. Other work that must outlive the
+  screen belongs in the host: [`emit`](events.md) an event instead.
 - **Host hook.** Before it is sent, every request goes through the host's
   `prepareRequest` hook, which can add authorization, rewrite the URL or reject the
   request (an error with status `0`). See
@@ -735,6 +737,8 @@ Fetch a datasource again and update every variable bound to it.
 | Property | Type | Description |
 |----------|------|-------------|
 | `source` | string | The datasource path, exactly as written in the variables' `source` field |
+| `onSuccess` | Action / Action[] | Optional. Runs after the variables are updated |
+| `onError` | Action / Action[] | Optional. Runs after the fetch failed |
 
 The engine asks the host data source for `source` once (`getDatasource`, with the
 id of the screen that runs the action), then writes the result into every variable
@@ -743,8 +747,11 @@ is currently alive. Computed variables and collections that read them update as
 usual. Persisted app variables store the new value.
 
 Like `request`, the reload is asynchronous: the action list continues immediately.
-When the fetch fails, the variables keep their values and the engine logs a
-`datasource.reload.failed` warning.
+Put actions that need the fresh data in `onSuccess`, which runs once every bound
+variable has its new value. When the fetch fails, the variables keep their values,
+the engine logs a `datasource.reload.failed` warning, and `onError` runs. Both
+follow the `request` lifetime rule: they run only while the screen that started the
+reload is still alive.
 
 A common pair: delete on the server, then refresh the list.
 

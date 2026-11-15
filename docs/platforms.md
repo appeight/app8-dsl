@@ -123,7 +123,7 @@ A new DSL feature lands only when both columns are filled (see
 | `activityIndicator` | ✓ | ✓ | Android: Material 3 `CircularProgressIndicator` at the iOS sizes (20pt, 37pt `large`), gray by default |
 | `shimmer` | ✓ | ✓ | Same sweep on both: 0 → 30% → 0% white band, linear, `duration` (1.5s) |
 | `video` | ✓ | ✓ | Android: Media3 ExoPlayer; same events, marks, posters and end behaviors |
-| `native` (host module, props, events → actions with `event`, `native.<module>.<event>` on the bus, `fallback`) | ✓ | planned | Studio: `registerNativeComponent` in the web renderer. Android renders `fallback` until `App8Config.nativeComponents` lands |
+| `native` (host module, props, events → actions with `event`, `native.<module>.<event>` on the bus, `fallback`) | ✓ | ✓ | Android: `App8Config(nativeComponents = …)` with `App8NativeComponent`. Studio: `registerNativeComponent` in the web renderer |
 | `focus`, `focusNext`, `focusPrevious`, `dismissKeyboard` actions | ✓ | ✓ | |
 | `keyboard` layout target | ✓ | ✓ | Android tracks the IME insets |
 | `tableView` | ✓ | planned | Rendered as a lazy list with grouped sections |
