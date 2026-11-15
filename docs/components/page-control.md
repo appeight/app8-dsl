@@ -26,6 +26,8 @@ Commonly paired with a horizontally-paged [carousel collection](../collections.m
 | `alpha` | number | Opacity (0.0–1.0) |
 | `contentMode` | ContentMode | Content alignment |
 
+> **iOS**: since 0.5.4 the iOS renderer ignores `pageIndicatorTintColor` and `currentPageIndicatorTintColor` and always draws the media capsule: white dots (current solid, others at half opacity) on a dark blurred capsule, 26 pt tall, so the dots read on any photo. Same look as the web renderer.
+
 ## Example
 
 ```json
