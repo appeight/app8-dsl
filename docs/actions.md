@@ -137,7 +137,7 @@ away first, then the new screen appears, with no frame where both animate at onc
   "actions": {
     "tap": [
       { "type": "dismiss" },
-      { "type": "navigation", "nextScreen": "orderDetails", "params": { "orderId": "{{order.id}}" } }
+      { "type": "navigation", "nextScreen": "noteDetails", "params": { "noteId": "{{note.id}}" } }
     ]
   }
 }
@@ -154,10 +154,10 @@ whose values are evaluated once, before the dismissal:
 ```json
 {
   "type": "with",
-  "values": { "orderId": "{{draftOrder.id}}" },
+  "values": { "noteId": "{{draftNote.id}}" },
   "actions": [
     { "type": "dismiss" },
-    { "type": "navigation", "nextScreen": "orderDetails", "params": { "orderId": "{{orderId}}" } }
+    { "type": "navigation", "nextScreen": "noteDetails", "params": { "noteId": "{{noteId}}" } }
   ]
 }
 ```
@@ -327,7 +327,7 @@ none: a "recently viewed" list, a saved address book, a per-item note.
   "type": "upsertArrayItem",
   "variableName": "recentlyViewed",
   "matchBy": "id",
-  "value": { "id": "{{product.id}}", "title": "{{product.title}}", "viewedAt": "{{now()}}" },
+  "value": { "id": "{{photo.id}}", "title": "{{photo.title}}", "viewedAt": "{{now()}}" },
   "position": "start"
 }
 ```
@@ -353,9 +353,9 @@ Remove elements by key, or one element by position.
 ```json
 {
   "type": "removeArrayItem",
-  "variableName": "cart",
+  "variableName": "tasks",
   "matchBy": "key",
-  "value": "{{line.key}}"
+  "value": "{{task.key}}"
 }
 ```
 
@@ -598,11 +598,11 @@ Run nested actions once per element of an array.
 ```json
 {
   "type": "forEach",
-  "items": "{{cartLines}}",
-  "as": "line",
+  "items": "{{selectedTasks}}",
+  "as": "task",
   "index": "i",
   "actions": [
-    { "type": "incrementArrayItem", "variableName": "cart", "matchBy": "key", "value": { "key": "{{line.key}}" }, "by": 1 }
+    { "type": "incrementArrayItem", "variableName": "tasks", "matchBy": "key", "value": { "key": "{{task.key}}" }, "field": "count", "by": 1 }
   ]
 }
 ```
@@ -632,9 +632,9 @@ Bind names for nested actions.
 ```json
 {
   "type": "with",
-  "values": { "product": "{{item.product}}", "qty": 1 },
+  "values": { "book": "{{item.book}}", "count": 1 },
   "actions": [
-    { "type": "upsertArrayItem", "variableName": "cart", "matchBy": "key", "value": { "key": "{{product.id}}", "title": "{{product.title}}", "quantity": "{{qty}}" } }
+    { "type": "upsertArrayItem", "variableName": "readingList", "matchBy": "key", "value": { "key": "{{book.id}}", "title": "{{book.title}}", "count": "{{count}}" } }
   ]
 }
 ```

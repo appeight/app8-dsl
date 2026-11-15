@@ -1,6 +1,6 @@
 # Prefabs
 
-A **prefab** is a versioned feature package: screens, templates, styles and variables for one use case (onboarding, a loyalty card), written once and instantiated by any app with its own parameters (brand colours, fonts, copy, data sources, what happens on a key action).
+A **prefab** is a versioned feature package: screens, templates, styles and variables for one use case (onboarding, a loyalty card), written once and instantiated by any app with its own parameters (colours, fonts, copy, data sources, what happens on a key action).
 
 [Templates](templates.md) reuse one component. Prefabs reuse a whole feature.
 
@@ -98,7 +98,7 @@ An optional param that is not set and has no default resolves to `null`. In an o
 <!-- @dsl-skip: prefab source, expanded at bundle build -->
 ```json
 {
-  "app": { "id": "exampleStore", "title": "Example Store" },
+  "app": { "id": "my-app", "title": "My App" },
   "prefabs": [
     {
       "id": "loyaltyCard",
@@ -240,7 +240,7 @@ The bundle builder expands every entry of `prefabs` in this order, and fails the
 5. **Verify**: no `$param` / `$spread` node or `${param.` / `${id.` / `${instance}` text is left; no namespaced id collides with an id the app or another instance already defines; every `${id.name}` named a prefab-owned id; each `native` component whose module is in `requires.nativeModules` has a `fallback` (warning when it does not). A reference from the app to a prefab screen that is not exported is a warning.
 6. **Merge** the screens into `screens`, templates into `templates`, style entities into the styles, variables into `app.variables`, and drop `prefabs` from the built `app.json`.
 
-The result is an ordinary bundle. Studio previews run the same expansion, so what an author sees is what ships.
+The result is an ordinary bundle. The web renderer runs the same expansion for previews, so what an author sees is what ships.
 
 `requires.nativeModules` and `requires.datasources` are a contract with the host app, which the builder cannot check: the host registers each module (see [native component host registration](components/native.md#host-registration)) and serves each datasource (see [host integration](host-integration.md#datasources)). A module the host has not registered shows its `fallback`.
 

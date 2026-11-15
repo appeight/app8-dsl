@@ -90,7 +90,7 @@ A signature pad that stores the result and moves on:
       "props": {
         "strokeColor": "#1A1A1A",
         "lineWidth": 3,
-        "placeholder": "Sign here, {{customerName}}"
+        "placeholder": "Sign here, {{userName}}"
       }
     },
     "layout": { "leading": 16, "trailing": 16, "top": 120, "height": 240 },
@@ -168,7 +168,7 @@ val config = App8Config(
 
 ### Web renderer
 
-The web renderer (Studio previews) takes a React component per module:
+The web renderer takes a React component per module:
 
 ```tsx
 registerNativeComponent("signaturePad", SignaturePad);
