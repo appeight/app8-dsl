@@ -297,6 +297,7 @@ Configure the navigation bar for each screen.
 | Property | Type | Description |
 |----------|------|-------------|
 | `title` | string | Navigation bar title (ignored when `titleView` is set) |
+| `largeTitle` | boolean | Show `title` as a large title: iOS `prefersLargeTitles` (34pt bold under the bar, moving with the content and collapsing into the inline title as it scrolls). Use it for a tab's root screen title instead of a label or a collection row. Needs a plain `title` (no `titleView`, no `search`); `titleColor` applies to the inline title only. Android ignores it: set `topAppBar: "large"` for the same role |
 | `titleView` | Component | Custom DSL component rendered as the nav bar title |
 | `titleAlignment` | string | `"left"` places `titleView` as left bar item; `"center"` (default) uses standard title area |
 | `backLabel` | string | Custom back button label (ignored when `titleView` is set) |
@@ -369,6 +370,17 @@ A screen with only `search` (no `title`) shows just the field. Do not set `hidde
 {
   "navigationBar": {
     "title": "Settings"
+  }
+}
+```
+
+**Large Title (a tab's root screen):**
+```json
+{
+  "navigationBar": {
+    "title": "Wishlist",
+    "largeTitle": true,
+    "topAppBar": "large"
   }
 }
 ```
