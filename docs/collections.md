@@ -377,7 +377,7 @@ Each entry in `sectionDefinitions`:
 | Property | Type | Description |
 |----------|------|-------------|
 | `key` | string | Unique section key (used to match `sectionLayouts` and `sectionHeaders`) |
-| `data` | expression | Variable expression for this section's data |
+| `data` | expression | Variable expression for this section's data. The section rebuilds when any variable the expression reads changes, e.g. both `allProducts` and `wishlist` in `{{filter(allProducts, wishlist.includes(item.handle))}}`, and items leave the list when the array shrinks |
 | `templateName` | string | Name of the registered template to use for items in this section |
 | `templateKey` | string | Item property path for heterogeneous templates within this section |
 
