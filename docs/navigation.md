@@ -302,6 +302,7 @@ Configure the navigation bar for each screen.
 | `titleAlignment` | string | `"left"` places `titleView` as left bar item; `"center"` (default) uses standard title area |
 | `backLabel` | string | Custom back button label (ignored when `titleView` is set) |
 | `hidden` | boolean | Hide navigation bar |
+| `hidesBackButton` | boolean | Hide the back button on a pushed screen (back swipe still works). For a search screen whose field takes the back button's place; leave the screen with `search.onCancel` |
 | `leftAction` | BarAction | Left bar button (ignored when `titleAlignment: "left"`) |
 | `rightAction` | BarAction | Single right bar button (kept for backward compatibility) |
 | `rightActions` | BarAction[] | Multiple right bar buttons — takes priority over `rightAction` |
@@ -341,9 +342,70 @@ button that appears only while the field is focused. Never build a search bar fr
 | `tintColor` | Color | | Caret and cancel-button tint |
 | `fillsBar` | boolean | `false` | With `placement: "integrated"` (iOS 26): stretch the field across the bar from the leading edge instead of the compact trailing field. While focused it shortens to make room for the ✕ |
 | `onSubmit` | Action \| Action[] | | Runs when the user taps the keyboard's search key |
+| `mode` | string | `field` | `field`: the editable system field. `button`: the same field, drawn identically (placeholder, glass, magnifier, size), that never takes focus or shows the keyboard; a tap runs `onTap`. Use it on a screen whose search lives on its own screen |
+| `onTap` | Action \| Action[] | | `mode: "button"` only: runs on a tap, typically a push to the search screen |
+| `autoFocus` | boolean | `false` | Focus the field (keyboard up, cancel ✕ shown) as soon as the screen appears. For a dedicated search screen |
+| `onCancel` | Action \| Action[] | | Runs when the user taps the cancel ✕, after the field clears and loses focus. A dedicated search screen pops: `{ "type": "navigation", "isBack": true }` |
 
 A screen with only `search` (no `title`) shows just the field. Do not set `hidden: true`
 — that hides the field too.
+
+While focused, the field never leaves the bar's margins: it shortens to make room for the
+✕ instead of sliding out past the leading edge, also on a screen with `rightActions`
+(the trailing items give way to the ✕ while the field is focused).
+
+#### Search as a button that opens a search screen
+
+A common iOS 26 pattern: a screen shows a search field that is a
+button; tapping it pushes a search screen whose field sits in exactly the same place,
+already focused, with the keyboard up. The bar items morph between the two screens like
+any other push (the field stays put, the content changes underneath), and the field on
+the first screen morphs into the back button when a detail screen is pushed.
+
+The first screen (`home`):
+
+```json
+{
+  "navigationBar": {
+    "search": {
+      "placeholder": "Search",
+      "placement": "integrated",
+      "fillsBar": true,
+      "mode": "button",
+      "onTap": { "type": "navigation", "nextScreen": "search" }
+    }
+  }
+}
+```
+
+The search screen (`search`):
+
+```json
+{
+  "navigationBar": {
+    "hidesBackButton": true,
+    "search": {
+      "placeholder": "Search",
+      "bindVariable": "query",
+      "placement": "integrated",
+      "fillsBar": true,
+      "autoFocus": true,
+      "onCancel": { "type": "navigation", "isBack": true }
+    }
+  }
+}
+```
+
+Keep `placeholder`, `placement`, `fillsBar` and `rightActions` the same on both screens so
+the field does not move. The search screen shows recent searches while `query` is empty
+(an app variable with `persist: true`, newest first, capped with `slice`) and live results
+filtered from a datasource as the user types.
+
+| Platform | Behavior |
+|----------|----------|
+| iOS | `mode: "button"`: the real `UISearchController` field; `searchBarShouldBeginEditing` returns `false` and runs `onTap`, so it is pixel-identical and the navigation bar morphs it into the next screen's items (back button, the search screen's field) on push and back on pop. `autoFocus` activates the search controller once the push lands; the ✕ is the system cancel button |
+| Android | `mode: "button"`: the Material 3 search bar (collapsed), a tap runs `onTap`. The search screen's field is the expanded search view: focused, keyboard up, a ✕ that clears and runs `onCancel` |
+| Web renderer | Same as the platform it renders as: the button field has no caret and runs `onTap` on click; `autoFocus` focuses the input on appear |
 
 ### Bar Action
 
