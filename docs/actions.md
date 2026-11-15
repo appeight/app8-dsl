@@ -230,7 +230,7 @@ By index:
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
 | `variableName` | string | | Variable to increment |
-| `by` | number | 1 | Amount to add |
+| `by` | number/expression | 1 | Amount to add. Accepts an expression that gives a number, e.g. `"{{line.quantity}}"` |
 
 ### Toggle Array Value
 
@@ -289,7 +289,7 @@ action for a cart's add, +, − and remove-at-zero.
 | `matchBy` | string | | Object key that identifies an item |
 | `value` | object / any | | The full object (its `matchBy` key matches; appended with `field = by` when missing and `by > 0`) or just the key value |
 | `field` | string | `"quantity"` | Numeric field to adjust |
-| `by` | number | `1` | Amount to add (negative to decrement). An item whose field drops to `0` or below is removed |
+| `by` | number/expression | `1` | Amount to add (negative to decrement); an expression must give a number. An item whose field drops to `0` or below is removed |
 
 Object `value`s may contain `{{expressions}}` at any depth; they resolve when the
 action runs.
