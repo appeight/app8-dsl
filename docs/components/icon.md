@@ -14,7 +14,6 @@ Displays an icon — an SF Symbol, a bundled asset, or a remote image — with a
 | `properties.isHidden` | boolean/expression | | Hide via expression, e.g. `"{{!isChecked}}"` |
 | `style` | IconStyle | | Icon styling — see [styles.md → IconStyle](../styles.md#iconstyle) |
 | `layout` | Layout | | Position and size |
-| `hidden` | boolean/expression | | Hide component |
 
 > **Tint via property or style**: the `tintColor` property is expression- and animation-friendly — prefer it for dynamic colors. The static `tint`/`color` on [IconStyle](../styles.md#iconstyle) is equivalent for fixed colors.
 

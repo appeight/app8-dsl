@@ -576,6 +576,10 @@ Close modal screens (sheet, fullScreen, formSheet, pageSheet).
 }
 ```
 
+A `navigation` that follows `dismiss` in the same action list waits until the modal
+is gone and then runs from the presenting screen's navigation stack. See
+[Dismiss, then navigate](actions.md#dismiss-then-navigate).
+
 ---
 
 ## Going Back

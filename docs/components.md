@@ -41,6 +41,34 @@ Every component shares the same envelope:
 
 ---
 
+## Visibility
+
+`properties.isHidden` hides **any** component: view, label, icon, button, image,
+collection, stackView, scrollView, native, inputs and the rest. It takes a boolean
+or a `{{expression}}` and re-evaluates when a variable it reads changes.
+
+<!-- @dsl-type: Component -->
+```json
+{
+  "type": "button",
+  "content": {
+    "properties": {
+      "text": "Remove",
+      "isHidden": "{{selectedIds.length == 0}}"
+    }
+  }
+}
+```
+
+A hidden component is not drawn, does not receive touches, and is skipped by
+accessibility. Inside a [`stackView`](components/stack-view.md) it also takes no
+space: the stack lays out as if it were not there, spacing included (as
+`UIStackView` does with hidden arranged subviews). Outside a stack it keeps its
+frame, so constraints that point at it still resolve. Its children are hidden
+with it.
+
+---
+
 ## Interaction
 
 The optional `content.interaction` block overrides touch handling, clipping, and
@@ -121,5 +149,6 @@ Each component type has its own reference doc with its `properties`, styling, an
 | `activityIndicator` | Spinner for indeterminate waits | [components/activity-indicator.md](components/activity-indicator.md) |
 | `shimmer` | Skeleton loading placeholder | [components/shimmer.md](components/shimmer.md) |
 | `pageControl` | Page-indicator dots | [components/page-control.md](components/page-control.md) |
+| `native` | Host-registered native view with props, events and a DSL fallback | [components/native.md](components/native.md) |
 
 These cover the building blocks; [forms.md](forms.md) shows how to combine the input components, and [host-integration.md](host-integration.md) covers how the host feeds them data.

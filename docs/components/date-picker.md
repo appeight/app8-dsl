@@ -13,7 +13,7 @@ A native date/time selector (`UIDatePicker`). Two-way bound to a string variable
 | `properties.minimumDate` | string | | Earliest selectable date (ISO8601 or `"yyyy-MM-dd"`) |
 | `properties.maximumDate` | string | | Latest selectable date |
 | `properties.isEnabled` | boolean/expression | `true` | Whether the picker accepts input |
-| `hidden` | boolean/expression | | Hide component |
+| `properties.isHidden` | boolean/expression | | Hide component; see [Visibility](../components.md#visibility) |
 
 > **Storage format**: in `date` mode the picker writes the selected value back to the bound variable as a `"yyyy-MM-dd"` string. In `time`, `dateAndTime` and `countdownTimer` modes it writes an ISO8601 local date-time with UTC offset, `"yyyy-MM-dd'T'HH:mm:ss±HH:MM"` (e.g. `"2026-03-04T14:30:00+01:00"`), so the time is preserved. Format it for display with [`formatDate`](../variables.md#date--time), e.g. `"{{formatDate(startDate, 'medium')}}"`.
 

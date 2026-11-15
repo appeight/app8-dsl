@@ -84,6 +84,7 @@ A minimal app with one screen and a button:
 | `navigation` | Flow definitions and start flow |
 | `screens` | Screen definitions by ID |
 | `templates` | Reusable component templates |
+| `prefabs` | Feature packages expanded into screens at bundle build time ([prefabs.md](prefabs.md)) |
 
 ## Component Types
 
@@ -107,6 +108,12 @@ A minimal app with one screen and a button:
 | `icon` | SF Symbol, asset, or remote icon | [components/icon.md](components/icon.md) |
 | `map` | Interactive map with annotations and routing | [components/map.md](components/map.md) |
 | `shape` | Arc rings, bars, circles, dividers | [components/shape.md](components/shape.md) |
+
+**Host-provided**
+
+| Type | Description | See |
+|------|-------------|-----|
+| `native` | A view the host app registers (signature pad, video call, …), with props, events and a DSL fallback | [components/native.md](components/native.md) |
 
 **Lists**
 
@@ -210,11 +217,13 @@ See [variables.md](variables.md) for full expression documentation.
 - [states.md](states.md) - Component states and animations
 - [animations.md](animations.md) - Animation primitive (timing, springs, registry, per-property)
 - [templates.md](templates.md) - Reusable component templates
+- [prefabs.md](prefabs.md) - Feature packages (screens, templates, params) instantiated per app and expanded at bundle build time
 - [localization.md](localization.md) - Translations, the `$i18n` marker, locale fallback
 
 **Host & analytics**
 
-- [host-integration.md](host-integration.md) - Data sources, datasources, assets, streaming, and event wiring
+- [host-integration.md](host-integration.md) - Data sources, datasources, assets, streaming, event wiring, and native components
+- [components/native.md](components/native.md) - Host-registered native views: props, events, fallback
 - [events.md](events.md) - Host-facing event bus (`.emit` action + subscribe API)
 - [analytics.md](analytics.md) - Analytics bus (auto `app8.*` + author-declared `analytics` binding, SDK auto-prefixed)
 - [analytics-events.spec.md](analytics-events.spec.md) - Canonical registry of every auto-fired event (cross-platform contract)

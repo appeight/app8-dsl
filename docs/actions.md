@@ -124,6 +124,44 @@ Close the current modal screen.
 }
 ```
 
+#### Dismiss, then navigate
+
+In one action list, a `navigation` after `dismiss` waits until the modal has
+finished dismissing, then runs from the **presenting** screen: a push lands on the
+presenting screen's navigation stack, a modal presentation is presented by it, and
+`isBack` pops that stack. The result is the same on every platform: the modal goes
+away first, then the new screen appears, with no frame where both animate at once.
+
+```json
+{
+  "actions": {
+    "tap": [
+      { "type": "dismiss" },
+      { "type": "navigation", "nextScreen": "noteDetails", "params": { "noteId": "{{note.id}}" } }
+    ]
+  }
+}
+```
+
+Precisely: after a `dismiss`, the list pauses before its next `navigation` action
+until the modal is gone, then continues in order with that navigation. Actions
+between the two run right away. Run variable updates **before** `dismiss`, and do
+not read the modal screen's own variables in the `navigation` or anything after it:
+the modal is gone by the time they run. To carry
+a value from the modal into the next screen, bind it first with [`with`](#with),
+whose values are evaluated once, before the dismissal:
+
+```json
+{
+  "type": "with",
+  "values": { "noteId": "{{draftNote.id}}" },
+  "actions": [
+    { "type": "dismiss" },
+    { "type": "navigation", "nextScreen": "noteDetails", "params": { "noteId": "{{noteId}}" } }
+  ]
+}
+```
+
 ### Complete Flow
 
 Finish current flow and navigate to another flow.
@@ -192,7 +230,7 @@ By index:
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
 | `variableName` | string | | Variable to increment |
-| `by` | number | 1 | Amount to add |
+| `by` | number/expression | 1 | Amount to add. Accepts an expression that gives a number, e.g. `"{{line.quantity}}"` |
 
 ### Toggle Array Value
 
@@ -251,10 +289,104 @@ action for a cart's add, +, − and remove-at-zero.
 | `matchBy` | string | | Object key that identifies an item |
 | `value` | object / any | | The full object (its `matchBy` key matches; appended with `field = by` when missing and `by > 0`) or just the key value |
 | `field` | string | `"quantity"` | Numeric field to adjust |
-| `by` | number | `1` | Amount to add (negative to decrement). An item whose field drops to `0` or below is removed |
+| `by` | number/expression | `1` | Amount to add (negative to decrement); an expression must give a number. An item whose field drops to `0` or below is removed |
 
 Object `value`s may contain `{{expressions}}` at any depth; they resolve when the
 action runs.
+
+When the resolved match key is `null` or missing (an object `value` without its
+`matchBy` key, or a key expression that resolves to `null`), the action does
+nothing: no item is added, adjusted or removed.
+
+### Insert Array Item
+
+Insert a value at a position in an array variable.
+
+```json
+{
+  "type": "insertArrayItem",
+  "variableName": "recentSearches",
+  "value": "{{query}}",
+  "index": 0
+}
+```
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `variableName` | string | | Array variable |
+| `value` | any/expression | | Value to insert. Objects may contain expressions at any depth |
+| `index` | number/expression | `0` | Position of the new element. `0` prepends. A negative index counts from the end: `-1` appends, `-2` inserts before the last element. The index is clamped to `[0, count]`, so a large index appends |
+
+### Upsert Array Item
+
+Replace the object whose `matchBy` key equals the value's, or add it when there is
+none: a "recently viewed" list, a saved address book, a per-item note.
+
+```json
+{
+  "type": "upsertArrayItem",
+  "variableName": "recentlyViewed",
+  "matchBy": "id",
+  "value": { "id": "{{photo.id}}", "title": "{{photo.title}}", "viewedAt": "{{now()}}" },
+  "position": "start"
+}
+```
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `variableName` | string | | Array variable |
+| `matchBy` | string | | Object key that identifies an element |
+| `value` | object | | The new element. Its `matchBy` key is the match key |
+| `position` | string | `"end"` | Where a new element goes when nothing matches: `"start"` or `"end"` |
+
+- The **first** element whose `matchBy` key equals `value[matchBy]` is replaced by
+  `value` exactly: fields of the old element that `value` does not have are dropped,
+  and the element keeps its position.
+- No match: `value` is inserted at `position`.
+- A `null` or missing match key makes the action a no-op (same rule as
+  `incrementArrayItem`).
+
+### Remove Array Item
+
+Remove elements by key, or one element by position.
+
+```json
+{
+  "type": "removeArrayItem",
+  "variableName": "tasks",
+  "matchBy": "key",
+  "value": "{{task.key}}"
+}
+```
+
+```json
+{
+  "type": "removeArrayItem",
+  "variableName": "recentSearches",
+  "index": -1
+}
+```
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `variableName` | string | Array variable |
+| `matchBy` | string | With `value`: object key that identifies elements |
+| `value` | any/expression | With `matchBy`: the key value. **Every** element whose `matchBy` key equals it is removed. An object `value` uses its own `matchBy` key, as in `incrementArrayItem` |
+| `index` | number/expression | Remove the element at this position instead. Negative counts from the end (`-1` is the last element). Out of range: no-op |
+
+When both `index` and `matchBy` are present, `index` wins. A `null` or missing
+match key, or an `index` out of range, makes the action a no-op.
+
+### Array action rules
+
+These rules hold for `appendToArray`, `insertArrayItem`, `upsertArrayItem`,
+`removeArrayItem` and `incrementArrayItem`:
+
+- A variable whose value is `null` (or not set yet) counts as an empty array.
+- `matchBy` keys compare the same way in every array action: equal strings, equal
+  numbers or equal booleans match.
+- Each action writes a new array to the variable once, so readers update once per
+  action.
 
 ### Update Multiple Variables
 
@@ -457,6 +589,185 @@ Invoke a named function by reference.
 
 ---
 
+## Control Flow Actions
+
+### forEach
+
+Run nested actions once per element of an array.
+
+```json
+{
+  "type": "forEach",
+  "items": "{{selectedTasks}}",
+  "as": "task",
+  "index": "i",
+  "actions": [
+    { "type": "incrementArrayItem", "variableName": "tasks", "matchBy": "key", "value": { "key": "{{task.key}}" }, "field": "count", "by": 1 }
+  ]
+}
+```
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `items` | expression | | The array to walk |
+| `as` | string | `"item"` | Name of the current element inside `actions` |
+| `index` | string | | Optional name of the current position (0-based) inside `actions` |
+| `actions` | Action / Action[] | | Actions to run for each element |
+
+- `items` is evaluated **once**, before the first iteration. Actions that change the
+  source variable during the loop do not add, skip or repeat iterations.
+- Iterations run in order. Each iteration runs its `actions` like an action list,
+  to the end, before the next iteration starts. Asynchronous actions (such as
+  [`request`](#request)) start in their iteration and do not hold up the next one.
+- The element and index names shadow outer names of the same name (an `item` from a
+  collection, a screen variable) inside the nested actions only. They are read-only:
+  variable actions still write to real variables.
+- `null` or a non-array `items` runs nothing. An empty array runs nothing.
+- `forEach` can be nested; give the inner loop a different `as`.
+
+### with
+
+Bind names for nested actions.
+
+```json
+{
+  "type": "with",
+  "values": { "book": "{{item.book}}", "count": 1 },
+  "actions": [
+    { "type": "upsertArrayItem", "variableName": "readingList", "matchBy": "key", "value": { "key": "{{book.id}}", "title": "{{book.title}}", "count": "{{count}}" } }
+  ]
+}
+```
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `values` | object | Names and their values. Values are literals or expressions; objects and arrays resolve expressions at any depth, and a whole-string expression keeps its type |
+| `actions` | Action / Action[] | Actions that run with `values` in scope |
+
+`values` is evaluated **once**, against the current scope, before the first nested
+action runs. Inside `actions` the names shadow outer names of the same name; outside
+`with` they do not exist. Like loop names they are read-only.
+
+`with` lets one reusable action list receive different inputs at each place it is
+used: a [prefab](prefabs.md) param supplies the list once, and each call site wraps
+it in a `with` that binds the names the list reads.
+
+---
+
+## Network Actions
+
+### request
+
+Make an HTTP request from the DSL.
+
+```json
+{
+  "type": "request",
+  "method": "DELETE",
+  "url": "https://api.example.com/v1/items/{{item.id}}",
+  "headers": { "Accept": "application/json" },
+  "body": { "note": "{{note}}" },
+  "resultVariable": "lastResponse",
+  "onSuccess": [
+    { "type": "removeArrayItem", "variableName": "items", "matchBy": "id", "value": "{{item.id}}" }
+  ],
+  "onError": [
+    { "type": "updateVariable", "variableName": "errorMessage", "value": "{{response.body.message}}" }
+  ]
+}
+```
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `method` | string | `"GET"` | `GET`, `POST`, `PUT`, `PATCH` or `DELETE` |
+| `url` | string/expression | | Absolute `https://` or `http://` URL. Interpolates like `openURL` |
+| `headers` | object | | Header names and values. Values accept expressions |
+| `body` | any | | JSON body: an object, an array or an expression. Objects and arrays resolve expressions at any depth. Sent as `application/json` |
+| `resultVariable` | string | | Variable that receives the `response` object |
+| `onSuccess` | Action / Action[] | | Runs after a 2xx response |
+| `onError` | Action / Action[] | | Runs after any other status, a network failure, a timeout or a host rejection |
+
+**The `response` object.** While `onSuccess` or `onError` run, `response` is in scope:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `response.status` | number | HTTP status code. `0` for a network failure, a timeout or a host rejection |
+| `response.body` | any | The body parsed as JSON; the raw string when it is not JSON; `null` when empty or when there was no response |
+| `response.headers` | object | Response headers, names lowercased (`response.headers["content-type"]`). `{}` when there was no response |
+
+`resultVariable` receives the same object, written before `onSuccess` / `onError`
+run. It follows the [`updateVariable`](#update-single-variable) rules for which
+variable it writes.
+
+Rules:
+
+- **Success** is a 2xx status. Everything else is an error, including 3xx that
+  are not followed, 4xx, 5xx and status `0`. Redirects are followed.
+- **Body.** `GET` requests send no body (a `body` on a `GET` is ignored). For the
+  other methods, a present `body` is serialized as JSON and the engine sets
+  `Content-Type: application/json`.
+- **Timeout** is 30 seconds. A timeout is an error with status `0`.
+- **Asynchronous.** `request` starts the request and the rest of the action list
+  continues immediately, without waiting for the response. Put actions that depend
+  on the response in `onSuccess` / `onError`.
+- **Lifetime.** `onSuccess` and `onError` run only while the screen that started the
+  request is still alive (on a navigation stack or presented). When the screen has
+  been removed, the callbacks are dropped, and so is a `resultVariable` write to a
+  screen or component variable. A `resultVariable` that is an **app** variable is
+  always written, even when the screen is gone. Other work that must outlive the
+  screen belongs in the host: [`emit`](events.md) an event instead.
+- **Host hook.** Before it is sent, every request goes through the host's
+  `prepareRequest` hook, which can add authorization, rewrite the URL or reject the
+  request (an error with status `0`). See
+  [host-integration.md](host-integration.md#http-requests-from-the-dsl).
+- Never put secrets (API keys, tokens) in the bundle; the host adds them in
+  `prepareRequest`.
+
+### reloadDatasource
+
+Fetch a datasource again and update every variable bound to it.
+
+```json
+{
+  "type": "reloadDatasource",
+  "source": "datasources/items"
+}
+```
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `source` | string | The datasource path, exactly as written in the variables' `source` field |
+| `onSuccess` | Action / Action[] | Optional. Runs after the variables are updated |
+| `onError` | Action / Action[] | Optional. Runs after the fetch failed |
+
+The engine asks the host data source for fresh data for `source` once
+([`reloadDatasource(screenId:datasourceId:)`](host-integration.md#datasources), with
+the id of the screen that runs the action; it defaults to `getDatasource`, and a data
+source that caches bypasses its cache there), then writes the result into every variable
+whose `source` is that path: app variables and the variables of every screen that
+is currently alive. Computed variables and collections that read them update as
+usual. Persisted app variables store the new value.
+
+Like `request`, the reload is asynchronous: the action list continues immediately.
+Put actions that need the fresh data in `onSuccess`, which runs once every bound
+variable has its new value. When the fetch fails, the variables keep their values,
+the engine logs a `datasource.reload.failed` warning, and `onError` runs. Both
+follow the `request` lifetime rule: they run only while the screen that started the
+reload is still alive.
+
+A common pair: delete on the server, then refresh the list.
+
+```json
+{
+  "type": "request",
+  "method": "DELETE",
+  "url": "https://api.example.com/v1/items/{{item.id}}",
+  "onSuccess": { "type": "reloadDatasource", "source": "datasources/items" }
+}
+```
+
+---
+
 ## Event Triggers
 
 Screen lifecycle and timer events.
@@ -534,7 +845,10 @@ Screen lifecycle and timer events.
 
 ## Action Arrays
 
-Execute multiple actions in sequence.
+Execute multiple actions in sequence, in JSON order. [`request`](#request) and
+[`reloadDatasource`](#reloaddatasource) start their work and let the list continue
+(their results arrive later). After a [`dismiss`](#dismiss-then-navigate), the list
+pauses before its next `navigation` until the modal is gone.
 
 ```json
 {

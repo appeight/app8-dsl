@@ -141,6 +141,16 @@ cloudInstance.subscribe(onScreen: alias) { event in
 
 The same rule applies to `App8AnalyticsEvent.screenId` ([analytics.md](analytics.md)) and to auto-fired engine events (`app8.screen.appeared`, `app8.component.tapped`, `app8.navigation.pushed`, …).
 
+## Native component events
+
+Events emitted by a host [native component](components/native.md) module also land on this bus, named `native.<module>.<event>` (for example `native.signaturePad.completed`), with the module's payload unchanged, `componentId` = the component's `id` and `componentType` = `"native"`. The DSL side handles the same event through the component's `actions`, with the payload in scope as `event`.
+
+```swift
+app8Instance.subscribe(to: "native.signaturePad.completed") { event in
+    let signature = event.payload["signature"] as? [String: Any]
+}
+```
+
 ## Cloud SDK
 
 `App8Cloud.Instance` exposes the same API verbatim — `subscribe(...)`, `events`, `eventStream`, `setEventHandler(_:)`. Subscribing to the cloud instance subscribes to the underlying engine, so events from a screen rendered by the cloud SDK land in the same handler.

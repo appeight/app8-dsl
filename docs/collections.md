@@ -152,6 +152,78 @@ Renderers lay out items near the viewport first and the rest as they come into v
 
 ---
 
+## Sizing to Content
+
+A vertical or grid collection that does **not scroll itself** is as tall as its
+content. Its items self-size from their constraints (no `itemHeight` needed), and
+the collection's height is the sum of its rows, spacing, section headers and
+footers, and vertical `contentInsets`. This is how a short list or grid sits inside
+a scrolling page with other content above and below it.
+
+A collection does not scroll itself when either holds:
+
+- `layout.scrollEnabled` is `false`, or
+- it is inside a vertical [`scrollView`](components/scroll-view.md) (directly or
+  through stacks and views) and has no height of its own (no `layout.height`, no
+  `top` + `bottom` pair, no height constraint). The outer scroll view scrolls
+  instead.
+
+<!-- @dsl-type: Component -->
+```json
+{
+  "type": "scrollView",
+  "content": {
+    "layout": { "leading": 0, "trailing": 0, "top": 0, "bottom": 0 },
+    "children": [
+      {
+        "type": "stackView",
+        "content": {
+          "properties": { "axis": "vertical", "spacing": 24 },
+          "layout": { "leading": 0, "trailing": 0, "top": 0, "bottom": 0 },
+          "children": [
+            { "type": "label", "content": { "properties": { "text": "Recently viewed" } } },
+            {
+              "type": "collection",
+              "content": {
+                "properties": { "data": "{{recentlyViewed}}" },
+                "layout": { "type": "grid", "columns": 2, "itemSpacing": 12, "lineSpacing": 12, "scrollEnabled": false },
+                "template": {
+                  "type": "label",
+                  "content": {
+                    "properties": { "text": "{{item.title}}", "numberOfLines": 0 },
+                    "layout": { "leading": 0, "trailing": 0, "top": 0, "bottom": 0 }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
+```
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `layout.scrollEnabled` | boolean | `true` | `false`: the collection never scrolls and sizes its height to its content |
+
+Rules:
+
+- The height follows the data: adding, removing or resizing items changes the
+  collection's height, and the views around it move.
+- Every item is laid out (no lazy loading by viewport), so keep these collections
+  short: tens of items, not hundreds. A long list should be the scrolling container
+  itself.
+- An explicit height (`layout.height` or `top` + `bottom`) wins: the collection keeps
+  that height, and scrolls inside it unless `scrollEnabled` is `false`.
+- `itemHeight`, `aspectRatio` and self-sizing items all work; `estimatedItemHeight`
+  is only a first guess.
+- Horizontal collections keep scrolling sideways and are sized by `itemHeight` or
+  their layout as before.
+
+---
+
 ## Mixed Layouts
 
 Use `defaultSectionLayout` or `sectionLayouts` inside `properties` to give each section its own layout (orthogonal scrolling). This enables, for example, a vertical list where each section scrolls horizontally.

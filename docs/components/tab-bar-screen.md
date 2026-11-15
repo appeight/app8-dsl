@@ -12,7 +12,7 @@ Tab-based navigation container.
 | `unselectedColor` | Color | Unselected tab color |
 | `badgeColor` | Color | Badge background (default system red) |
 | `badgeTextColor` | Color | Badge text (default white) |
-| `hidden` | boolean/expression | Hide component |
+| `properties.isHidden` | boolean/expression | Hide component; see [Visibility](../components.md#visibility) |
 
 ## Tab Structure
 

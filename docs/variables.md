@@ -220,7 +220,7 @@ without hard-coding pixel sizes. Notes:
 | `!` | Not | `{{!isHidden}}` |
 
 ```json
-"hidden": "{{!isVisible}}"
+"isHidden": "{{!isVisible}}"
 "canSubmit": "{{hasEmail && hasPassword}}"
 "showWarning": "{{hasError || isExpired}}"
 ```
@@ -820,7 +820,7 @@ Use `$parent` to access screen-level variables:
 ### Conditional Display
 
 ```json
-"hidden": "{{!isLoggedIn}}"
+"isHidden": "{{!isLoggedIn}}"
 "alpha": "{{isEnabled ? 1.0 : 0.5}}"
 ```
 

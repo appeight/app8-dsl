@@ -12,7 +12,7 @@ Use `tableView` for **settings-style screens** and short fixed lists where you a
 | `properties.showsIndicator` | boolean | `true` | Show the scroll indicator |
 | `properties.separatorInset` | number | `0` | Leading inset for row separators |
 | `sections` | Section[] | `[]` | The sections, in order |
-| `hidden` | boolean/expression | | Hide component |
+| `properties.isHidden` | boolean/expression | | Hide component; see [Visibility](../components.md#visibility) |
 
 `tableView` also supports `style`, `layout`, `variables`, `states`/`triggers`, and `onEvent` like other components.
 

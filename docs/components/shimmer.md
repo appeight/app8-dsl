@@ -10,7 +10,7 @@ A skeleton-loading container that sweeps a shimmering gradient across its childr
 | `properties.duration` | number | `1.5` | Seconds for one shimmer pass |
 | `properties.direction` | Direction | `leftToRight` | Sweep direction |
 | `children` | Component[] | | Placeholder components the shimmer is applied over |
-| `hidden` | boolean/expression | | Hide component |
+| `properties.isHidden` | boolean/expression | | Hide component; see [Visibility](../components.md#visibility) |
 
 ## Direction Values
 
