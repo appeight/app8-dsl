@@ -18,6 +18,7 @@ Implement this protocol to feed the engine. Only the core reads are required; th
 | `getComponent(componentId:)` | `Data` | A reusable component definition |
 | `getComponents()` | `[Data]` | Preloaded shared components |
 | `getDatasource(screenId:datasourceId:)` | `Data` | A [datasource](#datasources) file (e.g. `"datasources/listings"`) |
+| `reloadDatasource(screenId:datasourceId:)` | `Data` | Optional — fresh bytes for the [`reloadDatasource`](actions.md#reloaddatasource) action, bypassing any cache. Default: `getDatasource` |
 | `getAsset(assetId:assetName:)` | `Data?` | Raw bytes for an image/asset — see [Assets](#assets) |
 | `getTranslations()` | `Data` | The i18n [translation bundle](localization.md#translation-bundle) |
 | `getAllScreenIds()` | `[String]?` | Optional — enables orphan-screen diagnostics |
@@ -56,7 +57,7 @@ The `data` value populates the variable. Use [`schema`](variables.md#object-vari
 
 **App variables** may have a `source` too ([variables.md](variables.md#app-variables-with-a-source)). The engine loads them at app start with `getDatasource(screenId: "", datasourceId:)`: the empty `screenId` means "app scope".
 
-**Reloading.** The [`reloadDatasource`](actions.md#reloaddatasource) action calls `getDatasource` again for one `datasourceId` (with the id of the screen that runs it) and writes the result into every app and live-screen variable bound to that path. Return fresh data, not a cached copy, when the app may reload.
+**Reloading.** The [`reloadDatasource`](actions.md#reloaddatasource) action calls `reloadDatasource(screenId:datasourceId:)` (Android `reloadDatasource(screenId, datasourceId)`) for one `datasourceId`, with the id of the screen that runs it, and writes the result into every app and live-screen variable bound to that path. The default implementation calls `getDatasource`, which is right for a data source that always reads fresh data. A data source that caches (`getDatasource` serves a stored copy) implements `reloadDatasource` to bypass or refresh that cache, and throws when it cannot get fresh data so the action's `onError` runs instead of reporting stale data as reloaded. The App8 cloud SDKs do this: they refetch the screen response that carries the datasource.
 
 ---
 

@@ -740,8 +740,10 @@ Fetch a datasource again and update every variable bound to it.
 | `onSuccess` | Action / Action[] | Optional. Runs after the variables are updated |
 | `onError` | Action / Action[] | Optional. Runs after the fetch failed |
 
-The engine asks the host data source for `source` once (`getDatasource`, with the
-id of the screen that runs the action), then writes the result into every variable
+The engine asks the host data source for fresh data for `source` once
+([`reloadDatasource(screenId:datasourceId:)`](host-integration.md#datasources), with
+the id of the screen that runs the action; it defaults to `getDatasource`, and a data
+source that caches bypasses its cache there), then writes the result into every variable
 whose `source` is that path: app variables and the variables of every screen that
 is currently alive. Computed variables and collections that read them update as
 usual. Persisted app variables store the new value.
