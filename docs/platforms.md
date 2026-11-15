@@ -4,7 +4,7 @@ The App8 DSL renders natively on iOS (UIKit, `app8-ios-sdk`) and Android
 (Jetpack Compose, `app8-android-sdk`). One JSON app runs on both. This page
 lists what differs between the platforms and how an app says so.
 
-## Principle: brand content identical, system chrome native
+## Principle: app content identical, system chrome native
 
 Everything an app designs itself renders the same on both platforms: views,
 labels, images, shapes, materials, colors, fonts, corner radii, layout and
@@ -116,7 +116,7 @@ A new DSL feature lands only when both columns are filled (see
 |---|---|---|---|
 | `view`, `label`, `image`, `icon`, `button`, `shape` | ✓ | planned | |
 | `stackView`, `scrollView`, `collection`, `pageControl` | ✓ | planned | |
-| `textField`, `textView` | ✓ | ✓ | Brand look from DSL styles on both. Android: `BasicTextField`, IME `keyboardType`/`returnKeyType`, `textContentType` → autofill hints, `focus`/`blur` triggers, Material selection handles. See [Input controls](#input-controls) |
+| `textField`, `textView` | ✓ | ✓ | Look from DSL styles on both. Android: `BasicTextField`, IME `keyboardType`/`returnKeyType`, `textContentType` → autofill hints, `focus`/`blur` triggers, Material selection handles. See [Input controls](#input-controls) |
 | `toggle`, `slider` | ✓ | ✓ | Android: Material 3 `Switch` / `Slider` tinted by the DSL colors, laid out at the iOS size (51×31, 31pt tall) |
 | `picker` | ✓ | ✓ | `menu`: pop-up button + Material 3 exposed dropdown menu; `segmented`: Material 3 segmented buttons |
 | `datePicker` | ✓ | ✓ | `compact`: pills opening the Material 3 date / time picker dialogs; `inline`: Material 3 `DatePicker`; `wheels`: snapping wheel columns |
@@ -154,7 +154,7 @@ A new DSL feature lands only when both columns are filled (see
 | `app.platforms` floors | planned | planned | DSL 1.1 |
 
 Exact Android chrome numbers (heights, paddings, icon sizes, motion) and their
-Material sources: `docs/android-chrome-spec.md` in app8-android-sdk. Studio's
+Material sources: `docs/android-chrome-spec.md` in app8-android-sdk. The web renderer's
 Android preview draws the same numbers.
 
 ## Android system colors
@@ -163,8 +163,8 @@ Material 3 chrome on Android (top app bar search field, `tabBarScreen`
 navigation bar, sheets, dialogs, pickers, pull-to-refresh, ripple) takes its
 colors from the app, never from Material's baseline scheme (purple seed
 `#6750A4`, lavender surfaces like `#F3EDF7`). Both Android renderers (the
-native SDK and Shoppu Studio) build the same M3 `ColorScheme` with the same
-function, so one JSON gives one brand look.
+native SDK and the web renderer) build the same M3 `ColorScheme` with the same
+function, so one JSON gives one look.
 
 **Accent** (primary, secondary, tertiary), first match wins:
 
@@ -203,14 +203,14 @@ resolve for that appearance before the scheme is built.
 
 **Dynamic color** (wallpaper palette) is off. A native host can opt in with
 `App8Config(dynamicColor = true)`; the app's tints then no longer re-theme
-chrome. Studio always draws the app's colors.
+chrome. The web renderer always draws the app's colors.
 
 Where the DSL sets a color explicitly (tab bar tint and unselected color,
 navigation bar and search tint), Android uses that exact color, as iOS does.
 
 ## Input controls
 
-Text inputs are brand content: their fill, border, corners, fonts, colors, padding
+Text inputs are app content: their fill, border, corners, fonts, colors, padding
 and placeholder come from DSL styles on both platforms. Everything the operating
 system owns follows the platform:
 

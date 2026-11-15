@@ -25,7 +25,7 @@ A DSL change is one change across the platforms:
 1. Spec: edit `docs/`, add a row or update the row in `docs/platforms.md`.
 2. iOS: implement in `app8-ios-sdk`.
 3. Android: implement in `app8-android-sdk`.
-4. Studio: implement in the web renderer (`shoppu-web/packages/app-dsl`).
+4. Web: implement in the web renderer.
 5. Fixture: add a conformance fixture so the screenshot report covers it.
 6. Release: tag this repo, bump `dsl.lock` and the version constant in both
    SDKs, tag both SDKs with the same version.

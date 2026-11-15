@@ -195,7 +195,7 @@ Rules:
 |----------|--------|
 | iOS 18+ | `viewController.preferredTransition = .zoom(options:) { context in sourceView(for: sourceKey) }`. `UIZoomTransitionOptions.interactiveDismissShouldBegin` returns `false` for `dismissGesture: none` and for vertical-only when the pan is horizontal. `alignmentRectProvider` returns the `alignmentKey` element's frame. The same API serves push (inside the navigation controller) and modal present |
 | Android | The incoming screen is drawn posed on the source (scaled so the `alignmentKey` element covers the source rect, clipped to the source's shape and corner) and eased to full screen. When the source shows an image and the alignment element exists, that image travels fully opaque from the source into the alignment element (which stays hidden until it lands) and back: a shared-element morph. Cubic ease-out, about 0.36 s in and 0.32 s out. Dismiss: predictive back scrubs the shrink; with `dismissGesture: any`, a drag on a modal follows the finger with scale and completes past 25% or a fling |
-| Studio (web) | Same pose and morph as Android; drag-to-dismiss with rubber-banded scale on iOS |
+| Web | Same pose and morph as Android; drag-to-dismiss with rubber-banded scale on iOS |
 
 ---
 
