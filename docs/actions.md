@@ -561,6 +561,39 @@ Open a URL. `url` supports expressions.
 | `url` | string/expression | | URL to open |
 | `urlPresentation` | string | `external` | `external` (system handler), `sheet`, or `fullScreen` (in-app Safari) |
 
+### Request Notification Permission
+
+Ask the user for permission to send notifications (the system prompt), then run
+`onGranted` or `onDenied`. The prompt shows only the first time; after the user
+has answered, the action answers at once with the stored choice (iOS and
+Android don't ask twice). The rest of the action list continues straight away,
+like `request`: put what depends on the answer in `onGranted` / `onDenied`.
+
+```json
+{
+  "type": "requestNotificationPermission",
+  "onGranted": [
+    { "type": "toggleArrayValue", "variableName": "remindedIds", "value": "{{item.id}}" },
+    { "type": "haptic", "hapticStyle": "success" }
+  ],
+  "onDenied": []
+}
+```
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `onGranted` | Action \| Action[] | Runs when notifications are allowed (now, or earlier) |
+| `onDenied` | Action \| Action[] | Runs when the user declines (now, or earlier) |
+
+| Platform | What it does |
+|----------|--------------|
+| iOS | `UNUserNotificationCenter.requestAuthorization(options: [.alert, .sound, .badge])` when the status is `.notDetermined`; otherwise reads the current status. Provisional and ephemeral count as granted. Registering for remote pushes is up to the host |
+| Android | 13+ (API 33): the `POST_NOTIFICATIONS` runtime permission dialog (the engine's manifest declares the permission). Older versions: granted when `NotificationManagerCompat.areNotificationsEnabled()` |
+| Web renderer | A simulated system prompt drawn the platform's way; the answer is kept per app (`app8:<appId>:permission.notifications` in `localStorage`) |
+
+To remember a per-item answer, write to a persisted app
+variable in `onGranted` (see [variables.md → Persisted Variables](variables.md#persisted-variables)).
+
 ---
 
 ## Function Actions
