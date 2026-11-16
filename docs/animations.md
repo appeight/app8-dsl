@@ -167,7 +167,8 @@ Property values that drive animatable view properties accept an optional `animat
 
 | Component | Animatable expression-driven properties |
 |---|---|
-| `view` | `transformScale`, `transformTranslateX`, `transformTranslateY`, `alpha`, `backgroundColor` |
+| `view` | `transformScale`, `transformTranslateX`, `transformTranslateY`, `transformRotation`, `alpha`, `backgroundColor` |
+| every component | `isHidden` (see [Animated visibility](#animated-visibility)) |
 | `label` | `backgroundColor` |
 | `icon` | `tintColor`, `backgroundColor` |
 | `shape` | `progress` |
@@ -179,6 +180,7 @@ When a variable change fires and the property is animatable, the runtime picks a
 1. **Per-property `animation`** wrapped on the property value — wins when present. Pointer references resolve at decode time against the app-level `animations` registry.
 2. **Legacy fallback** — preserves bit-for-bit historic behavior so existing screens animate exactly as before:
    - `transformScale` / `transformTranslateX` / `transformTranslateY`: `0.3s spring (damping 0.75, velocity 0.3)`
+   - `transformRotation` and `isHidden`: instantaneous
    - `alpha`: `0.25s easeOut`
    - `shape.progress`: derived from the legacy `animationDuration` + `animationCurve` siblings on the same Properties object
    - All other color/visual properties: instantaneous (matches what they did before)
@@ -191,8 +193,72 @@ The first time a property gets a value (component initialization, or first time 
 
 ### Notes
 
-- `isHidden` is currently animation-free (a discrete bool); cross-fade as alpha is a planned follow-up.
+- A bare `isHidden` (no `animation`) still applies at once.
 - Layout-driving expressions (`width` / `height`) are not animatable through this path — they need a separate layout-transition API.
+
+### transformRotation
+
+`view.properties.transformRotation`: degrees, clockwise, about the view's centre. A number or an expression, bare or wrapped with an `animation`. It composes with the other transform properties and with `style.transform` as translate, then rotate, then scale (iOS `CGAffineTransform(translationX:y:).rotated(by:).scaledBy(x:y:)`, Android `graphicsLayer { translationX; translationY; rotationZ; scaleX; scaleY }`, web `translate() rotate() scale()`). An animated change takes the shortest path only when the author writes it: the value interpolates numerically, so `0 → 180` turns clockwise and `180 → 0` turns back.
+
+A disclosure chevron that turns as its row opens:
+
+```json
+{
+  "id": "chevronTurn",
+  "type": "view",
+  "content": {
+    "properties": {
+      "transformRotation": {
+        "value": "{{ includes(openRows, 'shipping') ? 180 : 0 }}",
+        "animation": { "duration": 0.3, "cubicBezier": [0.33, 1, 0.68, 1] }
+      }
+    },
+    "children": [
+      { "id": "chevron", "type": "icon", "content": { "properties": { "type": "symbol", "name": "chevron.down" } } }
+    ]
+  }
+}
+```
+
+### Animated visibility
+
+`properties.isHidden` on any component accepts the wrapped form. When its value changes after the first apply, the change animates with the descriptor; the bare form keeps applying at once.
+
+```json
+{
+  "id": "shippingBody",
+  "type": "view",
+  "content": {
+    "properties": {
+      "isHidden": {
+        "value": "{{ !includes(openRows, 'shipping') }}",
+        "animation": { "duration": 0.3, "cubicBezier": [0.33, 1, 0.68, 1] }
+      }
+    },
+    "children": [ … ]
+  }
+}
+```
+
+**In a `stackView`** (an arranged subview, the disclosure / accordion case) the change is one animated layout pass, as UIKit does with `UIView.animate { view.isHidden = …; view.alpha = …; root.layoutIfNeeded() }`:
+
+- The component's size along the stack axis grows from 0 to its laid-out size when it appears, and shrinks to 0 when it disappears; the stack's spacing around it grows or shrinks with it.
+- Every frame that changes as a consequence moves and resizes on the same curve and duration: the siblings after it, the stack, its ancestors, the content size of an enclosing scroll view, and views constrained to any of them. Nothing jumps to its final place first.
+- The component's content is laid out at its final size from the first frame and clipped to the component's animating bounds, so it is revealed (or covered) by the moving edge rather than squeezed; there is no overlap with the views after it.
+- Alpha fades on the same timing: 0 → 1 while appearing, 1 → 0 while disappearing. At the end of a disappearance the component is hidden (not drawn, no touches, no space), exactly as with the bare form.
+- A new change while one is running starts from the current, in-flight state (`beginFromCurrent`), so tapping a row twice quickly reverses smoothly.
+
+**Elsewhere** (not an arranged subview) it keeps its frame either way, as a hidden view does: the change is an alpha cross-fade (1 → 0 then hidden, or shown at 0 → 1).
+
+Shared by all renderers:
+
+- The first apply (the screen appearing, a cell being bound or reused for another item) is instantaneous: a section that starts open is open, without an animation.
+- Reduce Motion: the change applies at once.
+- The component's own `alpha` (style or property) is the value it fades to; an animated `alpha` property on the same view keeps its own timing.
+- Touches go to the component from the moment it starts appearing and stop the moment it starts disappearing.
+- Scroll position: the content above the component does not move; a scroll view that would be scrolled past its new end (the last section closing at the bottom) animates its offset back inside on the same curve, without a bounce.
+
+For a disclosure row, give the body, the chevron and anything else that follows the same state one shared descriptor, usually a cubic ease-out of about 0.3 s (`"cubicBezier": [0.33, 1, 0.68, 1]`): the content below, the body's fade and the chevron's turn then move as one.
 
 ## Defaults
 
