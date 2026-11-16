@@ -67,6 +67,12 @@ space: the stack lays out as if it were not there, spacing included (as
 frame, so constraints that point at it still resolve. Its children are hidden
 with it.
 
+`isHidden` also takes the wrapped form `{ "value": …, "animation": … }`: a
+change then animates instead of applying at once. In a stack the component
+grows or shrinks along the stack axis while it fades and everything after it
+moves along (a disclosure row opening); elsewhere it cross-fades. See
+[Animated visibility](animations.md#animated-visibility).
+
 ---
 
 ## Interaction
