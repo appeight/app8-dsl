@@ -144,6 +144,13 @@ An item's natural height is the smallest one its constraints allow: a `>=` gap i
 
 Renderers lay out items near the viewport first and the rest as they come into view, as `UICollectionView` does with estimated sizes.
 
+Scrolling a self-sizing grid tracks the finger 1:1:
+
+- A row's height is final on its first layout: its other items are measured right then, not in a later pass.
+- An item's natural height is remembered by item identity (template and item data, at the column width), not by position, so a reused cell or a row scrolled back into view takes the height measured the first time. Rows above the viewport never change height while the user scrolls back up, so the offset never shifts under the finger and nothing jumps after deceleration.
+- Only an item whose content changed is measured again, and only its row relays out. Scrolling over measured items, and the overscroll past either end, relay out nothing.
+- A cell shown for another item (native cell reuse) is measured with that item's values: bound text, `isHidden`, dimensions and the template's computed variables all follow the new item before the cell is measured or drawn.
+
 | Platform | Row height |
 |----------|------------|
 | iOS | Horizontal group with `.estimated` item and group heights; each cell is measured from a compressed height (`UIView.layoutFittingCompressedSize`) and reports its row's tallest natural height (the group alone leaves shorter items short) |

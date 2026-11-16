@@ -546,6 +546,19 @@ Tab-based navigation using TabBarScreen.
 | `badgeColor` | Color | System red | Badge background on every tab. iOS `UITabBarItem.badgeColor`; Android `Badge(containerColor)` |
 | `badgeTextColor` | Color | White | Badge text color. iOS `setBadgeTextAttributes(_:for:)` (normal and selected); Android `Badge(contentColor)` |
 
+### Reselecting the selected tab
+
+Tapping the tab that is already selected follows each platform's convention:
+
+1. When the tab has pushed screens, it pops back to its root screen (animated).
+2. At the root, the screen's main vertical scroll view (the outermost visible `scrollView` or vertical `collection`) scrolls to its top rest position, animated: below the navigation bar and any large title, not to raw offset 0.
+
+| Platform | Reselect |
+|----------|----------|
+| iOS | `UITabBarControllerDelegate.tabBarController(_:shouldSelect:)` on the selected tab: `popToRootViewController(animated:)`, else `setContentOffset(-adjustedContentInset.top, animated: true)` |
+| Android | Navigation bar item tapped while selected: pop the tab's back stack to its root, else `animateScrollToItem(0)` / `animateScrollTo(0)` on the screen's main list |
+| Web | Same as Android: pop to root, else smooth `scrollTo({ top: 0 })` on the screen's main scroller |
+
 ### Programmatic Tab Selection
 
 ```json
