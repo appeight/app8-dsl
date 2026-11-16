@@ -383,27 +383,30 @@ The search screen (`search`):
 ```json
 {
   "navigationBar": {
-    "hidesBackButton": true,
     "search": {
       "placeholder": "Search",
       "bindVariable": "query",
       "placement": "integrated",
       "fillsBar": true,
-      "autoFocus": true,
-      "onCancel": { "type": "navigation", "isBack": true }
+      "autoFocus": true
     }
   }
 }
 ```
 
-Keep `placeholder`, `placement`, `fillsBar` and `rightActions` the same on both screens so
-the field does not move. The search screen shows recent searches while `query` is empty
-(an app variable with `persist: true`, newest first, capped with `slice`) and live results
-filtered from a datasource as the user types.
+Keep `placeholder`, `placement` and `fillsBar` the same on both screens. The search
+screen keeps its back button: unfocused, the field sits beside it; focused, the ✕ ends
+search (the field unfocuses, the screen stays). Give the screen content of its own so it
+never looks empty: recent searches while `query` is empty (an app variable with
+`persist: true`, newest first, capped with `slice`), popular items from a datasource, and
+live results as the user types. A search screen with nothing else to show can leave on
+the ✕ instead: `onCancel: { "type": "navigation", "isBack": true }`, with
+`hidesBackButton: true`. Don't repeat the first screen's `rightActions` on the search
+screen.
 
 | Platform | Behavior |
 |----------|----------|
-| iOS | `mode: "button"`: the real `UISearchController` field; `searchBarShouldBeginEditing` returns `false` and runs `onTap`, so it is pixel-identical and the navigation bar morphs it into the next screen's items (back button, the search screen's field) on push and back on pop. `autoFocus` activates the search controller once the push lands; the ✕ is the system cancel button |
+| iOS | `mode: "button"`: the real `UISearchController` field; `searchBarShouldBeginEditing` returns `false` and runs `onTap` (a tap that activates the controller directly is undone and runs `onTap` too), so it is pixel-identical and the navigation bar morphs it into the next screen's items (back button, the search screen's field) on push and back on pop. `autoFocus` activates the search controller once the push lands; the ✕ is the system cancel button |
 | Android | `mode: "button"`: the Material 3 search bar (collapsed), a tap runs `onTap`. The search screen's field is the expanded search view: focused, keyboard up, a ✕ that clears and runs `onCancel` |
 | Web renderer | Same as the platform it renders as: the button field has no caret and runs `onTap` on click; `autoFocus` focuses the input on appear |
 
