@@ -26,7 +26,7 @@ Commonly paired with a horizontally-paged [carousel collection](../collections.m
 | `alpha` | number | Opacity (0.0–1.0) |
 | `contentMode` | ContentMode | Content alignment |
 
-> **iOS**: the iOS renderer draws the media capsule (dots on a dark blurred capsule, 26 pt tall, so they read on any photo; same look as the web renderer). Since 0.6.0 it applies `pageIndicatorTintColor` and `currentPageIndicatorTintColor` to the dots when set (a hex or a color expression); unset or invalid, the dots are white, the current one solid and the others at half opacity. 0.5.4 ignored both colors.
+> **Media capsule (all renderers)**: the dots sit on a dark capsule (26 pt tall, `pages × 16 + 10` wide, 7 pt dots 9 pt apart) so they read on any photo. iOS and the web renderer blur what is behind it; Android, which has no backdrop blur there, uses a slightly darker capsule. `pageIndicatorTintColor` and `currentPageIndicatorTintColor` color the dots when set (a hex or a color expression); unset or invalid, the dots are white, the current one solid and the others at half opacity. On photos use light tints (e.g. `#FFFFFF` and `#FFFFFF33`); dark tints disappear into the capsule. iOS applies the tints since 0.6.0 (0.5.4 ignored them); Android draws the capsule from the release after 0.6.3.
 
 ## Example
 
