@@ -564,6 +564,137 @@ Note: `rightActions` renders right-to-left — the first item in the array appea
 
 ---
 
+## Bottom Bar
+
+`bottomBar` pins content to the bottom of a screen the way the navigation bar pins the top: usually one or two primary actions (Save, Play, Continue). The engine lays it out above the bottom safe area, keeps scroll content from resting under it, and gives it the platform's own material behaviour.
+
+### Structure
+
+<!-- @dsl-type: Component -->
+```json
+{
+  "type": "screen",
+  "content": {
+    "bottomBar": {
+      "component": { "id": "barActions", "type": "stackView", "content": { } },
+      "insets": { "top": 12, "left": 16, "bottom": 8, "right": 16 },
+      "style": { "background": "system" },
+      "edgeEffect": "soft",
+      "hidden": false
+    },
+    "children": [ ]
+  }
+}
+```
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `component` | Component | required | The bar's content, any DSL component (usually a horizontal or vertical `stackView` of buttons). It reads the screen's variables and runs actions like any other component on the screen |
+| `insets` | EdgeInsets | `{ "top": 12, "left": 16, "bottom": 8, "right": 16 }` | Space around `component` inside the bar. `left` / `right` are the leading and trailing edges. `bottom` is measured from the bottom safe area (home indicator, gesture bar or tab bar), not from the screen edge. Each edge is optional; a missing edge keeps its default |
+| `style.background` | `"system"` or style entity | `"system"` | `"system"`: the platform's bar treatment, see [Background](#background). Otherwise a `material` or `fill` [style entity](styles.md#using-styles-in-components) (inline or pointer) drawn behind the bar |
+| `edgeEffect` | string | `"soft"` | iOS 26 scroll-edge effect for a `"system"` background: `"soft"` or `"hard"`. An unknown value is `"soft"`. Ignored with a custom background and on other platforms |
+| `hidden` | boolean/expression | `false` | Hides the bar. Changes animate, see [Hiding](#hiding) |
+
+### Layout
+
+- The bar spans the full width of the screen. `component` is pinned to the bar's `insets` horizontally and vertically; its height is its fitting height (or its own `layout.height`). Other `layout` constraints on `component` are ignored.
+- The bar sits directly above the bottom safe area. When the screen shows a tab bar, that is above the tab bar; on a pushed screen with `hidesTabBar`, it is above the home indicator or gesture bar.
+- The bar's height (from its top edge to the bottom safe area) is **added to the screen's bottom safe area**. Scroll views and collections that reach the bottom of the screen get the matching bottom content inset, so their last item scrolls up clear of the bar, and anything constrained to `safeArea` bottom stays above it. A screen's own `additionalSafeAreaInsets.bottom` adds on top; it does not move the bar.
+- The bar draws above the screen's `children`.
+- The keyboard does not move the bar; it covers it like the rest of the bottom of the screen. Use the [`keyboard` layout target](layout.md) for content that must stay above the keyboard.
+
+### Background
+
+`"system"` (the default) follows each platform:
+
+| Platform | `"system"` |
+|----------|------------|
+| iOS 26 | No fill. Content scrolls under the bar with the system bottom scroll-edge effect (`UIScrollEdgeEffect`, `soft` or `hard` from `edgeEffect`) and the bar's buttons keep their Liquid Glass |
+| iOS 18 to 25 | The toolbar appearance: transparent while the scroll content ends above the bar, the system chrome material (blur) with a hairline separator while content is under it |
+| Android | Material 3 bottom app bar surface: transparent at rest, `surfaceContainer` once content scrolls under it (animated, no shadow), the same rule as the top app bar ([platforms](platforms.md#android-system-colors)) |
+| Web renderer | iOS mode: the iOS bottom edge blur, drawn like the top bar's. Android mode: the Material 3 surface as on Android |
+
+"Content scrolls under it" means the screen's scroll view (the one that reaches the bottom of the screen) can scroll further down than the bar's top edge. A screen that does not scroll has nothing under the bar.
+
+A `material` or `fill` background replaces the system treatment on every platform: it fills the bar from its top edge down to the screen's bottom edge (or to the top of the tab bar), and there is no edge effect or tonal change.
+
+### Hiding
+
+`hidden` takes a boolean or an expression and re-evaluates when its variables change. Hiding slides the bar down by its height while it fades out; showing reverses it. Both take 0.33 s with a cubic ease-out curve, and the bottom safe area shrinks or grows with the same animation. A bar that starts hidden appears without animation the first time the screen shows; it is laid out but takes no space.
+
+### Example
+
+A clip detail screen with two actions. The bar keeps them reachable while the text scrolls under it:
+
+<!-- @dsl-type: Component -->
+```json
+{
+  "type": "screen",
+  "content": {
+    "navigationBar": { "title": "Clip" },
+    "variables": {
+      "isSaved": { "type": "boolean", "initialValue": false }
+    },
+    "bottomBar": {
+      "component": {
+        "id": "clipActions",
+        "type": "stackView",
+        "content": {
+          "properties": { "axis": "horizontal", "spacing": 12, "distribution": "fillEqually" },
+          "children": [
+            {
+              "id": "saveButton",
+              "type": "button",
+              "content": {
+                "properties": { "text": "{{isSaved ? 'Saved' : 'Save'}}" },
+                "style": { "system": { "variant": "glass", "cornerStyle": "capsule", "size": "large" } },
+                "layout": { "height": 50 },
+                "actions": { "tap": { "type": "updateVariable", "variableName": "isSaved", "value": "{{!isSaved}}" } }
+              }
+            },
+            {
+              "id": "playButton",
+              "type": "button",
+              "content": {
+                "properties": { "text": "Play" },
+                "style": { "system": { "variant": "prominentGlass", "cornerStyle": "capsule", "size": "large" } },
+                "layout": { "height": 50 },
+                "actions": { "tap": { "type": "navigation", "nextScreen": "player", "presentation": "fullScreen" } }
+              }
+            }
+          ]
+        }
+      },
+      "edgeEffect": "soft"
+    },
+    "children": [ ]
+  }
+}
+```
+
+With a custom background and a bar that hides while a note is being edited:
+
+<!-- @dsl-skip: bottomBar fragment -->
+```json
+"bottomBar": {
+  "component": { "id": "noteActions", "type": "stackView", "content": { } },
+  "style": {
+    "background": {
+      "id": "noteBarMaterial",
+      "type": "material",
+      "content": [
+        { "id": "noteBarFill", "type": "fill", "content": { "solid": "#FFFFFF" } }
+      ]
+    }
+  },
+  "hidden": "{{isEditing}}"
+}
+```
+
+`bottomBar` works on any `screen`: the root of a flow, a screen pushed on a navigation stack, a tab's screen and a presented screen. It is not a property of `tabBarScreen`.
+
+---
+
 ## Tab Bar
 
 Tab-based navigation using TabBarScreen.

@@ -619,6 +619,8 @@ Declare `additionalSafeAreaInsets` on the screen's `content` to push scroll cont
 
 Each edge is optional. The values are in points and correspond to the height of the bar that overlays that edge.
 
+For buttons pinned to the bottom of a screen, prefer [`bottomBar`](navigation.md#bottom-bar): the engine measures the bar, sets the bottom inset and draws the platform's scroll-edge treatment.
+
 **Full topbar + bottom bar pattern:**
 
 ```json

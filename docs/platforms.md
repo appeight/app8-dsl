@@ -17,6 +17,7 @@ conventions, so the app feels at home on each:
 | Navigation bar search (`navigationBar.search`) | `UISearchController` (iOS 26 integrated field) | Material 3 app bar with search (56dp field, 4dp above and below, `surfaceContainer` once content scrolls under it; with `hidesWhenScrolling: true` it hides on scroll down and returns on scroll up); own row for `stacked`; expanding action for `integratedButton` |
 | Screen transitions (`transition`) | Custom `UIViewControllerAnimatedTransitioning` | Authored transitions on Navigation 3; `system` is Material shared axis X (450ms); predictive back scrubs the authored pop, or previews `system` at 90% scale |
 | Back navigation | Edge swipe | System back gesture with predictive back preview |
+| Bottom bar (`bottomBar`, `style.background: "system"`) | iOS 26: no fill, system bottom scroll-edge effect (`soft` / `hard`); iOS 18 to 25: toolbar appearance (blur and hairline while content is under it) | Material 3 bottom app bar surface: transparent at rest, `surfaceContainer` once content scrolls under it |
 | Tab bar (`tabBarScreen`) | `UITabBar` (floating glass capsule on iOS 26) | Material 3 Expressive short navigation bar (64dp; icon beside label from 600dp wide) |
 | Press feedback (`button`) | Highlight and dim | Ripple |
 | Scroll edges | Rubber band and bounce | Stretch overscroll |
@@ -124,6 +125,8 @@ A new DSL feature lands only when both columns are filled (see
 | `shimmer` | ✓ | ✓ | Same sweep on both: 0 → 30% → 0% white band, linear, `duration` (1.5s) |
 | `video` | ✓ | ✓ | Android: Media3 ExoPlayer; same events, marks, posters and end behaviors |
 | `native` (host module, props, events → actions with `event`, `native.<module>.<event>` on the bus, `fallback`) | ✓ | ✓ | Android: `App8Config(nativeComponents = …)` with `App8NativeComponent`. Web renderer: `registerNativeComponent` |
+| `native` visibility (iOS `isVisible` / `onVisibilityChange`, Android `isVisible`, `appear` / `disappear` actions) | ✓ | ✓ | Visible only on the topmost presented screen of the selected tab, in the foreground, on screen and not hidden; `true` after the appear transition, `false` when a disappear transition starts. Web renderer: `visible` (`live` deprecated). DSL 0.6.3 |
+| `bottomBar` (`component`, `insets`, `style.background`, `edgeEffect`, `hidden`) | ✓ | ✓ | Height added to the bottom safe area; above the tab bar when one is shown; `hidden` animates 0.33 s cubic ease-out. Web renderer: iOS edge blur / M3 surface per mode. DSL 0.6.3 |
 | `focus`, `focusNext`, `focusPrevious`, `dismissKeyboard` actions | ✓ | ✓ | |
 | `keyboard` layout target | ✓ | ✓ | Android tracks the IME insets |
 | `tableView` | ✓ | planned | Rendered as a lazy list with grouped sections |

@@ -140,11 +140,13 @@ A [`native`](components/native.md) component embeds a view the host provides. Th
 
 | Platform | Registration | The view gets |
 |----------|--------------|---------------|
-| iOS | `App8.registerNativeComponent("signaturePad") { context in UIView }` | `App8NativeContext`: `props`, `onPropsChange`, `emit(_:_:)`, `appId`, `screenId` |
-| Android | `App8Config(nativeComponents = mapOf("signaturePad" to App8NativeComponent { context, modifier -> … }))` | `App8NativeContext(props, emit, appId, screenId)` + `Modifier` |
-| Web | `registerNativeComponent("signaturePad", Component)` in the web renderer | `NativeComponentProps`: `props`, `emit`, `width`, `height`, `platform`, `appId` |
+| iOS | `App8.registerNativeComponent("signaturePad") { context in UIView }` | `App8NativeContext`: `props`, `onPropsChange`, `emit(_:_:)`, `appId`, `screenId`, `isVisible`, `onVisibilityChange` |
+| Android | `App8Config(nativeComponents = mapOf("signaturePad" to App8NativeComponent { context, modifier -> … }))` | `App8NativeContext(props, emit, appId, screenId, isVisible)` + `Modifier` |
+| Web | `registerNativeComponent("signaturePad", Component)` in the web renderer | `NativeComponentProps`: `props`, `emit`, `width`, `height`, `platform`, `appId`, `visible` (`live` is a deprecated alias) |
 
 When the module calls `emit("completed", payload)`, the engine runs the component's `actions.completed` with the payload in scope as `event`, and posts `native.signaturePad.completed` on the event bus, so the host can also observe it with `subscribe(to:)`. When no factory is registered for the module, the component renders its DSL `fallback` (or nothing, with a `native.module.missing` warning).
+
+**Visibility.** A module that drives a camera, a player, a sensor or a timer starts and stops it on the context's visibility, not on view creation or teardown: screens are built before they are shown and the screen under a modal stays alive. A component is visible while its screen is the topmost presented screen of the selected tab, the app is in the foreground and the component is on screen and not hidden. `true` arrives after the appear transition completes and `false` when a disappear transition starts, on the main thread, once per change. The DSL can react too, with `appear` and `disappear` keys in the component's `actions`. Full rules: [native.md — Visibility](components/native.md#visibility).
 
 Modules usually need data the engine does not have (an auth token, an upload endpoint). Give it to the module in the factory closure, not through props: props come from the bundle and are visible to every author.
 
