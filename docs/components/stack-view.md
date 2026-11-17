@@ -7,6 +7,8 @@ Linear layout container backed by `UIStackView`. Arranges children along a singl
 > - Top-level `width` / `height` shorthand.
 > - `constraints[]` entries with `type: width` or `type: height` — including self-dimension clamps (omit `target`) and sibling-dimension equality (`target: "<sibling-id>"`, `attribute: "width|height"`). These enable priority-bearing flexible spacers and lockstep-equal sibling sizes inside a stack — see [Layout · Constraints in UIStackView Arranged Subviews](../layout.md#constraints-in-uistackview-arranged-subviews).
 
+A direct child may carry `defer` to be built after its screen is shown, with a placeholder in its slot until then. See [Deferred sections](../components.md#deferred-sections).
+
 ## Content Properties
 
 | Property | Type | Default | Description |
