@@ -132,8 +132,14 @@ Rules:
   constraints that name its `id` find nothing, and its variables are not
   defined. Keep screen state in screen or app variables, not in a deferred
   component.
+- A deferred component whose `isHidden` is true when its screen is built
+  gets no placeholder space (`isHidden` is read in the stack's scope, since
+  the component's own variables don't exist yet).
 - `defer` inside a deferred component, and inside collection items and
-  templates rendered per item, is ignored: those are built with their parent.
+  templates rendered per item, is ignored without a warning: those are built
+  with their parent.
+- `defer` must be an object; any other value is ignored. An unknown
+  `placeholder` means `none`; negative estimates mean `0`.
 - Put the content needed for the first frame (the image a zoom transition
   grows from, the title) outside deferred components.
 - Engines that predate `defer` ignore it and build everything with the screen.
