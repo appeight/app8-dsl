@@ -21,6 +21,7 @@ Every component shares the same envelope:
 | `type` | string | Yes | Component type |
 | `id` | string | No | Unique identifier for references |
 | `templateId` | string | No | Template to inherit from ([templates.md](templates.md)) |
+| `defer` | object | No | Build this component after the screen is shown ([Deferred sections](#deferred-sections)) |
 | `content` | object | Yes | Type-specific content |
 
 `content` is where each component differs, but most components accept these shared keys:
@@ -72,6 +73,76 @@ change then animates instead of applying at once. In a stack the component
 grows or shrinks along the stack axis while it fades and everything after it
 moves along (a disclosure row opening); elsewhere it cross-fades. See
 [Animated visibility](animations.md#animated-visibility).
+
+---
+
+## Deferred sections
+
+A screen is built before it is shown. A long screen (a product page with
+details, ingredients, FAQs and reviews) takes time to build, and a navigation
+transition cannot start until the screen exists. `defer` lets the part the user
+sees first appear at once and the rest follow.
+
+A component with `defer` is not built with its screen. A placeholder takes its
+place, and the engine builds the component once the screen is on screen (the
+push or zoom transition has already started), then swaps it in with a short
+fade (0.2 s, cubic ease-out).
+
+<!-- @dsl-type: Component -->
+```json
+{
+  "type": "stackView",
+  "id": "productStack",
+  "content": {
+    "properties": { "axis": "vertical", "spacing": 24 },
+    "children": [
+      { "type": "label", "id": "title", "content": { "properties": { "text": "{{product.title}}" } } },
+      {
+        "type": "view",
+        "id": "details",
+        "defer": { "placeholder": "shimmer", "estimatedHeight": 240 },
+        "content": { "children": [] }
+      },
+      {
+        "type": "view",
+        "id": "faqs",
+        "defer": { "placeholder": "none" },
+        "content": { "children": [] }
+      }
+    ]
+  }
+}
+```
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| `placeholder` | `"shimmer"` \| `"none"` | `"none"` | `shimmer`: a neutral rounded block with a sweeping highlight, as wide as the stack. `none`: empty space. |
+| `estimatedHeight` | number | `0` | Placeholder height in a vertical stack. Use the section's usual height so the content below moves as little as possible when it arrives. |
+| `estimatedWidth` | number | `0` | Placeholder width in a horizontal stack. |
+
+Rules:
+
+- `defer` works on the direct children of a [`stackView`](components/stack-view.md).
+  Anywhere else the component is built with its screen (warning
+  `defer.notInStack`).
+- Deferred components are built in document order, a few per frame, so the
+  transition stays smooth. Each one is built only while its screen is in the
+  window.
+- Until it is built, a deferred component does not exist: actions and
+  constraints that name its `id` find nothing, and its variables are not
+  defined. Keep screen state in screen or app variables, not in a deferred
+  component.
+- A deferred component whose `isHidden` is true when its screen is built
+  gets no placeholder space (`isHidden` is read in the stack's scope, since
+  the component's own variables don't exist yet).
+- `defer` inside a deferred component, and inside collection items and
+  templates rendered per item, is ignored without a warning: those are built
+  with their parent.
+- `defer` must be an object; any other value is ignored. An unknown
+  `placeholder` means `none`; negative estimates mean `0`.
+- Put the content needed for the first frame (the image a zoom transition
+  grows from, the title) outside deferred components.
+- Engines that predate `defer` ignore it and build everything with the screen.
 
 ---
 
