@@ -8,7 +8,7 @@ Interactive tappable component.
 |----------|------|-------------|
 | `properties.text` | string | Button label |
 | `properties.icon` | string | SF Symbol name `[Planned]` (for system buttons use `style.system.image`) |
-| `properties.isEnabled` | expression → boolean | Enable state. Drives the system disabled appearance (or a dimmed alpha on the Material path). Defaults to `true`. |
+| `properties.isEnabled` | expression → boolean | Enable state, defaults to `true`. `false`, `0` and any string other than `"true"` / `"1"` disable the button (the [boolean coercion](toggle.md#boolean-coercion) of toggles); a missing or unresolved value keeps it enabled. A disabled button runs no actions and fires no tap analytics. Look: the system path uses the platform's disabled configuration (iOS: gray fill, dimmed label); the custom (`material`) path draws at alpha 0.4. Re-evaluated when its variables change |
 | `properties.isSelected` | expression → boolean | Selected state (`UIButton.isSelected`). Defaults to `false`. |
 | `style` | ButtonStyle | Button styling |
 | `layout` | Layout | Position and size |
