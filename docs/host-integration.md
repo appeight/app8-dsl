@@ -92,6 +92,14 @@ Keep tokens out of the bundle: the DSL names the endpoint, the host adds credent
 
 `image` components resolve their bytes through the data source. When a screen references a remote image, the engine asks the host for it via `getAsset(assetId:assetName:)`. Returning `nil` lets the component fall back to its declared URL.
 
+An app's **asset map** (an asset name → a file the app ships, e.g. `{ "logo": "logo.png" }`) lets screens reference the app's own images by name. The host serves it: `getAsset(assetId: nil, assetName: "logo")` returns that file's bytes. A `localAsset` name resolves in this order, on every platform:
+
+1. the app's asset map, through `getAsset(assetName:)` (same cache as remote images);
+2. an image compiled into the host app (iOS `UIImage(named:)`, Android a drawable of that name: lowercase, `-` → `_`, no extension);
+3. nothing (the image's background and size still apply).
+
+A `remoteAsset` whose `name` (or relative `url`) is not an absolute URL goes through `getAsset(assetName:)` the same way.
+
 To **prefetch** — warm the cache before a screen appears so images render instantly — the instance can walk a screen's DSL and hand you exactly the asset (and font) references it needs:
 
 - `collectAssetReferences(screenId:)` / `collectAllAssetReferences()` — enumerate referenced assets

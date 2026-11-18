@@ -26,6 +26,11 @@ Image display component.
 | `type: "remoteAsset"` + `url` or `name` | remote, from that value; a value that is not an absolute URL is a file in the bundle's assets |
 | `type: "localAsset"` + `name` or `asset` | local asset |
 
+A local asset name resolves through the app's asset map first (the host's
+`getAsset(assetName:)`, see [host integration, Assets](../host-integration.md#assets)),
+then as an image compiled into the host app, else nothing. So an app's own files
+(a logo, a stripe) can be referenced by name as `localAsset` or `remoteAsset`.
+
 ```json
 { "type": "image", "content": { "properties": { "url": "https://example.com/hero.jpg" } } }
 ```
