@@ -46,7 +46,8 @@ Every component shares the same envelope:
 
 `properties.isHidden` hides **any** component: view, label, icon, button, image,
 collection, stackView, scrollView, native, inputs and the rest. It takes a boolean
-or a `{{expression}}` and re-evaluates when a variable it reads changes.
+or a `{{expression}}` (read with the [boolean coercion](variables.md#boolean-coercion))
+and re-evaluates when a variable it reads changes.
 
 <!-- @dsl-type: Component -->
 ```json
@@ -154,8 +155,8 @@ z-ordering on **any** component. All fields accept a literal (`"true"`, `"2"`) o
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `enabled` | boolean/expression | Explicit `isUserInteractionEnabled`. By default a component only handles touches when it declares `actions` / `triggers` / `gestures`; set this to force-enable a passive container or force-disable an otherwise-interactive subtree. |
-| `clipsToBounds` | boolean/expression | Clip children to the component's bounds. |
+| `enabled` | [boolean](variables.md#boolean-coercion)/expression | Explicit `isUserInteractionEnabled`. By default a component only handles touches when it declares `actions` / `triggers` / `gestures`; set this to force-enable a passive container or force-disable an otherwise-interactive subtree. |
+| `clipsToBounds` | [boolean](variables.md#boolean-coercion)/expression | Clip children to the component's bounds. |
 | `zIndex` | number/expression | Raise/lower the component among its siblings (maps to `layer.zPosition`) without reordering the hierarchy. |
 
 ```json
@@ -179,8 +180,8 @@ automatically from the component `id`.)
 | `hint` | string/expression | Spoken hint. |
 | `value` | string/expression | Spoken value (e.g. a slider's current value). |
 | `traits` | string[] | Accessibility traits — e.g. `["button", "header"]`. See values below. |
-| `isElement` | boolean/expression | Override `isAccessibilityElement`. |
-| `hidden` | boolean/expression | Hide from accessibility (`accessibilityElementsHidden`). |
+| `isElement` | [boolean](variables.md#boolean-coercion)/expression | Override `isAccessibilityElement`. |
+| `hidden` | [boolean](variables.md#boolean-coercion)/expression | Hide from accessibility (`accessibilityElementsHidden`). |
 
 Trait values: `button`, `link`, `header`, `image`, `selected`, `disabled`,
 `adjustable`, `searchField`, `staticText`, `summaryElement`, `updatesFrequently`,

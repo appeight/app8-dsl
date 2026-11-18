@@ -6,11 +6,11 @@ A skeleton-loading container that sweeps a shimmering gradient across its childr
 
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
-| `properties.isAnimating` | boolean/expression | `false` | Whether the shimmer sweep is active. Accepts an expression, e.g. `"{{isLoading}}"` |
+| `properties.isAnimating` | [boolean](../variables.md#boolean-coercion)/expression | `false` | Whether the shimmer sweep is active. Accepts an expression, e.g. `"{{isLoading}}"` |
 | `properties.duration` | number | `1.5` | Seconds for one shimmer pass |
 | `properties.direction` | Direction | `leftToRight` | Sweep direction |
 | `children` | Component[] | | Placeholder components the shimmer is applied over |
-| `properties.isHidden` | boolean/expression | | Hide component; see [Visibility](../components.md#visibility) |
+| `properties.isHidden` | [boolean](../variables.md#boolean-coercion)/expression | | Hide component; see [Visibility](../components.md#visibility) |
 
 ## Direction Values
 

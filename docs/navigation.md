@@ -296,7 +296,7 @@ Configure the navigation bar for each screen.
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `title` | string | Navigation bar title (ignored when `titleView` is set) |
+| `title` | string / expression | Navigation bar title (ignored when `titleView` is set). An expression like any text property (`"{{count}} items"`, `"{{selected.name}}"`): it updates when its variables change, large title included |
 | `largeTitle` | boolean | Show `title` as a large title: iOS `prefersLargeTitles` (34pt bold under the bar, moving with the content and collapsing into the inline title as it scrolls). Use it for a tab's root screen title instead of a label or a collection row. Needs a plain `title` (no `titleView`, no `search`); `titleColor` applies to the inline title only. Android ignores it: set `topAppBar: "large"` for the same role |
 | `titleView` | Component | Custom DSL component rendered as the nav bar title |
 | `titleAlignment` | string | `"left"` places `titleView` as left bar item; `"center"` (default) uses standard title area |
@@ -596,7 +596,7 @@ Note: `rightActions` renders right-to-left — the first item in the array appea
 | `insets` | EdgeInsets | `{ "top": 12, "left": 16, "bottom": 8, "right": 16 }` | Space around `component` inside the bar. `left` / `right` are the leading and trailing edges. `bottom` is measured from the bottom safe area (home indicator, gesture bar or tab bar), not from the screen edge. Each edge is optional; a missing edge keeps its default |
 | `style.background` | `"system"` or style entity | `"system"` | `"system"`: the platform's bar treatment, see [Background](#background). Otherwise a `material` or `fill` [style entity](styles.md#using-styles-in-components) (inline or pointer) drawn behind the bar |
 | `edgeEffect` | string | `"soft"` | iOS 26 scroll-edge effect for a `"system"` background: `"soft"` or `"hard"`. An unknown value is `"soft"`. Ignored with a custom background and on other platforms |
-| `hidden` | boolean/expression | `false` | Hides the bar. Changes animate, see [Hiding](#hiding) |
+| `hidden` | [boolean](variables.md#boolean-coercion)/expression | `false` | Hides the bar. Changes animate, see [Hiding](#hiding) |
 
 ### Layout
 

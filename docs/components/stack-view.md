@@ -21,8 +21,39 @@ A direct child may carry `defer` to be built after its screen is shown, with a p
 | `properties.cornerRadius` | number | none | Corner radius in points; clips children to rounded bounds |
 | `children` | Component[] | | Arranged subviews |
 | `style` | ViewStyle | | Container styling (material, alpha, etc.) |
+| `style.layoutMargins` | object | all `0` | Padding inside the stack: `top`, `leading`, `bottom`, `trailing` in points. See [Layout margins](#layout-margins) |
 | `layout` | Layout | | Position and size of the stack itself |
-| `properties.isHidden` | boolean/expression | | Hide component; see [Visibility](../components.md#visibility) |
+| `properties.isHidden` | [boolean](../variables.md#boolean-coercion)/expression | | Hide component; see [Visibility](../components.md#visibility) |
+
+## Layout margins
+
+`style.layoutMargins` insets the arranged subviews from the stack's edges (UIKit
+`directionalLayoutMargins` with `isLayoutMarginsRelativeArrangement`):
+
+```json
+{
+  "type": "stackView",
+  "content": {
+    "properties": { "axis": "vertical", "spacing": 8 },
+    "style": { "layoutMargins": { "top": 12, "leading": 16, "bottom": 12, "trailing": 16 } },
+    "layout": { "constraints": [
+      { "type": "leading", "target": "superview" },
+      { "type": "trailing", "target": "superview" }
+    ] },
+    "children": []
+  }
+}
+```
+
+- Each key is optional and defaults to `0`. `leading` and `trailing` follow the layout
+  direction (left and right in left-to-right languages).
+- Children are laid out inside the margins: alignment, distribution and `spacing` apply to
+  the inset area. A stack that sizes to its content grows by the margins.
+- The background (`properties.backgroundColor`, `style.material`) and `cornerRadius` still
+  cover the whole stack frame, margins included.
+- Hidden children take no space and add no spacing, as without margins. A stack whose
+  children are all hidden is as large as its margins.
+- An engine older than this property ignores it: the children touch the stack's edges.
 
 ## Alignment Values
 

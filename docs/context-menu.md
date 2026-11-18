@@ -30,7 +30,7 @@ collection cell's root view.
 | `preview` | ContextMenuPreview | No | The content shown above the menu. Omit it to lift the component itself |
 | `items` | ContextMenuItem[] | No | Menu actions, top to bottom. Empty or missing: preview only |
 | `onPreviewTap` | Action[] | No | Runs when the preview is tapped (iOS commit). Usually a navigation to the full screen |
-| `isEnabled` | boolean/expression | No | Default `true`. `false` turns the long press off |
+| `isEnabled` | [boolean](variables.md#boolean-coercion)/expression | No | Default `true`. `false` turns the long press off |
 
 The menu replaces a `longPress` action on the same component. If both are set,
 `contextMenu` wins and the engine logs `contextMenu.longPressIgnored`.
@@ -55,8 +55,8 @@ only run `onPreviewTap`. Put controls (add to bag, wishlist) in `items`.
 | `subtitle` | string/expression | No | Second line |
 | `icon` | string/expression | No | SF Symbol name (Android: SF → Material table) |
 | `destructive` | boolean | No | Red style |
-| `isEnabled` | boolean/expression | No | Default `true` |
-| `hidden` | boolean/expression | No | Default `false` |
+| `isEnabled` | [boolean](variables.md#boolean-coercion)/expression | No | Default `true` |
+| `hidden` | [boolean](variables.md#boolean-coercion)/expression | No | Default `false` |
 | `actions` | Action[] | Yes | Run after the menu closes |
 
 ### Scope

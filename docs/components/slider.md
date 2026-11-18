@@ -11,8 +11,8 @@ A native continuous or stepped slider (`UISlider`). Two-way bound to a number va
 | `properties.maximumValue` | number | `1` | Upper bound |
 | `properties.step` | number | | Optional snap increment — values snap to the nearest multiple within `[min, max]` |
 | `properties.bindVariable` | string | | Variable name for two-way binding (no `{{}}`) |
-| `properties.isEnabled` | boolean/expression | `true` | Whether the slider accepts input |
-| `properties.isHidden` | boolean/expression | | Hide component; see [Visibility](../components.md#visibility) |
+| `properties.isEnabled` | [boolean](../variables.md#boolean-coercion)/expression | `true` | Whether the slider accepts input |
+| `properties.isHidden` | [boolean](../variables.md#boolean-coercion)/expression | | Hide component; see [Visibility](../components.md#visibility) |
 
 > **Binding vs. value**: set `bindVariable` to the bare variable **name**; set `value` to an **expression**. See [variables.md → Variable Binding](../variables.md#variable-binding).
 

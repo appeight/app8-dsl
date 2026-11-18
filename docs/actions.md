@@ -685,6 +685,41 @@ action runs. Inside `actions` the names shadow outer names of the same name; out
 used: a [prefab](prefabs.md) param supplies the list once, and each call site wraps
 it in a `with` that binds the names the list reads.
 
+### if
+
+Run one of two action lists depending on a condition.
+
+```json
+{
+  "type": "if",
+  "condition": "{{selectedSize != null}}",
+  "then": [ { "type": "haptic", "style": "success" } ],
+  "else": [ { "type": "navigation", "nextScreen": "sizePicker", "presentation": "sheet" } ]
+}
+```
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `condition` | expression → [boolean](variables.md#boolean-coercion) | Evaluated **once**, when the `if` action runs |
+| `then` | Action / Action[] | Actions to run when `condition` is true |
+| `else` | Action / Action[] | Optional. Actions to run when `condition` is false |
+
+- The condition follows the DSL's [boolean coercion](variables.md#boolean-coercion), like
+  every other boolean: `true`, a non-zero number, `"true"`, `"1"` and non-empty arrays or
+  objects are true; any other string (including `"M"`) is false. Compare strings
+  explicitly: `{{selectedSize != null}}`. A condition that cannot be evaluated runs `else`.
+- Exactly one branch runs (or none, when the condition is false and there is no `else`).
+  The chosen branch runs like an action list, in order, in the current scope: loop
+  names from [`forEach`](#foreach) and names from [`with`](#with) stay visible.
+- Changing a variable the condition reads, from inside a branch, does not re-run the
+  `if` or switch branches.
+- `if` nests inside `forEach`, `with` and other `if` actions, and they nest inside it.
+- Inner actions keep their own analytics and event semantics: an `emit` in a branch
+  emits exactly as it would outside the `if`. The `if` itself emits nothing.
+- Engines released before `if` reject the screen that contains it (iOS and Android: a
+  decode error; the web renderer skips the action). Engines from this release on skip
+  action types they do not know (see [Unknown action types](#unknown-action-types)).
+
 ---
 
 ## Network Actions
@@ -875,6 +910,13 @@ Screen lifecycle and timer events.
 | `repeats` | boolean | false | Whether to repeat |
 
 ---
+
+## Unknown action types
+
+An action whose `type` the engine does not know (written for a newer DSL) is skipped: it
+runs nothing, the engine logs one diagnostic naming the type, and the actions after it in
+the list and the rest of the screen work as usual. Engines before this release rejected the
+whole screen (iOS and Android: a decode error); the web renderer has always skipped them.
 
 ## Action Arrays
 

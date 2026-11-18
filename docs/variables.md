@@ -108,6 +108,27 @@ When referencing `{{userName}}`, the system looks in:
 
 ---
 
+## Boolean coercion
+
+Every boolean in the DSL (an `if` condition, `isHidden`, a button's `isEnabled`, a
+toggle's `isOn` and bound variable, and every other boolean property) turns a value
+into true or false with this one rule:
+
+| Value | Result |
+|-------|--------|
+| `true` / `false` | itself |
+| a number | `true` unless it is `0` |
+| `"true"`, `"1"` (any letter case for `"true"`) | `true` |
+| any other string (`"false"`, `"0"`, `""`, `"yes"`, `"M"`) | `false` |
+| an array or object | `true` when it is not empty |
+| `null` | `false` |
+
+A **missing** value and an expression that **cannot be evaluated** (an unknown
+variable, a syntax error) do not count as false: the property keeps its default
+(`isEnabled` stays `true`, `isHidden` stays `false`). An `if` whose condition cannot be
+evaluated runs its `else`. To test a string for content, compare it:
+`{{selectedSize != null && selectedSize != ''}}`.
+
 ## Expression Syntax
 
 Expressions use `{{...}}` syntax.
@@ -144,6 +165,26 @@ expression, so it works for maps keyed by an item id:
 
 A missing key gives `null`. A number inside brackets on an object reads the key
 of that number as a string (`{{counts[3]}}` reads `counts["3"]`).
+
+### Array and Object Literals
+
+JSON-style array and object literals are values like any other, anywhere an
+expression takes a value: a collection's `data`, a function argument, an action value.
+
+```json
+"data": "{{[ {\"title\": \"A\"}, {\"title\": \"B\"} ]}}"
+"data": "{{[ {'title': 'New', 'count': newCount}, {'title': 'All', 'count': length(items)} ]}}"
+"text": "{{join(['a', 'b', 'c'], ', ')}}"
+"value": "{{merge(item, {'selected': true})}}"
+```
+
+- Arrays: `[` values separated by commas `]`. Objects: `{` `key: value` pairs separated
+  by commas `}`. Keys are strings in single or double quotes, or bare names
+  (`{title: 'A'}`). Values are any expression, including nested literals.
+- Trailing commas are not allowed. `{}` and `[]` are empty literals.
+- Braces inside an expression do not end it: `{{ {'a': {'b': 1}} }}` is one expression.
+  The `}}` that ends the expression is the first one outside quotes and literals.
+- A whole-string expression keeps its type: `"{{[1, 2]}}"` is an array, not text.
 
 ### Reserved `view` geometry
 
@@ -290,6 +331,8 @@ without hard-coding pixel sizes. Notes:
 | `last(array, predicate)` | Last matching element or nil | `{{last(items, item.done == false)}}` |
 | `sort(array)` | Sorted ascending (numbers numerically, strings lexically) | `{{sort(scores)}}` |
 | `sort(array, ascending)` | Sorted; pass `false` for descending | `{{sort(scores, false)}}` |
+| `sortBy(array, key)` | Objects sorted by the value at `key` (a dot path such as `'price.amount'`), ascending. See [sortBy](#sortby) | `{{sortBy(products, 'price')}}` |
+| `sortBy(array, key, ascending)` | Same; pass `false` for descending | `{{sortBy(products, 'name', false)}}` |
 | `reverse(array)` | Reversed copy | `{{reverse(items)}}` |
 | `slice(array, start)` | Sub-array from `start` to end | `{{slice(items, 1)}}` |
 | `slice(array, start, end)` | Sub-array `[start, end)` | `{{slice(items, 0, 3)}}` |
@@ -304,7 +347,22 @@ without hard-coding pixel sizes. Notes:
 "tagLine": "{{join(item.tags, ' · ')}}"
 ```
 
-> **Non-mutating**: `sort`, `reverse`, `slice`, and `concat` return new arrays — they never modify the source variable. Use them freely inside computed variables and `data` bindings.
+> **Non-mutating**: `sort`, `sortBy`, `reverse`, `slice`, `concat` and `merge` return new values — they never modify the source variable. Use them freely inside computed variables and `data` bindings.
+
+#### sortBy
+
+`sortBy(array, key, ascending = true)` sorts an array of objects by one field:
+
+- `key` is a string: a field name or a dot path (`'price.amount'`).
+- Numbers compare numerically, strings lexically by Unicode code point
+  (locale-independent: `'B' < 'a'`, `'Z' < 'é'`).
+- Ascending puts numbers before strings; descending reverses the order of the present
+  values (strings first, then numbers, largest first). Missing values, `null`, booleans,
+  objects and arrays count as missing and sort **last** in both directions.
+- The sort is stable: elements with equal keys (and missing ones) keep their order, in both
+  directions.
+- An `array` that is not an array returns it unchanged; elements that are not objects count
+  as missing.
 
 ### Higher-Order Array Functions
 
@@ -351,6 +409,7 @@ Combine with other functions:
 |----------|-------------|---------|
 | `keys(object)` | Get keys | `{{keys(user)}}` |
 | `values(object)` | Get values | `{{values(user)}}` |
+| `merge(a, b)` | Two objects: a shallow merge, `b`'s values win. Two arrays: `a` followed by `b` (as `concat`). Anything else: `a` | `{{merge(defaults, overrides)}}` |
 
 ### Math Functions
 

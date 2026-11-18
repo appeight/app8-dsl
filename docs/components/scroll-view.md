@@ -23,7 +23,7 @@ Scrollable container.
 | `children` | Component[] | | Content components |
 | `style` | ScrollViewStyle | | Styling |
 | `layout` | Layout | | Position and size |
-| `properties.isHidden` | boolean/expression | | Hide component; see [Visibility](../components.md#visibility) |
+| `properties.isHidden` | [boolean](../variables.md#boolean-coercion)/expression | | Hide component; see [Visibility](../components.md#visibility) |
 
 ## Direction Values
 

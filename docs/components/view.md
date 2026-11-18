@@ -12,7 +12,7 @@ General-purpose container for grouping and layout.
 | `actions` | Actions | Tap actions |
 | `states` | States | State definitions |
 | `triggers` | Triggers | State triggers |
-| `properties.isHidden` | boolean/expression/animated | Hide component; see [Visibility](../components.md#visibility). Wrapped with an `animation`, a change animates ([Animated visibility](../animations.md#animated-visibility)) |
+| `properties.isHidden` | [boolean](../variables.md#boolean-coercion)/expression/animated | Hide component; see [Visibility](../components.md#visibility). Wrapped with an `animation`, a change animates ([Animated visibility](../animations.md#animated-visibility)) |
 | `properties.transformRotation` | number/expression/animated | Rotation in degrees, clockwise, about the centre; animatable ([transformRotation](../animations.md#transformrotation)) |
 
 ## Style: ViewStyle

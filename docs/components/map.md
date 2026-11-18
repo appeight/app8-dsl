@@ -27,7 +27,7 @@ Interactive map view backed by `MKMapView`. Supports static and dynamic annotati
 | `properties.selectedAnnotationBinding` | string | none | Expression variable to write selected annotation ID into |
 | `properties.userLocationBinding` | string | none | Expression variable to write user coordinate into |
 | `properties.routeStatusBinding` | string | none | Expression variable that receives `"ok"` or `"error"` after a directions request |
-| `properties.isHidden` | boolean/expression | none | Hide component; see [Visibility](../components.md#visibility) |
+| `properties.isHidden` | [boolean](../variables.md#boolean-coercion)/expression | none | Hide component; see [Visibility](../components.md#visibility) |
 
 ## Annotation Object
 

@@ -12,7 +12,7 @@ Commonly paired with a horizontally-paged [carousel collection](../collections.m
 | `properties.currentPage` | number/expression | `0` | Active page index (0-based). Accepts an expression |
 | `properties.bindVariable` | string | | Variable name the tapped page index is written to (no `{{}}`) |
 | `properties.hidesForSinglePage` | boolean | `true` | Hide the control when there is only one page |
-| `properties.isHidden` | boolean/expression | | Hide component; see [Visibility](../components.md#visibility) |
+| `properties.isHidden` | [boolean](../variables.md#boolean-coercion)/expression | | Hide component; see [Visibility](../components.md#visibility) |
 
 > **Binding direction**: `bindVariable` is **write-on-tap** — when the user taps a dot the new index is written to the variable. To drive the dots from elsewhere (e.g. a scrolling carousel), bind `currentPage` to the same variable with `"{{...}}"`.
 

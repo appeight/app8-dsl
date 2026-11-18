@@ -71,8 +71,51 @@ Standard scrolling list.
 | `itemSpacing` | number | `0` | Space between items |
 | `separatorStyle` | string | `"none"` | `"none"`, `"full"`, `"inset"` |
 | `estimatedItemHeight` | number | | Hint for self-sizing items; improves layout performance |
+| `itemHeight` | number / `"fill"` | | Fixed item height (items self-size without it). `"fill"`: each item is as tall as the collection's frame minus vertical insets (a full-screen feed) |
+| `pagingStyle` | string | `"continuous"` | `"continuous"` (free scroll) or `"paging"` (page by item height plus `itemSpacing`; by the frame for self-sizing items) |
+| `currentPageVariable` | string | | With `pagingStyle: "paging"`: the current page index, two-way, exactly as for [horizontal collections](#horizontal-carousel) |
 | `contentInsets` | object | | Padding around content: `top`, `left`, `bottom`, `right` |
 | `showsScrollIndicator` | boolean | `true` | Show or hide the vertical scroll indicator |
+
+#### Vertical paging (a full-screen feed)
+
+One item per screen, swipe up for the next:
+
+```json
+{
+  "type": "collection",
+  "id": "feed",
+  "content": {
+    "properties": {
+      "data": "{{posts}}",
+      "layout": {
+        "type": "vertical",
+        "pagingStyle": "paging",
+        "itemHeight": "fill",
+        "currentPageVariable": "feedPage",
+        "showsScrollIndicator": false
+      }
+    },
+    "template": { "type": "view", "content": { "children": [] } }
+  }
+}
+```
+
+- Items come from `data` (or `sectionDefinitions` / `groupBy`) like any collection;
+  templates and item variables are unchanged. Pages run through all items in order.
+- A swipe turns one page; a fast flick also turns exactly one page, never several
+  (feed behaviour). A slow drag past half a page turns it; less springs back. On the
+  web renderer a mouse-wheel notch turns one page, and a trackpad swipe turns at most one.
+- A vertical collection with `pagingStyle: "paging"` or `itemHeight: "fill"` adds **no
+  automatic safe-area insets**: the page is the collection's own frame. Run the
+  collection edge to edge (pin it to `superview`, under translucent bars) and keep text
+  and buttons inside the template clear of the bars with `safeArea` anchors.
+- `currentPageVariable` updates when a swipe settles on another page, and writing the
+  variable scrolls to that page (animated while on screen).
+- Applies to a plain vertical list. With `sectionLayouts`, `defaultSectionLayout`,
+  `sectionHeaders` or `swipeActions`, `pagingStyle` is ignored and the list scrolls freely.
+- An engine older than this feature ignores `pagingStyle` and `itemHeight` on a vertical
+  list: the feed scrolls freely with self-sizing items.
 
 ### Horizontal Carousel
 
@@ -420,6 +463,12 @@ Group items by a property and render section headers.
 | `sectionHeaders` | Map of templates keyed by section key — overrides `defaultSectionHeader` for specific sections |
 
 If both are defined, `sectionHeaders[key]` takes precedence over `defaultSectionHeader` for any section whose key has a match.
+
+Headers work with `groupBy` and with `sectionDefinitions`, in `vertical` and `grid` layouts:
+each header spans the section's width (inside the left/right `contentInsets`) above its
+items, and a grid starts a new row for each section. A sectioned product grid needs no
+scroll view, stack or non-scrolling grids around it. Top-level `horizontal` collections do
+not draw section headers.
 
 ### Section Variables
 
