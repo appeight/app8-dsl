@@ -493,6 +493,36 @@ and the glass becomes touch-interactive. All of the view's children move togethe
 }
 ```
 
+### Adaptive glass (`glassAppearance`)
+
+Glass adapts to what is behind it, as iOS 26 Liquid Glass does: over dark
+content it is dark glass with light symbols and text, over light content light
+glass with dark ones. It follows the content as it scrolls, with a short
+cross-fade and enough hysteresis not to flicker while a photo passes under it.
+To pin it, set `glassAppearance` on the view's `style`, or on a tab bar
+screen's `content.style` for the tab bar. (`navigationBar.glassAppearance` pins
+the bar's glass items on the web; native navigation bars use the system's
+adaptive glass.)
+
+| Value | Glass |
+|-------|-------|
+| `auto` (default) | Follows the content behind it |
+| `light` | Always light glass |
+| `dark` | Always dark glass |
+
+```json
+{ "type": "view", "content": { "style": {
+    "glassAppearance": "dark",
+    "material": [ { "id": "g", "type": "visualEffect", "content": { "glass": "normal" } } ] } } }
+```
+
+| Platform | Adaptive glass |
+|----------|----------------|
+| iOS 26+ | The system glass (`UIGlassEffect`, the tab bar) adapts on its own; `light` / `dark` set the glass view's interface style |
+| iOS 18–25 | A light or dark blur (`systemUltraThinMaterialLight` / `Dark`) chosen from the luminance of what is behind, sampled a few times a second |
+| Android | The glass tint (the tonal surface over the blurred backdrop) follows the luminance of its backdrop |
+| Web | The luminance behind the glass element (photos and backgrounds under it) picks light or dark glass |
+
 ### Blur Styles
 
 | Value | Appearance |
