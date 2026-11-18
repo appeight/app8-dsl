@@ -183,6 +183,10 @@ Rules:
 - A key that matches nothing on the presenting screen (cell scrolled away) falls
   back to a cross-dissolve, both ways.
 - The source element is hidden while the incoming screen is up, as the system does.
+- A vertical drag over a scroll view scrolls it (`any` and `down`): only a pull
+  down while the scroll view rests at its top (offset at or above its top inset,
+  not decelerating) starts the dismissal, as the system zoom does. Scrolling down
+  and back up never shrinks the screen.
 - A pull-down at the top of a scroll view with `stretchesTopChild` stretches its
   first child and never starts the dismissal. Dismiss such a screen with a
   horizontal drag (iOS: from anywhere outside a horizontal scroller; the leading
