@@ -154,6 +154,7 @@ A new DSL feature lands only when both columns are filled (see
 | Sheet `detents` `medium`, `large`, number, `NN%` | ✓ | planned | Android bottom sheet anchors |
 | `openURL` presentation `sheet` | ✓ | planned | Custom Tabs |
 | `haptic` styles | ✓ | planned | Nearest `HapticFeedbackConstants` |
+| Vertical paging collection (`pagingStyle: paging`, `itemHeight: "fill"`, `currentPageVariable` on `type: vertical`) | ✓ | ✓ | One page per swipe or flick, no automatic safe-area insets. iOS: `isPagingEnabled` when a page is the frame, else a one-page snap; Android: `VerticalPager` with `PagerSnapDistance.atMost(1)`. Web renderer: one page per wheel notch or trackpad swipe |
 | Per-node `ios` / `android` overrides | planned | planned | DSL 1.1 |
 | `app.platforms` floors | planned | planned | DSL 1.1 |
 
