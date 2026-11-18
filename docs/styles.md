@@ -539,6 +539,7 @@ Typography styling for text content.
 
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
+| `fontFamily` | string | system font | A font of the app by name (see [Fonts](#fonts)). A custom font draws its own weight; `fontWeight` applies to the system font |
 | `fontSize` | number | 17 | Font size in points |
 | `fontWeight` | FontWeight | `regular` | Font weight |
 | `alignment` | Alignment | `natural` | Text alignment |
@@ -551,6 +552,32 @@ Typography styling for text content.
 | `strikethrough` | boolean | false | Draw a single strikethrough line through the text |
 | `adjustsFontSizeToFitWidth` | boolean | false | Shrink font to fit width instead of truncating |
 | `minimumScaleFactor` | number | 0.5 | Smallest font scale autoshrink may use (0–1); only used when `adjustsFontSizeToFitWidth` is true |
+
+### Fonts
+
+`fontFamily` names a font. A name the platform already has (a system font, or one the host
+app ships) is used as is. An app bundle can also carry its own fonts: the bundle's fonts
+manifest maps each name to a family, and optionally to a font **file** in the bundle's
+assets:
+
+```json
+{
+  "fonts": {
+    "Display": { "family": "Display Serif", "weight": 600, "file": "fonts/DisplaySerif-SemiBold.ttf" },
+    "Mono": { "family": "Mono Regular", "file": "fonts/Mono-Regular.ttf" },
+    "Body": { "family": "Body Sans" }
+  }
+}
+```
+
+- Native apps download the files with the other assets and register them with the
+  platform's font system before the screen that uses them is shown.
+- The web renderer registers every manifest font that has a `file` as a web font
+  (`@font-face` from the bundle's asset URL, `font-display: swap`) before it first draws text
+  in that font, and measures the text again once the file has loaded.
+- A family without a `file` resolves through the fonts the host already provides (on the
+  web, the families the host page loads).
+- A name that resolves nowhere falls back to the system font.
 
 ### FontWeight Values
 
