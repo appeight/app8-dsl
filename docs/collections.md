@@ -464,6 +464,12 @@ Group items by a property and render section headers.
 
 If both are defined, `sectionHeaders[key]` takes precedence over `defaultSectionHeader` for any section whose key has a match.
 
+Headers work with `groupBy` and with `sectionDefinitions`, in `vertical` and `grid` layouts:
+each header spans the section's width (inside the left/right `contentInsets`) above its
+items, and a grid starts a new row for each section. A sectioned product grid needs no
+scroll view, stack or non-scrolling grids around it. Top-level `horizontal` collections do
+not draw section headers.
+
 ### Section Variables
 
 Inside `defaultSectionHeader` (or `sectionHeaders`) templates:
