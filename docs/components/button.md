@@ -8,14 +8,14 @@ Interactive tappable component.
 |----------|------|-------------|
 | `properties.text` | string | Button label |
 | `properties.icon` | string | SF Symbol name `[Planned]` (for system buttons use `style.system.image`) |
-| `properties.isEnabled` | expression → boolean | Enable state, defaults to `true`. `false`, `0` and any string other than `"true"` / `"1"` disable the button (the [boolean coercion](toggle.md#boolean-coercion) of toggles); a missing or unresolved value keeps it enabled. A disabled button runs no actions and fires no tap analytics. Look: the system path uses the platform's disabled configuration (iOS: gray fill, dimmed label); the custom (`material`) path draws at alpha 0.4. Re-evaluated when its variables change |
-| `properties.isSelected` | expression → boolean | Selected state (`UIButton.isSelected`). Defaults to `false`. |
+| `properties.isEnabled` | expression → [boolean](../variables.md#boolean-coercion) | Enable state, defaults to `true`. Follows the [boolean coercion](../variables.md#boolean-coercion): `false`, `0` and any string other than `"true"` / `"1"` disable the button; a missing or unresolved value keeps it enabled. A disabled button runs no actions and fires no tap analytics. Look: the system path uses the platform's disabled configuration (iOS: gray fill, dimmed label); the custom (`material`) path draws at alpha 0.4. Re-evaluated when its variables change |
+| `properties.isSelected` | expression → [boolean](../variables.md#boolean-coercion) | Selected state (`UIButton.isSelected`). Defaults to `false`. |
 | `style` | ButtonStyle | Button styling |
 | `layout` | Layout | Position and size |
 | `actions` | Actions | Tap action |
 | `states` | States | State definitions |
 | `triggers` | Triggers | State triggers |
-| `properties.isHidden` | boolean/expression | Hide component; see [Visibility](../components.md#visibility) |
+| `properties.isHidden` | [boolean](../variables.md#boolean-coercion)/expression | Hide component; see [Visibility](../components.md#visibility) |
 
 ## Style: ButtonStyle
 
@@ -45,7 +45,7 @@ title layout, without rebuilding any of it by hand.
 | `imagePlacement` | enum | `leading`, `trailing`, `top`, `bottom`. |
 | `imagePadding` | number | Gap between image and title. |
 | `subtitle` | string/expression | Optional secondary line. |
-| `showsActivityIndicator` | expression → boolean | Replaces the title with a spinner when true (e.g. `"{{loading}}"`). |
+| `showsActivityIndicator` | expression → [boolean](../variables.md#boolean-coercion) | Replaces the title with a spinner when true (e.g. `"{{loading}}"`). |
 
 Unknown enum values degrade gracefully to the default case rather than failing the screen.
 

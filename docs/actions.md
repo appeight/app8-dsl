@@ -700,14 +700,14 @@ Run one of two action lists depending on a condition.
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `condition` | expression → boolean | Evaluated **once**, when the `if` action runs |
+| `condition` | expression → [boolean](variables.md#boolean-coercion) | Evaluated **once**, when the `if` action runs |
 | `then` | Action / Action[] | Actions to run when `condition` is true |
 | `else` | Action / Action[] | Optional. Actions to run when `condition` is false |
 
-- The condition counts as true when it evaluates to `true`, a non-zero number, a
-  non-empty string other than `"false"`, or a non-empty array or object. `false`,
-  `null`, a missing value, `0`, `""`, `"false"` and empty arrays and objects are false.
-  A condition that cannot be evaluated (a syntax error) is false.
+- The condition follows the DSL's [boolean coercion](variables.md#boolean-coercion), like
+  every other boolean: `true`, a non-zero number, `"true"`, `"1"` and non-empty arrays or
+  objects are true; any other string (including `"M"`) is false. Compare strings
+  explicitly: `{{selectedSize != null}}`. A condition that cannot be evaluated runs `else`.
 - Exactly one branch runs (or none, when the condition is false and there is no `else`).
   The chosen branch runs like an action list, in order, in the current scope: loop
   names from [`forEach`](#foreach) and names from [`with`](#with) stay visible.

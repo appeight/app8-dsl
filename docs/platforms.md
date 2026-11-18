@@ -155,7 +155,8 @@ A new DSL feature lands only when both columns are filled (see
 | `openURL` presentation `sheet` | ✓ | planned | Custom Tabs |
 | `haptic` styles | ✓ | planned | Nearest `HapticFeedbackConstants` |
 | Vertical paging collection (`pagingStyle: paging`, `itemHeight: "fill"`, `currentPageVariable` on `type: vertical`) | ✓ | ✓ | One page per swipe or flick, no automatic safe-area insets. iOS: `isPagingEnabled` when a page is the frame, else a one-page snap; Android: `VerticalPager` with `PagerSnapDistance.atMost(1)`. Web renderer: one page per wheel notch or trackpad swipe |
-| `if` action (`condition`, `then`, `else`) | ✓ | ✓ | Condition evaluated once; `"false"`, `0`, empty and unevaluable conditions are false. Web renderer: same rules |
+| `if` action (`condition`, `then`, `else`) | ✓ | ✓ | Condition evaluated once with the [boolean coercion](variables.md#boolean-coercion); an unevaluable condition runs `else`. Web renderer: same rules |
+| One [boolean coercion](variables.md#boolean-coercion) for every boolean (`if`, `isHidden`, `isEnabled`, toggles, …) | ✓ | ✓ | Android before this release read `"yes"` as true and other strings as unset. Web renderer: same rule |
 | `stackView` `style.layoutMargins` (`top`, `leading`, `bottom`, `trailing`) | ✓ | ✓ | iOS `directionalLayoutMargins` + `isLayoutMarginsRelativeArrangement`; Android and web renderer: margins in the stack's solver constraints |
 | `sortBy(array, key, ascending)`, `merge(a, b)` expression functions | ✓ | ✓ | Shared input/output table in the conformance repo (`fixtures/functions/sortBy-merge.json`), run by each renderer's tests |
 | Array and object literals in expressions (`[…]`, `{key: value}`, nested braces) | ✓ | ✓ | Web renderer: same grammar |

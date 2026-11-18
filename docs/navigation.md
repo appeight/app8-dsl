@@ -596,7 +596,7 @@ Note: `rightActions` renders right-to-left — the first item in the array appea
 | `insets` | EdgeInsets | `{ "top": 12, "left": 16, "bottom": 8, "right": 16 }` | Space around `component` inside the bar. `left` / `right` are the leading and trailing edges. `bottom` is measured from the bottom safe area (home indicator, gesture bar or tab bar), not from the screen edge. Each edge is optional; a missing edge keeps its default |
 | `style.background` | `"system"` or style entity | `"system"` | `"system"`: the platform's bar treatment, see [Background](#background). Otherwise a `material` or `fill` [style entity](styles.md#using-styles-in-components) (inline or pointer) drawn behind the bar |
 | `edgeEffect` | string | `"soft"` | iOS 26 scroll-edge effect for a `"system"` background: `"soft"` or `"hard"`. An unknown value is `"soft"`. Ignored with a custom background and on other platforms |
-| `hidden` | boolean/expression | `false` | Hides the bar. Changes animate, see [Hiding](#hiding) |
+| `hidden` | [boolean](variables.md#boolean-coercion)/expression | `false` | Hides the bar. Changes animate, see [Hiding](#hiding) |
 
 ### Layout
 

@@ -11,7 +11,7 @@ Displays an icon — an SF Symbol, a bundled asset, or a remote image — with a
 | `properties.url` | string | | Image URL (`type: "remote"`) |
 | `properties.tintColor` | color/expression | | Tint color. Accepts an expression, e.g. `"{{item.iconColor}}"`, or the wrapped `{ value, animation }` form |
 | `properties.backgroundColor` | color/expression | | Background color. Accepts an expression or the wrapped `{ value, animation }` form |
-| `properties.isHidden` | boolean/expression | | Hide via expression, e.g. `"{{!isChecked}}"` |
+| `properties.isHidden` | [boolean](../variables.md#boolean-coercion)/expression | | Hide via expression, e.g. `"{{!isChecked}}"` |
 | `style` | IconStyle | | Icon styling — see [styles.md → IconStyle](../styles.md#iconstyle) |
 | `layout` | Layout | | Position and size |
 

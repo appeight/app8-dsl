@@ -9,7 +9,7 @@ Text display component.
 | `properties.text` | string \| LocalizedString | Text content. A plain string (supports `{{expressions}}`) or the `{"$i18n": "key"}` localization marker — see [localization.md](../localization.md) |
 | `properties.numberOfLines` | number | Max lines (`0` = unlimited). Also settable via the text style |
 | `properties.backgroundColor` | color/expression | Background color. Accepts an expression or the wrapped `{ value, animation }` form |
-| `properties.isHidden` | boolean/expression | Hide via expression, e.g. `"{{!isChecked}}"` |
+| `properties.isHidden` | [boolean](../variables.md#boolean-coercion)/expression | Hide via expression, e.g. `"{{!isChecked}}"` |
 | `properties.spans` | Span[] | Inline rich-text overrides on character ranges — see [Spans](#spans) |
 | `style` | LabelStyle | Text styling |
 | `layout` | Layout | Position and size |

@@ -15,7 +15,7 @@ A screen that uses a module the host has not registered still renders: it shows 
 | `fallback` | Component | none | Any DSL subtree, rendered in place of the native view when no host module is registered for `module` |
 | `layout` | Layout | | Normal [layout](../layout.md); the native view (or the fallback) fills the component's frame |
 | `style` | View style | | Same as [`view`](view.md) (background, corners, …), drawn behind the native view |
-| `properties.isHidden` | boolean/expression | | Hide component; see [Visibility](../components.md#visibility) |
+| `properties.isHidden` | [boolean](../variables.md#boolean-coercion)/expression | | Hide component; see [Visibility](../components.md#visibility) |
 
 `native` has no `children`; use `fallback` for DSL content.
 

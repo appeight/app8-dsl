@@ -50,7 +50,7 @@ See [navigation.md — Bottom Bar](../navigation.md#bottom-bar) for layout, back
 | `insets` | EdgeInsets | Space around `component`: `top` (default 12), `left` (16), `bottom` (8, above the bottom safe area), `right` (16) |
 | `style.background` | `"system"` / style entity | `"system"` (default): iOS 26 scroll-edge effect, Android Material 3 surface; or a `material` / `fill` style entity |
 | `edgeEffect` | string | iOS 26 scroll-edge effect for the system background: `soft` (default) or `hard` |
-| `hidden` | boolean/expression | Hide the bar (animated, 0.33 s cubic ease-out) |
+| `hidden` | [boolean](../variables.md#boolean-coercion)/expression | Hide the bar (animated, 0.33 s cubic ease-out) |
 
 The bar's height is added to the screen's bottom safe area, so scroll content gets the matching bottom inset. Above a tab bar when one is shown.
 

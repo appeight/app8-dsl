@@ -6,24 +6,17 @@ A native on/off switch (`UISwitch`). Two-way bound to a boolean variable.
 
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
-| `properties.isOn` | boolean/expression | `false` | Current on/off state. Accepts an expression, e.g. `"{{darkMode}}"` |
+| `properties.isOn` | [boolean](../variables.md#boolean-coercion)/expression | `false` | Current on/off state. Accepts an expression, e.g. `"{{darkMode}}"` |
 | `properties.bindVariable` | string | | Variable name for two-way binding (no `{{}}`) |
-| `properties.isEnabled` | boolean/expression | `true` | Whether the toggle accepts input. Accepts an expression |
-| `properties.isHidden` | boolean/expression | | Hide component; see [Visibility](../components.md#visibility) |
+| `properties.isEnabled` | [boolean](../variables.md#boolean-coercion)/expression | `true` | Whether the toggle accepts input. Accepts an expression |
+| `properties.isHidden` | [boolean](../variables.md#boolean-coercion)/expression | | Hide component; see [Visibility](../components.md#visibility) |
 
 > **Binding vs. value**: set `bindVariable` to the bare variable **name** (`"darkMode"`); set `isOn` to an **expression** (`"{{darkMode}}"`). Most toggles only need `bindVariable` — the engine reads the current value and writes user changes back automatically. See [variables.md → Variable Binding](../variables.md#variable-binding).
 
 ## Boolean Coercion
 
-`isOn` and the bound variable accept any of these, coerced to a bool:
-
-| Input | Result |
-|-------|--------|
-| `true` / `false` | direct |
-| `1` / non-zero number | `true` |
-| `0` | `false` |
-| `"true"` / `"1"` | `true` |
-| any other string | `false` |
+`isOn` and the bound variable follow the DSL's [boolean coercion](../variables.md#boolean-coercion):
+`true`, non-zero numbers, `"true"` and `"1"` are on; any other string and `0` are off.
 
 ## Style: ToggleStyle
 

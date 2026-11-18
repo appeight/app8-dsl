@@ -23,7 +23,7 @@ A direct child may carry `defer` to be built after its screen is shown, with a p
 | `style` | ViewStyle | | Container styling (material, alpha, etc.) |
 | `style.layoutMargins` | object | all `0` | Padding inside the stack: `top`, `leading`, `bottom`, `trailing` in points. See [Layout margins](#layout-margins) |
 | `layout` | Layout | | Position and size of the stack itself |
-| `properties.isHidden` | boolean/expression | | Hide component; see [Visibility](../components.md#visibility) |
+| `properties.isHidden` | [boolean](../variables.md#boolean-coercion)/expression | | Hide component; see [Visibility](../components.md#visibility) |
 
 ## Layout margins
 

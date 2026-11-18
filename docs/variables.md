@@ -108,6 +108,27 @@ When referencing `{{userName}}`, the system looks in:
 
 ---
 
+## Boolean coercion
+
+Every boolean in the DSL (an `if` condition, `isHidden`, a button's `isEnabled`, a
+toggle's `isOn` and bound variable, and every other boolean property) turns a value
+into true or false with this one rule:
+
+| Value | Result |
+|-------|--------|
+| `true` / `false` | itself |
+| a number | `true` unless it is `0` |
+| `"true"`, `"1"` (any letter case for `"true"`) | `true` |
+| any other string (`"false"`, `"0"`, `""`, `"yes"`, `"M"`) | `false` |
+| an array or object | `true` when it is not empty |
+| `null` | `false` |
+
+A **missing** value and an expression that **cannot be evaluated** (an unknown
+variable, a syntax error) do not count as false: the property keeps its default
+(`isEnabled` stays `true`, `isHidden` stays `false`). An `if` whose condition cannot be
+evaluated runs its `else`. To test a string for content, compare it:
+`{{selectedSize != null && selectedSize != ''}}`.
+
 ## Expression Syntax
 
 Expressions use `{{...}}` syntax.

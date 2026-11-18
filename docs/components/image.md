@@ -12,7 +12,7 @@ Image display component.
 | `properties.type` | string | Optional: `"remoteAsset"` or `"localAsset"`. Inferred when absent (see [Image source](#image-source)) |
 | `style` | ImageStyle | Image styling |
 | `layout` | Layout | Position and size |
-| `properties.isHidden` | boolean/expression | Hide component; see [Visibility](../components.md#visibility) |
+| `properties.isHidden` | [boolean](../variables.md#boolean-coercion)/expression | Hide component; see [Visibility](../components.md#visibility) |
 
 ## Image source
 
