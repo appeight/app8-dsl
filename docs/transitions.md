@@ -182,7 +182,12 @@ platform's interactive dismissal. Works for push and for modal presentation.
 Rules:
 - A key that matches nothing on the presenting screen (cell scrolled away) falls
   back to a cross-dissolve, both ways.
-- The source element is hidden while the incoming screen is up, as the system does.
+- The source element is hidden while the incoming screen is up, as the system does,
+  unless it fills (most of) the presenting screen (the photo of a full-screen
+  pager page): then it stays visible, so the screen behind never turns blank
+  while the incoming screen shrinks back into it.
+- A zoom with `presentation: "push"` is a navigation push: the presenting screen
+  stays in place at full size underneath; it is never scaled like a page sheet.
 - A vertical drag over a scroll view scrolls it (`any` and `down`): only a pull
   down while the scroll view rests at its top (offset at or above its top inset,
   not decelerating) starts the dismissal, as the system zoom does. Scrolling down
