@@ -219,11 +219,15 @@ it is passed to the system camera app as a hint, which most camera apps follow.
 
 ## Versioning
 
-`capturePhoto`, `deletePhoto` and photo references in `image` arrive with release
-train 0.8.0 (DSL 1.2) on iOS, Android and the web renderer.
+`capturePhoto`, `deletePhoto` and photo references in `image` are introduced by
+**DSL 1.2**, shipped in release train **0.8.0** on iOS, Android and the web renderer.
+What older engines do (checked in their code):
 
-- 0.7.x engines skip both actions as [unknown action types](actions.md#unknown-action-types)
-  (one diagnostic; the rest of the list runs), and an `image` with a photo reference
-  draws nothing. A button that captures does nothing there.
-- Engines before 0.7.0 (iOS and Android) reject a screen that contains either action.
-  Ship such screens only to hosts on 0.8.0 or later.
+| Engine | `capturePhoto` / `deletePhoto` | `image` with a `photo://` url |
+|--------|--------------------------------|-------------------------------|
+| iOS and Android 0.7.x | Decoded as an [unknown action type](actions.md#unknown-action-types): one `Unknown action type … skipped` diagnostic, the rest of the list runs. A capture button does nothing | The value has `://`, so it is tried as a remote URL: the host data source has no such asset, the URL load fails, the image draws nothing (its background shows) |
+| iOS and Android before 0.7.0 | The screen fails to decode | As 0.7.x |
+| Web renderer before 0.8.0 | Skipped (it has always skipped unknown types) | Not an `http(s)` URL or bundle asset: nothing is drawn |
+
+Ship screens that capture only to hosts on 0.8.0 or later. Screens that only show
+photos are safe on 0.7.x and degrade to empty images.
