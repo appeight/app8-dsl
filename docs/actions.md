@@ -685,6 +685,41 @@ action runs. Inside `actions` the names shadow outer names of the same name; out
 used: a [prefab](prefabs.md) param supplies the list once, and each call site wraps
 it in a `with` that binds the names the list reads.
 
+### if
+
+Run one of two action lists depending on a condition.
+
+```json
+{
+  "type": "if",
+  "condition": "{{selectedSize != null}}",
+  "then": [ { "type": "haptic", "style": "success" } ],
+  "else": [ { "type": "navigation", "nextScreen": "sizePicker", "presentation": "sheet" } ]
+}
+```
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `condition` | expression → boolean | Evaluated **once**, when the `if` action runs |
+| `then` | Action / Action[] | Actions to run when `condition` is true |
+| `else` | Action / Action[] | Optional. Actions to run when `condition` is false |
+
+- The condition counts as true when it evaluates to `true`, a non-zero number, a
+  non-empty string other than `"false"`, or a non-empty array or object. `false`,
+  `null`, a missing value, `0`, `""`, `"false"` and empty arrays and objects are false.
+  A condition that cannot be evaluated (a syntax error) is false.
+- Exactly one branch runs (or none, when the condition is false and there is no `else`).
+  The chosen branch runs like an action list, in order, in the current scope: loop
+  names from [`forEach`](#foreach) and names from [`with`](#with) stay visible.
+- Changing a variable the condition reads, from inside a branch, does not re-run the
+  `if` or switch branches.
+- `if` nests inside `forEach`, `with` and other `if` actions, and they nest inside it.
+- Inner actions keep their own analytics and event semantics: an `emit` in a branch
+  emits exactly as it would outside the `if`. The `if` itself emits nothing.
+- Engines released before `if` do not know the action type: the iOS and Android SDKs
+  reject the screen that contains it (a decode error), the web renderer skips the action.
+  Use `if` only in apps whose engines support it.
+
 ---
 
 ## Network Actions
