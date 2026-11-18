@@ -716,9 +716,9 @@ Run one of two action lists depending on a condition.
 - `if` nests inside `forEach`, `with` and other `if` actions, and they nest inside it.
 - Inner actions keep their own analytics and event semantics: an `emit` in a branch
   emits exactly as it would outside the `if`. The `if` itself emits nothing.
-- Engines released before `if` do not know the action type: the iOS and Android SDKs
-  reject the screen that contains it (a decode error), the web renderer skips the action.
-  Use `if` only in apps whose engines support it.
+- Engines released before `if` reject the screen that contains it (iOS and Android: a
+  decode error; the web renderer skips the action). Engines from this release on skip
+  action types they do not know (see [Unknown action types](#unknown-action-types)).
 
 ---
 
@@ -910,6 +910,13 @@ Screen lifecycle and timer events.
 | `repeats` | boolean | false | Whether to repeat |
 
 ---
+
+## Unknown action types
+
+An action whose `type` the engine does not know (written for a newer DSL) is skipped: it
+runs nothing, the engine logs one diagnostic naming the type, and the actions after it in
+the list and the rest of the screen work as usual. Engines before this release rejected the
+whole screen (iOS and Android: a decode error); the web renderer has always skipped them.
 
 ## Action Arrays
 
