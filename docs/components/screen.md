@@ -24,7 +24,7 @@ See [navigation.md — Navigation Bar](../navigation.md#navigation-bar) for full
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `title` | string | Navigation bar title text |
+| `title` | string / expression | Navigation bar title text; an expression updates when its variables change |
 | `backLabel` | string | Custom back button label |
 | `hidden` | boolean | Hide the navigation bar |
 | `leftAction` | BarAction | Leading bar button item |

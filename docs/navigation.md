@@ -296,7 +296,7 @@ Configure the navigation bar for each screen.
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `title` | string | Navigation bar title (ignored when `titleView` is set) |
+| `title` | string / expression | Navigation bar title (ignored when `titleView` is set). An expression like any text property (`"{{count}} items"`, `"{{selected.name}}"`): it updates when its variables change, large title included |
 | `largeTitle` | boolean | Show `title` as a large title: iOS `prefersLargeTitles` (34pt bold under the bar, moving with the content and collapsing into the inline title as it scrolls). Use it for a tab's root screen title instead of a label or a collection row. Needs a plain `title` (no `titleView`, no `search`); `titleColor` applies to the inline title only. Android ignores it: set `topAppBar: "large"` for the same role |
 | `titleView` | Component | Custom DSL component rendered as the nav bar title |
 | `titleAlignment` | string | `"left"` places `titleView` as left bar item; `"center"` (default) uses standard title area |
