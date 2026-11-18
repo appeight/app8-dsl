@@ -156,7 +156,15 @@ A new DSL feature lands only when both columns are filled (see
 | `haptic` styles | ✓ | planned | Nearest `HapticFeedbackConstants` |
 | Vertical paging collection (`pagingStyle: paging`, `itemHeight: "fill"`, `currentPageVariable` on `type: vertical`) | ✓ | ✓ | One page per swipe or flick, no automatic safe-area insets. iOS: `isPagingEnabled` when a page is the frame, else a one-page snap; Android: `VerticalPager` with `PagerSnapDistance.atMost(1)`. Web renderer: one page per wheel notch or trackpad swipe |
 | `if` action (`condition`, `then`, `else`) | ✓ | ✓ | Condition evaluated once; `"false"`, `0`, empty and unevaluable conditions are false. Web renderer: same rules |
+| `stackView` `style.layoutMargins` (`top`, `leading`, `bottom`, `trailing`) | ✓ | ✓ | iOS `directionalLayoutMargins` + `isLayoutMarginsRelativeArrangement`; Android and web renderer: margins in the stack's solver constraints |
+| `sortBy(array, key, ascending)`, `merge(a, b)` expression functions | ✓ | ✓ | Shared input/output table in the conformance repo (`fixtures/functions/sortBy-merge.json`), run by each renderer's tests |
+| Array and object literals in expressions (`[…]`, `{key: value}`, nested braces) | ✓ | ✓ | Web renderer: same grammar |
+| Expressions in `navigationBar.title` (live updates) | ✓ | ✓ | Web renderer: iOS and Android bars |
+| `image` source without `type` (`url` → remote, `asset` / `name` → local) | ✓ | ✓ | Web renderer: same inference |
+| Bundle font files on the web renderer (`@font-face` per manifest font with a `file`) | — | — | Web renderer only; native apps already register bundle font files through the host |
 | Unknown action types are skipped (one diagnostic, the list and screen go on) | ✓ | ✓ | Earlier iOS and Android releases reject the screen. Web renderer: always skipped |
+| Section headers in `grid` collections (`groupBy`, `sectionDefinitions`), `section.items` in header scope | ✓ | ✓ | Web renderer: same |
+| `button` `isEnabled` coercion (`false`, `0`, strings other than `"true"`/`"1"` disable) | ✓ | ✓ | Disabled: no actions, no tap analytics; custom path alpha 0.4 on all renderers |
 | Per-node `ios` / `android` overrides | planned | planned | DSL 1.1 |
 | `app.platforms` floors | planned | planned | DSL 1.1 |
 
