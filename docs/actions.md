@@ -594,6 +594,28 @@ like `request`: put what depends on the answer in `onGranted` / `onDenied`.
 To remember a per-item answer, write to a persisted app
 variable in `onGranted` (see [variables.md → Persisted Variables](variables.md#persisted-variables)).
 
+### Capture Photo
+
+`capturePhoto` opens the camera or the photo library, stores the photo on the device
+and returns a `photo://` reference to keep in a persisted variable and show in an
+`image`; `deletePhoto` removes one. Full reference: [photos.md](photos.md).
+
+```json
+{
+  "type": "capturePhoto",
+  "source": "camera",
+  "camera": "front",
+  "aspectRatio": 1,
+  "resultVariable": "avatar",
+  "onCancel": [],
+  "onError": { "type": "updateVariable", "variableName": "photoError", "value": "{{error.code}}" }
+}
+```
+
+```json
+{ "type": "deletePhoto", "ref": "{{avatar}}" }
+```
+
 ---
 
 ## Function Actions

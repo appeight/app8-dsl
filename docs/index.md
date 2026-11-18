@@ -178,6 +178,8 @@ A minimal app with one screen and a button:
 | `showAlert` | Present a native alert | [actions.md](actions.md#show-alert) |
 | `haptic` | Trigger haptic feedback | [actions.md](actions.md#haptic) |
 | `openURL` | Open a URL | [actions.md](actions.md#open-url) |
+| `capturePhoto` | Take or pick a photo and store it on the device | [photos.md](photos.md#capturephoto) |
+| `deletePhoto` | Remove a stored photo | [photos.md](photos.md#deletephoto) |
 | `emit` | Fire typed event to the host event bus | [events.md](events.md) |
 
 ## Expression Syntax
@@ -204,6 +206,7 @@ See [variables.md](variables.md) for full expression documentation.
 - [layout.md](layout.md) - Layout and constraint system
 - [variables.md](variables.md) - Variables and expression syntax
 - [actions.md](actions.md) - Actions and event triggers
+- [photos.md](photos.md) - Capture, store and show photos on the device
 - [gestures.md](gestures.md) - Continuous gesture → variable bindings (`pan`), and composing custom controls
 - [context-menu.md](context-menu.md) - Long-press preview and actions (iOS context menu, Android quick-view sheet)
 - [navigation.md](navigation.md) - Navigation and flow system

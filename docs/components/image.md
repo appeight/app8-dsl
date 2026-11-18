@@ -37,6 +37,17 @@ then as an image compiled into the host app, else nothing. So an app's own files
 
 An image with none of these draws nothing (its background and size still apply).
 
+## Photo references
+
+A `url` (or `name`) that is a photo reference, `photo://<id>` from
+[`capturePhoto`](../photos.md#capturephoto), shows the photo stored on the device.
+Every image style applies. A deleted or unknown photo draws nothing, like an empty
+`url`.
+
+```json
+{ "type": "image", "content": { "properties": { "url": "{{entry.photo}}" }, "style": { "contentMode": "scaleAspectFill" } } }
+```
+
 ## Style: ImageStyle
 
 | Property | Type | Description |

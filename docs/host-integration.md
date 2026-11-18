@@ -160,6 +160,17 @@ Modules usually need data the engine does not have (an auth token, an upload end
 
 ---
 
+## Photos
+
+The [`capturePhoto`](photos.md) action uses the system camera and photo library. On
+iOS the host's `Info.plist` must have `NSCameraUsageDescription` (the text of the
+camera permission prompt); without it the camera reports `unavailable` instead of
+opening. The library needs no usage string (`PHPickerViewController`). Android needs
+no setup. Stored photos are removed by `App8.clearPersistedData()`. Details:
+[photos.md → Host setup](photos.md#host-setup).
+
+---
+
 ## Localization
 
 The host owns the active locale. `getTranslations()` supplies the bundle once at boot; `instance.setLocale(_:)` switches language at runtime; `instance.currentLocale` reports the resolved locale. See [localization.md](localization.md) for the bundle shape and fallback chain.
