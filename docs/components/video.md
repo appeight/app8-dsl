@@ -8,17 +8,24 @@ behaviors, timing controls (`startDelay` / `startTime` / `rate`), per-clip audio
 
 > **Sources:** a `localAsset` bundled in the host app target (`.mp4` / `.mov` / `.m4v`),
 > or a `remoteAsset` resolved at runtime through the data source (the host's prefetched
-> asset cache) — exactly like `image`. Use `remoteAsset` for backend/uploaded videos;
-> `localAsset` only works when the file is compiled into the app target.
+> asset cache) — exactly like `image`. Use `remoteAsset` for backend/uploaded videos.
+> A `localAsset` name that is not in the app target is looked up in the host's asset map
+> next (as for `image`), so a stored bundle's `assets.json` names play either way.
+>
+> **`type` is optional.** Without it, a `name`, `id` or `url` is a `remoteAsset` (data
+> source by id/name, then the URL); with none of them the video is `none`. A poster
+> without `type` is `remoteAsset` when it has a `name` or `id`, `url` when it has only a
+> `url`, `frameAtTime` when it has only a `time`, and `firstFrame` otherwise. All
+> renderers apply the same rule.
 
 ## Content Properties
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `properties.type` | string | Source type: `localAsset`, `remoteAsset`, or `none` |
+| `properties.type` | string | Source type: `localAsset`, `remoteAsset`, or `none`. Optional: inferred from `name` / `id` / `url` (see Sources) |
 | `properties.name` | string | For `localAsset`: bundle resource name (`"intro"` / `"intro.mp4"`). For `remoteAsset`: the asset's name/filename as listed by the host (e.g. `assets.json`). |
 | `properties.id` | string | `remoteAsset` only — the backend asset id. The data source resolves by `id` first, then `name`. |
-| `properties.url` | string | `remoteAsset` only — an explicit URL to stream when the asset isn't in the data source. |
+| `properties.url` | string | `remoteAsset` only — an explicit URL to stream when the asset isn't in the data source. A value that is not an absolute URL is an asset name (as for `image`) and resolves through the data source by name. |
 | `properties.autoplay` | boolean | Start playing when on-screen. Default `true` |
 | `properties.loop` | boolean | Seamlessly loop playback. Default `true` |
 | `properties.muted` | boolean | Mute audio. Default `true` |
@@ -105,13 +112,15 @@ A `poster` is a still shown before playback starts and held during `startDelay`;
 out when the first frame begins to play. `endPoster` is shown after completion under
 `endBehavior: "showPoster"`. Both are a `PosterSource` object:
 
+`type` may be omitted; it is inferred from the fields (see Sources at the top).
+
 | `type` | Fields | Source |
 |--------|--------|--------|
 | `firstFrame` | — | The clip's frame at `t=0`, generated on device. |
 | `frameAtTime` | `time` (seconds) | A generated frame at the given time. |
 | `remoteAsset` | `name` / `id` | An image resolved through the data source (host's asset cache), like `image`. |
 | `url` | `url` | An image loaded from an explicit URL. |
-| `localAsset` | `name` | An image bundled in the app target (`UIImage(named:)`). |
+| `localAsset` | `name` | An image bundled in the app target (`UIImage(named:)`), else the host's asset map. |
 
 ## Timing
 
