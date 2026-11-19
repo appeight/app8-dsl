@@ -68,9 +68,15 @@ haptic and the tab accessibility traits: only its drawing changes.
 | `component` | string | — | A component template that draws the whole bar (see below). `variant` is ignored; `background` still applies. |
 
 The selection is instant; the indicator moves with a cubic ease-out of
-0.3 s that a new tap retargets from where it is. Labels in the `text`
-variant use `tintColor` (selected) and `unselectedColor`, except with
-`selection: opacity`, where both use `tintColor` and the opacity differs.
+0.3 s that a new tap retargets from where it is. Each tab gets an equal slot;
+the indicator centres on the selected slot and sizes to its label (capsule:
+label width + 28, at most 34 tall; box: label width + 20, at most 28 tall,
+square corners; underline: the label's width, 2 pt, 5 pt under it).
+`indicatorColor` defaults to `tintColor`; a capsule without one is the tint
+at 12% opacity, a faint pill like the system's.
+Labels take their colour from `text` / `selectedText`; without a text style
+they use `tintColor` (selected) and `unselectedColor`. `height` is a request:
+a platform whose system bar has a fixed height (iOS) keeps it.
 
 ### Custom bar component
 
