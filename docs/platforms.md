@@ -21,7 +21,7 @@ conventions, so the app feels at home on each:
 | Tab bar (`tabBarScreen`) | `UITabBar` (floating glass capsule on iOS 26) | Material 3 Expressive short navigation bar (64dp; icon beside label from 600dp wide) |
 | Press feedback (`button`) | Highlight and dim | Ripple |
 | Scroll edges | Rubber band and bounce | Stretch overscroll |
-| Scroll indicators | Thin overlay bars that fade | None by default |
+| Scroll indicators | Thin overlay bars that fade. Vertical lists and scroll views show one by default; horizontal collections and horizontal sections only with `showsScrollIndicator: true` | None |
 | `system` font | SF Pro | Roboto (Google Sans on Pixel when available) |
 | `corner.curve: continuous` | Continuous (squircle) corners | Continuous corners, drawn as a path |
 | Sheets (`presentation: sheet`) | `UISheetPresentationController` | Material 3 modal bottom sheet |
