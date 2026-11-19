@@ -219,15 +219,16 @@ it is passed to the system camera app as a hint, which most camera apps follow.
 
 ## Versioning
 
-`capturePhoto`, `deletePhoto` and photo references in `image` are introduced by
-**DSL 1.2**, shipped in release train **0.8.0** on iOS, Android and the web renderer.
-What older engines do (checked in their code):
+`capturePhoto`, `deletePhoto` and photo references in `image` arrive with release
+train **0.7.2** on iOS, Android and the web renderer. `DSL_VERSION` stays `1.1`: features
+are tracked by release (see [VERSIONING](../VERSIONING.md)). What older engines do
+(checked in their code):
 
 | Engine | `capturePhoto` / `deletePhoto` | `image` with a `photo://` url |
 |--------|--------------------------------|-------------------------------|
-| iOS and Android 0.7.x | Decoded as an [unknown action type](actions.md#unknown-action-types): one `Unknown action type … skipped` diagnostic, the rest of the list runs. A capture button does nothing | The value has `://`, so it is tried as a remote URL: the host data source has no such asset, the URL load fails, the image draws nothing (its background shows) |
-| iOS and Android before 0.7.0 | The screen fails to decode | As 0.7.x |
-| Web renderer before 0.8.0 | Skipped (it has always skipped unknown types) | Not an `http(s)` URL or bundle asset: nothing is drawn |
+| iOS and Android 0.7.0 and 0.7.1 | Decoded as an [unknown action type](actions.md#unknown-action-types): one `Unknown action type … skipped` diagnostic, the rest of the list runs. A capture button does nothing | The value has `://`, so it is tried as a remote URL: the host data source has no such asset, the URL load fails, the image draws nothing (its background shows) |
+| iOS and Android before 0.7.0 | The screen fails to decode | As 0.7.0 |
+| Web renderer before 0.7.2 | Skipped (it has always skipped unknown types) | Not an `http(s)` URL or bundle asset: nothing is drawn |
 
-Ship screens that capture only to hosts on 0.8.0 or later. Screens that only show
-photos are safe on 0.7.x and degrade to empty images.
+Ship screens that capture only to hosts on 0.7.2 or later. Screens that only show
+photos are safe on 0.7.0 and 0.7.1 and degrade to empty images.
