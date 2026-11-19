@@ -13,7 +13,7 @@ conventions, so the app feels at home on each:
 
 | Concern | iOS | Android |
 |---|---|---|
-| Navigation bar | `UINavigationBar`, large titles, chevron back button | Material 3 top app bar (64dp; `navigationBar.topAppBar` picks `small`, `centerAligned`, `medium` or `large`), arrow back button. Transparent at rest, `surfaceContainer` once content scrolls under it (no blur, no shadow). Over a hero (`topEdgeEffect: hidden`): icons on legibility circles until the hero scrolls away |
+| Navigation bar | `UINavigationBar`, large titles, chevron back button | Material 3 top app bar (64dp; `navigationBar.topAppBar` picks `small`, `centerAligned`, `medium` or `large`), arrow back button. Transparent at rest, `surfaceContainer` once content scrolls under it (no blur, no shadow). Over a hero (`topEdgeEffect: hidden`): icons on legibility circles until the hero scrolls away; with any other `topEdgeEffect` over a hero drawn under the bar, the same circles while the bar is at rest. A root screen (first screen of a tab, flow or modal) whose bar has no title, `titleView`, items or search draws no bar, only the status bar inset. Icon buttons carry TalkBack labels (back arrow "Navigate up"; items their `label`, else a name from the symbol) |
 | Navigation bar search (`navigationBar.search`) | `UISearchController` (iOS 26 integrated field) | Material 3 app bar with search (56dp field, 4dp above and below, `surfaceContainer` once content scrolls under it; with `hidesWhenScrolling: true` it hides on scroll down and returns on scroll up); own row for `stacked`; expanding action for `integratedButton` |
 | Screen transitions (`transition`) | Custom `UIViewControllerAnimatedTransitioning` | Authored transitions on Navigation 3; `system` is Material shared axis X (450ms); predictive back scrubs the authored pop, or previews `system` at 90% scale |
 | Back navigation | Edge swipe | System back gesture with predictive back preview |
@@ -24,7 +24,7 @@ conventions, so the app feels at home on each:
 | Scroll indicators | Thin overlay bars that fade. Vertical lists and scroll views show one by default; horizontal collections and horizontal sections only with `showsScrollIndicator: true` | None |
 | `system` font | SF Pro | Roboto (Google Sans on Pixel when available) |
 | `corner.curve: continuous` | Continuous (squircle) corners | Continuous corners, drawn as a path |
-| Sheets (`presentation: sheet`) | `UISheetPresentationController` | Material 3 modal bottom sheet |
+| Sheets (`presentation: sheet`) | `UISheetPresentationController` | Material 3 modal bottom sheet: `surfaceContainerLow`, the large detent starts at the status bar (no 10pt gap, nothing scales behind it) |
 | Alerts (`showAlert`) | `UIAlertController` | Material 3 `AlertDialog` |
 | Haptics (`haptic`) | `UIFeedbackGenerator` | `HapticFeedbackConstants` |
 | `openURL` in sheet | `SFSafariViewController` | Custom Tabs |
@@ -211,9 +211,15 @@ dark) toward the label color, the same hue as the background:
 Mixing is per sRGB channel, rounded to 8 bits; `onPrimary` is black or white
 by the accent's luminance. Elevation adds no tint (`surfaceTint` is clear).
 
-**Navigation bar items** keep the DSL tab colors, like iOS: selected
-`tintColor` (default system blue), unselected `unselectedColor` (default
-system gray). The selected indicator pill is the selected color at 14% alpha.
+**Navigation bar items**: selected `tintColor` (default the scheme's
+`primary`); unselected `unselectedColor` while it reaches 4.5:1 against the
+bar's `surfaceContainer` (alpha composited), else `onSurfaceVariant`, so tab
+labels stay readable (the iOS gray defaults read 2.3–3:1 there). The selected
+indicator pill is the selected color at 14% alpha.
+
+**Screen backgrounds**: a screen without its own `backgroundColor` shows
+`surface`; in a bottom sheet it shows the sheet's `surfaceContainerLow`. A
+screen's own `backgroundColor` (brand content) is drawn as authored.
 
 **Light and dark** follow the app's appearance (`userInterfaceStyle`, then
 `defaultUserInterfaceStyle`, then the system); `{light, dark}` DSL colors
@@ -223,8 +229,9 @@ resolve for that appearance before the scheme is built.
 `App8Config(dynamicColor = true)`; the app's tints then no longer re-theme
 chrome. The web renderer always draws the app's colors.
 
-Where the DSL sets a color explicitly (tab bar tint and unselected color,
-navigation bar and search tint), Android uses that exact color, as iOS does.
+Where the DSL sets a color explicitly (tab bar tint, navigation bar and
+search tint), Android uses that exact color, as iOS does. The one exception is
+an unselected tab color below 4.5:1, replaced as above.
 
 ## Input controls
 
