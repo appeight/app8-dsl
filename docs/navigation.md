@@ -423,10 +423,44 @@ screen.
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `label` | string | Button text |
-| `icon` | string | SF Symbol name (alternative to label) |
+| `label` | string / expression | Button text |
+| `icon` | string / expression | SF Symbol name (alternative to label). Android draws the matching Material Symbol (`heart.fill` is the filled `favorite`) |
 | `style` | string | `"bold"`, `"destructive"` |
-| `action` | Action | Action to execute |
+| `color` | Color / expression | The button's tint; wins over `style: "destructive"` and the bar's `tintColor`. An expression must give a hex color, else the field is left unset |
+| `action` | Action / Action[] | Action, or actions run in order, when tapped |
+
+`icon`, `label` and `color` are expressions like `title`: they resolve in the screen's
+scope (screen, then app variables) and update when their variables change, on
+`leftAction`, `rightAction` and every item of `rightActions`. A bar heart that follows
+a wishlist:
+
+```json
+{
+  "navigationBar": {
+    "title": "{{product.title}}",
+    "rightActions": [
+      {
+        "icon": "{{includes(wishlist, product.handle) ? 'heart.fill' : 'heart'}}",
+        "color": "{{includes(wishlist, product.handle) ? '#FF2D55' : '#000000'}}",
+        "action": [
+          { "type": "toggleArrayValue", "variableName": "wishlist", "value": "{{product.handle}}" },
+          { "type": "haptic", "hapticStyle": "light" }
+        ]
+      }
+    ]
+  }
+}
+```
+
+| Platform | Update |
+|----------|--------|
+| iOS | The same `UIBarButtonItem` gets the new image (SF Symbol replace transition), title or tint in place: the Liquid Glass group is not rebuilt and does not flicker |
+| Android | The top app bar item recomposes with the new Material Symbol, text or tint |
+| Web renderer | The bar re-renders with the screen, in both iOS and Android modes |
+
+An `icon` that resolves to an empty string draws an empty button. Before 0.7.3, `icon` and
+`label` were read as plain text, `color` was resolved once (iOS) and an `action` array
+failed the screen on iOS and Android.
 
 ### Examples
 
