@@ -142,7 +142,7 @@ field on the transition overrides the preset's value.
 |--------|--------------|----------|
 | `slide` | push | Incoming enters from `edge` (default trailing); outgoing parallaxes the opposite way. The default tunable push. |
 | `fade` / `crossDissolve` | push | Incoming fades in over the outgoing. |
-| `scale` / `zoom` | modal | Incoming scales up from 92% while fading in (spring). With `sourceKey`, `zoom` is the **native zoom** from a source element instead. See [Native zoom](#native-zoom-from-a-source-element). |
+| `scale` / `zoom` | modal | Incoming scales up from 92% while fading in (spring). With `sourceKey`, `zoom` is the **native zoom** from a source element instead, and it follows the action's `presentation` (a push unless `mode: "modal"`). See [Native zoom](#native-zoom-from-a-source-element). |
 | `cover` | modal | Incoming slides in from `edge` (default bottom); pairs well with `dimming`. |
 | `popup` | modal | **Sized** centered card (scale + fade, dimming, rounded). See [Sized modal presentation](#sized-modal-presentation-popups--sheets). |
 | `sheet` | modal | **Sized** bottom-anchored card (slides up, dimming, rounded top, swipe-to-dismiss). See [Sized modal presentation](#sized-modal-presentation-popups--sheets). |
