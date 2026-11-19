@@ -31,6 +31,9 @@ A local asset name resolves through the app's asset map first (the host's
 then as an image compiled into the host app, else nothing. So an app's own files
 (a logo, a stripe) can be referenced by name as `localAsset` or `remoteAsset`.
 
+Names and URLs are expressions like any text: in a collection cell,
+`"name": "{{item.image}}"` resolves in the cell's scope before the lookup.
+
 ```json
 { "type": "image", "content": { "properties": { "url": "https://example.com/hero.jpg" } } }
 ```
