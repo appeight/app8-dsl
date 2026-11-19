@@ -161,6 +161,7 @@ A new DSL feature lands only when both columns are filled (see
 | `sortBy(array, key, ascending)`, `merge(a, b)` expression functions | ✓ | ✓ | Shared input/output table in the conformance repo (`fixtures/functions/sortBy-merge.json`), run by each renderer's tests |
 | Array and object literals in expressions (`[…]`, `{key: value}`, nested braces) | ✓ | ✓ | Web renderer: same grammar |
 | Expressions in `navigationBar.title` (live updates) | ✓ | ✓ | Web renderer: iOS and Android bars |
+| Expressions in bar items' `icon`, `label`, `color` (live updates); `action` as an array | ✓ | ✓ | `leftAction`, `rightAction`, `rightActions`. iOS updates the `UIBarButtonItem` in place (symbol replace transition); Android recomposes the top app bar item. Web renderer: iOS and Android bars |
 | `image` source without `type` (`url` → remote, `asset` / `name` → local) | ✓ | ✓ | Web renderer: same inference |
 | Bundle font files on the web renderer (`@font-face` per manifest font with a `file`) | — | — | Web renderer only; native apps already register bundle font files through the host |
 | Unknown action types are skipped (one diagnostic, the list and screen go on) | ✓ | ✓ | Earlier iOS and Android releases reject the screen. Web renderer: always skipped |
