@@ -499,7 +499,9 @@ Glass adapts to what is behind it, as iOS 26 Liquid Glass does: over dark
 content it is dark glass with light symbols and text, over light content light
 glass with dark ones. It follows the content as it scrolls, with a short
 cross-fade and enough hysteresis not to flicker while a photo passes under it.
-To pin it, set `glassAppearance` on the view's `style`, or on a tab bar
+This applies to regular glass (`glass: "normal"`, the tab bar, floating
+controls); `glass: "clear"` keeps its dimmed look over any content, as iOS 26
+clear glass does. To pin it, set `glassAppearance` on the view's `style`, or on a tab bar
 screen's `content.style` for the tab bar. (`navigationBar.glassAppearance` pins
 the bar's glass items on the web; native navigation bars use the system's
 adaptive glass.)
