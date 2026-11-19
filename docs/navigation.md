@@ -300,7 +300,7 @@ Configure the navigation bar for each screen.
 | `largeTitle` | boolean | Show `title` as a large title: iOS `prefersLargeTitles` (34pt bold under the bar, moving with the content and collapsing into the inline title as it scrolls). Use it for a tab's root screen title instead of a label or a collection row. Needs a plain `title` (no `titleView`, no `search`); `titleColor` applies to the inline title only. Android ignores it: set `topAppBar: "large"` for the same role |
 | `titleView` | Component | Custom DSL component rendered as the nav bar title |
 | `titleAlignment` | string | `"left"` places `titleView` as left bar item; `"center"` (default) uses standard title area |
-| `backLabel` | string | Custom back button label (ignored when `titleView` is set) |
+| `backLabel` | string | Custom back button label (ignored when `titleView` is set). Like the default back button, it shows only on a pushed screen: the root of a stack (a tab's first screen, a flow's start screen) has none |
 | `hidden` | boolean | Hide navigation bar |
 | `hidesBackButton` | boolean | Hide the back button on a pushed screen (back swipe still works). For a search screen whose field takes the back button's place; leave the screen with `search.onCancel` |
 | `leftAction` | BarAction | Left bar button (ignored when `titleAlignment: "left"`) |
