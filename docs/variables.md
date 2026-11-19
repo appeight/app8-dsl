@@ -558,10 +558,14 @@ a cart, a wishlist, a chosen variant per product.
 - `resetVariables` resets a persisted variable to `initialValue` and clears its
   stored value.
 - Do not persist secrets. Storage is not encrypted.
+- Photos: a persisted variable can hold a `photo://` reference from
+  [`capturePhoto`](photos.md); the photo file lives as long as some persisted
+  variable mentions it ([cleanup](photos.md#cleanup)).
 - Stored values belong to the device, not to a user. A host with sign-in calls
   `App8.clearPersistedData()` (iOS) / `App8.clearPersistedData(context)`
   (Android) when its signed-in user changes, so the next user's apps start from
-  `initialValue`. Close running app instances first.
+  `initialValue`. Close running app instances first. The same call deletes the
+  apps' stored [photos](photos.md#reset).
 
 ## Computed Variables
 
