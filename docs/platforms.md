@@ -199,6 +199,7 @@ A new DSL feature lands only when both columns are filled (see
 | `button` `isEnabled` coercion (`false`, `0`, strings other than `"true"`/`"1"` disable) | ✓ | ✓ | Disabled: no actions, no tap analytics; custom path alpha 0.4 on all renderers |
 | Photos: `capturePhoto`, `deletePhoto`, `photo://` references in `image`, launch cleanup, removal by `clearPersistedData` ([photos.md](photos.md)) | ✓ | ✓ | iOS: `UIImagePickerController` camera, `PHPickerViewController` library, action sheet chooser. Android: system camera (`ACTION_IMAGE_CAPTURE`), Photo Picker, bottom sheet chooser. Web renderer: in-page `getUserMedia` camera (file input fallback), file input library, IndexedDB storage. Release 0.7.2; 0.7.0 and 0.7.1 skip both actions and draw a `photo://` image empty, earlier iOS/Android releases reject the screen |
 | [Unknown and mistyped values](index.md#unknown-and-mistyped-values) are ignored, never fatal (0.7.10; a mistyped value takes its default, the component and screen stay; one `value.ignored` warning per value; out-of-range numbers clamped) | ✓ (0.7.10) | ✓ (0.7.10) | Earlier releases: iOS and the web renderer rejected the screen (iOS error screen) on a mistyped value on the screen's own fields and dropped a whole child for one bad property; Android dropped a whole child, and some inputs (huge sizes, negative insets, inverted ranges, `NaN` numbers, an unregistered collection template id on iOS) crashed. Web renderer: same rules; its editor preview outlines a component that failed to render |
+| Screen `userInterfaceStyle` (`light` / `dark` for one screen: content, bar, back button, status bar, alerts and sheets) | ✓ (0.7.10) | ✓ (0.7.10) | iOS: `overrideUserInterfaceStyle` on the screen's view controller, the navigation bar follows the top screen with the push/pop transition. Android: a color scheme per screen for its content, top app bar and dialogs; system bar icons follow the top screen. Web renderer: same, in iOS and Android modes. See [screen.md](components/screen.md#light-and-dark) |
 | Per-node `ios` / `android` overrides | ✓ (0.7.9) | planned | DSL 1.1. iOS applies them to raw JSON before decoding: screens, templates and every nested component slot |
 | `app.platforms` floors | planned | planned | DSL 1.1 |
 
@@ -254,7 +255,11 @@ screen's own `backgroundColor` (brand content) is drawn as authored.
 
 **Light and dark** follow the app's appearance (`userInterfaceStyle`, then
 `defaultUserInterfaceStyle`, then the system); `{light, dark}` DSL colors
-resolve for that appearance before the scheme is built.
+resolve for that appearance before the scheme is built. A screen with its own
+`userInterfaceStyle` ([screen.md](components/screen.md#light-and-dark)) gets
+its own scheme, built for that style: its content, top app bar, dialogs and
+sheets use it, and the status and navigation bar icons follow the screen on
+top (light icons over a dark screen).
 
 **Dynamic color** (wallpaper palette) is off. A native host can opt in with
 `App8Config(dynamicColor = true)`; the app's tints then no longer re-theme

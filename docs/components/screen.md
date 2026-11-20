@@ -17,6 +17,7 @@ Top-level container for a screen.
 | `hidesTabBar` | boolean | Hide the tab bar when this screen is pushed |
 | `swipeBackEnabled` | boolean | Allow the interactive swipe-back (edge-pan pop) gesture while this screen is on top (default `true`). Set `false` for a forward-only screen — see [navigation.md — Disabling swipe-back](../navigation.md#disabling-swipe-back) |
 | `dismissKeyboardOnTap` | boolean | Dismiss keyboard when tapping outside inputs (default `true`) |
+| `userInterfaceStyle` | string | `"light"` or `"dark"`: this screen's appearance, whatever the app's. Absent: the screen follows the app. See [Light and dark](#light-and-dark) below. Since 0.7.10 |
 
 ## Navigation Bar
 
@@ -53,6 +54,48 @@ See [navigation.md — Bottom Bar](../navigation.md#bottom-bar) for layout, back
 | `hidden` | [boolean](../variables.md#boolean-coercion)/expression | Hide the bar (animated, 0.33 s cubic ease-out) |
 
 The bar's height is added to the screen's bottom safe area, so scroll content gets the matching bottom inset. Above a tab bar when one is shown.
+
+## Light and dark
+
+A screen follows the app's appearance (the host's `userInterfaceStyle`, then the
+app's `defaultUserInterfaceStyle`, then the system). `userInterfaceStyle` gives
+one screen its own:
+
+```json
+{
+  "type": "screen",
+  "id": "player",
+  "content": {
+    "userInterfaceStyle": "dark",
+    "navigationBar": { "title": "Now playing" },
+    "children": [ ]
+  }
+}
+```
+
+It works like iOS `overrideUserInterfaceStyle` on the screen's view controller.
+While the screen is shown, everything drawn for it uses that style:
+
+- every `{light, dark}` color and every system color on the screen, and its
+  default background;
+- its navigation bar: title, bar buttons and their iOS 26 glass, the back
+  button (dark glass with a white chevron on a dark screen), the search field;
+  on Android the top app bar and its icons;
+- the status bar (light content on a dark screen) and, on Android, the system
+  bar icons;
+- alerts and menus shown by the screen, and sheets and modals presented from
+  it, unless the presented screen sets `userInterfaceStyle` itself (UIKit
+  passes the presenting controller's traits to the presented one).
+
+Other screens keep their own style. Pushing a dark screen in a light app
+switches the bar to dark with the push, and popping back switches it to light
+again; an interactive pop that is cancelled keeps the dark bar. Screens pushed
+from a dark screen follow the app unless they set `userInterfaceStyle` too.
+The tab bar of a `tabBarScreen` keeps the app's style.
+
+Use it for screens whose design is always dark (players, camera, photo
+viewers, hero screens) in a light app, or the reverse. Engines before 0.7.10
+ignore it and draw the screen in the app's style.
 
 ## Event Triggers
 
