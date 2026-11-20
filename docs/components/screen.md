@@ -83,7 +83,9 @@ While the screen is shown, everything drawn for it uses that style:
   on Android the top app bar and its icons;
 - the status bar (light content on a dark screen) and, on Android, the system
   bar icons;
-- alerts, sheets and menus presented from the screen.
+- alerts and menus shown by the screen, and sheets and modals presented from
+  it, unless the presented screen sets `userInterfaceStyle` itself (UIKit
+  passes the presenting controller's traits to the presented one).
 
 Other screens keep their own style. Pushing a dark screen in a light app
 switches the bar to dark with the push, and popping back switches it to light
