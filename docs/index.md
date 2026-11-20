@@ -80,7 +80,7 @@ A minimal app with one screen and a button:
 
 | Key | Description |
 |-----|-------------|
-| `app` | App metadata and global variables |
+| `app` | App metadata and global variables; `minEngineVersion`, the oldest engine release that renders the app ([host-integration.md](host-integration.md#minimum-engine-version)) |
 | `navigation` | Flow definitions and start flow |
 | `screens` | Screen definitions by ID |
 | `templates` | Reusable component templates |

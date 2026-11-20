@@ -171,6 +171,40 @@ no setup. Stored photos are removed by `App8.clearPersistedData()`. Details:
 
 ---
 
+## Minimum engine version
+
+An app can name the oldest engine release that renders it correctly:
+
+```json
+{
+  "app": { "name": "Shop", "minEngineVersion": "0.7.0" }
+}
+```
+
+`minEngineVersion` is an engine release (`x.y.z`, the release train in
+[VERSIONING.md](../VERSIONING.md): `EngineVersion.current` on iOS,
+`EngineVersion.CURRENT` on Android), not the DSL version. Compare versions
+numerically part by part; missing parts are 0 and a `-suffix` is ignored.
+
+The engine does not check it. The host does, before it starts the engine:
+when the installed engine is older, it shows its own native screen (for
+example, asking the user to update the app) instead of the app. An app with
+no `minEngineVersion` opens as before.
+
+A host whose server delivers bundles may also work the minimum out from the
+features a bundle uses, from the release notes (`releases/<version>.md` lists
+what each release adds), and deliver it next to the bundle so apps already
+published are covered. A value in `app.json` should then only raise the
+computed one. Features an older engine ignores with the same result (for
+example `defer`, 0.6.8) do not need a newer engine.
+
+Older engines run an app whose features they lack in different ways: before
+0.7.0 an unknown action type rejects its whole screen; an unknown component or
+enum value may fail to decode; an unknown key is ignored, so its part is
+missing. A minimum engine version lets the host avoid all three.
+
+---
+
 ## Localization
 
 The host owns the active locale. `getTranslations()` supplies the bundle once at boot; `instance.setLocale(_:)` switches language at runtime; `instance.currentLocale` reports the resolved locale. See [localization.md](localization.md) for the bundle shape and fallback chain.
