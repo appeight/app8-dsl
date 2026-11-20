@@ -287,6 +287,7 @@ For complex layouts, use explicit constraints.
 Any other pair relates like to like (`type` to the same attribute). An edge on a
 centre makes two halves without multipliers:
 
+<!-- @dsl-skip: constraint fragment -->
 ```json
 { "type": "trailing", "target": "superview", "attribute": "centerX", "constant": -6 }
 ```
