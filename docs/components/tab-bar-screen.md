@@ -12,7 +12,7 @@ Tab-based navigation container.
 | `unselectedColor` | Color | Unselected tab color |
 | `badgeColor` | Color | Badge background (default system red) |
 | `badgeTextColor` | Color | Badge text (default white) |
-| `barStyle` | BarStyle | Optional: draw the bar differently or replace it with a component template. See [Bar style](#bar-style). Without it the platform bar is drawn (default). |
+| `barStyle` | BarStyle | Optional: draw the bar differently or replace it with a component template. See [Bar style](#bar-style). Without it the platform bar is drawn (default). Since 0.7.8. |
 | `properties.isHidden` | [boolean](../variables.md#boolean-coercion)/expression | Hide component; see [Visibility](../components.md#visibility) |
 
 ## Tab Structure
@@ -49,6 +49,9 @@ Tab-based navigation container.
 ```
 
 ## Bar style
+
+> Since 0.7.8 on iOS, Android and the web renderer. Engines up to 0.7.7 ignore
+> `barStyle` and draw the platform bar.
 
 For apps whose voice the system bar does not fit. The system bar stays the
 default; every key is optional. A styled or custom bar keeps the bar's place,
