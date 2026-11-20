@@ -137,8 +137,9 @@ Horizontally scrolling list.
 |----------|------|---------|-------------|
 | `type` | string | | `"horizontal"` |
 | `itemSpacing` | number | `0` | Space between items |
-| `itemWidth` | number / `"fill"` | | Fixed item width. `"fill"`: the collection's width minus horizontal insets |
+| `itemWidth` | number / `"fill"` / `"auto"` | | Fixed item width. `"fill"`: the collection's width minus horizontal insets. `"auto"`: each item is as wide as its content (see [Items sized to content](#items-sized-to-content)) |
 | `itemHeight` | number / `"fill"` | | Fixed item height. `"fill"`: each item is as tall as the collection's frame minus vertical insets (a full-screen pager) |
+| `estimatedItemWidth` | number | | First guess for `itemWidth: "auto"` items before they are measured. Without `itemWidth` it also turns on sizing to content (the form engines before 0.7.9 understand) |
 | `rows` | number | `1` | Number of rows in a multi-row horizontal carousel |
 | `pagingStyle` | string | `"continuous"` | `"continuous"` (free scroll), `"paging"` (page by item width), `"pagingCentered"` (page with centered item) |
 | `currentPageVariable` | string | | Plain variable name for the current page index. Two-way: paging writes it, and a write from elsewhere (another screen, an action) scrolls the collection to that page without animation while it is off screen, animated while visible. Can be an app variable, so a full-screen gallery and the product carousel stay on the same page |
@@ -147,6 +148,43 @@ Horizontally scrolling list.
 | `showsScrollIndicator` | boolean | `false` | Show the horizontal scroll indicator. Off by default for every horizontal collection (carousels, chip rows, tab-like rows) and for horizontal sections in `sectionLayouts` / `defaultSectionLayout`; set `true` to show it. Android draws no scroll indicators ([platforms](platforms.md)) |
 
 > **Legacy**: `snapToItem: true` and `pagingEnabled: true` are accepted but `pagingStyle` is preferred.
+
+#### Items sized to content
+
+> Since 0.7.9 on iOS, Android and the web renderer. Engines up to 0.7.8 do not
+> know `"auto"` and fail to lay out the collection (on Android the whole screen).
+> For them, leave `itemWidth` out and set `estimatedItemWidth`: iOS and Android
+> already size such items to their content; the web renderer does since 0.7.9.
+
+`itemWidth: "auto"` sizes each item to its content, for chip rows, filter pills
+and tag strips: a chip hugs its label plus its insets, on one line, and the row
+scrolls when the chips are wider than the screen.
+
+- The width comes from the item's constraints, like a self-sizing list row on its
+  side: pin the label to the cell's leading and trailing edges with the insets as
+  constants. Labels in an auto-width item do not wrap (`numberOfLines` is treated
+  as 1 for the width).
+- The height is `itemHeight` (or `"fill"`), as for any horizontal collection (100 without it).
+- `itemSpacing`, `contentInsets`, `pagingStyle: "continuous"` and
+  `currentPageVariable` work as usual.
+- It applies to a collection whose own `layout` is horizontal. Horizontal
+  sections in `sectionLayouts` keep their fixed item size (`"auto"` there is the
+  default 120).
+
+```json
+{
+  "layout": {
+    "type": "horizontal",
+    "itemWidth": "auto",
+    "itemHeight": 36,
+    "itemSpacing": 8,
+    "contentInsets": { "left": 16, "right": 16 }
+  }
+}
+```
+
+A chip template for it: a label pinned 14 pt from the cell's leading and
+trailing edges and centred vertically; the cell's corner radius 18.
 
 ### Grid
 

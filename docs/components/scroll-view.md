@@ -63,6 +63,43 @@ Every vertically scrollable screen bounces: a drag past either edge stretches an
 
 A screen whose children are placed directly on the screen does not scroll at all. Put a screen's content in a vertical `scrollView` (or a `collection`) whenever it could be taller than the smallest device, or should feel scrollable.
 
+## Content size
+
+The scroll view's children sit in a content view pinned to its content edges.
+Vertical content is as wide as the scroll view and as tall as its children
+reach; horizontal content is as tall as the scroll view and as **wide as its
+children reach**: a horizontal `stackView` pinned leading and trailing (with
+insets as constants) takes its width from its arranged views, and no view is
+stretched to fill a guessed width, the last one included. A row shorter than
+the scroll view leaves the rest empty. Since 0.7.9 the web renderer does the
+same as iOS and Android (it stretched the last arranged view before).
+
+```json
+{
+  "type": "scrollView",
+  "content": {
+    "properties": { "direction": "horizontal", "showsIndicator": false },
+    "layout": { "height": 36, "constraints": [ … ] },
+    "children": [{
+      "type": "stackView",
+      "content": {
+        "properties": { "axis": "horizontal", "spacing": 8 },
+        "layout": { "constraints": [
+          { "type": "leading", "target": "superview", "constant": 16 },
+          { "type": "trailing", "target": "superview", "constant": -16 },
+          { "type": "top", "target": "superview" },
+          { "type": "bottom", "target": "superview" }
+        ] },
+        "children": [ "…chips: a view with a label pinned 14 pt inside…" ]
+      }
+    }]
+  }
+}
+```
+
+For a data-driven row, a horizontal `collection` with `itemWidth: "auto"` does
+the same ([collections](../collections.md#items-sized-to-content)).
+
 ## outputVariable
 
 When set, the variable receives the current scroll offset as a number:
