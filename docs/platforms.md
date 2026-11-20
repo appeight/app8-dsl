@@ -198,7 +198,7 @@ A new DSL feature lands only when both columns are filled (see
 | Section headers in `grid` collections (`groupBy`, `sectionDefinitions`), `section.items` in header scope | ✓ | ✓ | Web renderer: same |
 | `button` `isEnabled` coercion (`false`, `0`, strings other than `"true"`/`"1"` disable) | ✓ | ✓ | Disabled: no actions, no tap analytics; custom path alpha 0.4 on all renderers |
 | Photos: `capturePhoto`, `deletePhoto`, `photo://` references in `image`, launch cleanup, removal by `clearPersistedData` ([photos.md](photos.md)) | ✓ | ✓ | iOS: `UIImagePickerController` camera, `PHPickerViewController` library, action sheet chooser. Android: system camera (`ACTION_IMAGE_CAPTURE`), Photo Picker, bottom sheet chooser. Web renderer: in-page `getUserMedia` camera (file input fallback), file input library, IndexedDB storage. Release 0.7.2; 0.7.0 and 0.7.1 skip both actions and draw a `photo://` image empty, earlier iOS/Android releases reject the screen |
-| Per-node `ios` / `android` overrides | planned | planned | DSL 1.1 |
+| Per-node `ios` / `android` overrides | next | planned | DSL 1.1. iOS applies them to raw JSON before decoding: screens, templates and every nested component slot |
 | `app.platforms` floors | planned | planned | DSL 1.1 |
 
 Exact Android chrome numbers (heights, paddings, icon sizes, motion) and their
