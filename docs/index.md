@@ -35,7 +35,9 @@ only when its root is unusable: not an object, or no `type`.
 
 Authoring tools show what was ignored: an editor preview outlines a component
 that failed to render and names the warning. Share pages and apps render
-nothing for it.
+nothing for it. On iOS, `App8.showErrors` (on in debug builds, off in release
+builds) draws such a component as a red box instead; preview hosts may turn
+it on.
 
 ## Quick Start
 
