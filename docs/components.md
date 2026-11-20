@@ -185,7 +185,7 @@ automatically from the component `id`.)
 
 Trait values: `button`, `link`, `header`, `image`, `selected`, `disabled`,
 `adjustable`, `searchField`, `staticText`, `summaryElement`, `updatesFrequently`,
-`startsMediaSession`, `allowsDirectInteraction`.
+`startsMediaSession`, `allowsDirectInteraction`, `tab` (an item of a custom tab bar: a button that reads as a tab). Unknown trait names are ignored.
 
 ```json
 {
