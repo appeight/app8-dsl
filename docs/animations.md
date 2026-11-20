@@ -40,7 +40,7 @@ The same primitive shows up everywhere — one schema, one runner, one mental mo
 |-------|--------|
 | `beginFromCurrent` | Maps to `UIView.AnimationOptions.beginFromCurrentState` so a re-press during a release picks up the in-flight presentation values. |
 | `allowUserInteraction` | Permits touch input during the animation. |
-| `repeat` | Loops the animation. |
+| `repeat` | Loops the animation forever. See [Repeating animations](#repeating-animations). |
 | `autoreverse` | Plays back in reverse after each forward pass. |
 
 State-driven animations always run with `beginFromCurrentState` and `allowUserInteraction` added on top of whatever you specify in `options` — re-pressing during settle should always feel right. You don't need to pass them.
@@ -189,7 +189,7 @@ Per-property animation also takes precedence over the active state animation. Ra
 
 ### First apply
 
-The first time a property gets a value (component initialization, or first time a `dynamicBackgroundView` is added) is always **instantaneous** regardless of the descriptor — there's no meaningful "from" value to animate from. Subsequent variable-driven changes use the descriptor.
+The first time a property gets a value (component initialization, or first time a `dynamicBackgroundView` is added) is always **instantaneous** regardless of the descriptor — there's no meaningful "from" value to animate from. Subsequent variable-driven changes use the descriptor. The exception is a `repeat` animation, which starts its loop on the first apply (see [Repeating animations](#repeating-animations)).
 
 ### Notes
 
@@ -198,7 +198,7 @@ The first time a property gets a value (component initialization, or first time 
 
 ### transformRotation
 
-`view.properties.transformRotation`: degrees, clockwise, about the view's centre. A number or an expression, bare or wrapped with an `animation`. It composes with the other transform properties and with `style.transform` as translate, then rotate, then scale (iOS `CGAffineTransform(translationX:y:).rotated(by:).scaledBy(x:y:)`, Android `graphicsLayer { translationX; translationY; rotationZ; scaleX; scaleY }`, web `translate() rotate() scale()`). An animated change takes the shortest path only when the author writes it: the value interpolates numerically, so `0 → 180` turns clockwise and `180 → 0` turns back.
+`view.properties.transformRotation`: degrees, clockwise, about the view's centre. A number or an expression, bare or wrapped with an `animation`. It composes with the other transform properties and with `style.transform` as translate, then rotate, then scale (iOS `CGAffineTransform(translationX:y:).rotated(by:).scaledBy(x:y:)`, Android `graphicsLayer { translationX; translationY; rotationZ; scaleX; scaleY }`, web `translate() rotate() scale()`). An animated change takes the shortest path only when the author writes it: the value interpolates numerically, so `0 → 180` turns clockwise and `180 → 0` turns back. A full turn turns too: `0 → 360` spins once (since 0.7.9 on iOS, which stood still before because the start and end transforms are equal).
 
 A disclosure chevron that turns as its row opens:
 
@@ -216,6 +216,50 @@ A disclosure chevron that turns as its row opens:
     "children": [
       { "id": "chevron", "type": "icon", "content": { "properties": { "type": "symbol", "name": "chevron.down" } } }
     ]
+  }
+}
+```
+
+### Repeating animations
+
+> Since 0.7.9 on iOS, Android and the web renderer. Engines up to 0.7.8 play
+> a `repeat` once on the web, and an iOS rotation by a full turn does not move.
+
+A per-property `animation` with `"options": ["repeat"]` loops from the
+property's start value to its value, then starts over, for as long as the
+property keeps that value. With `autoreverse` it goes back and forth instead.
+
+- **Start value.** On a change, the previous value. On the first apply, and
+  whenever the view is set up again (a reused collection cell, a screen built
+  again), the property's rest value: `0` for `transformRotation`,
+  `transformTranslateX` and `transformTranslateY`, `1` for `transformScale` and
+  `alpha`. So a value that is already set when the view appears still loops: a
+  sticker with `"transformRotation": { "value": -360, "animation": { "duration": 10, "curve": "linear", "options": ["repeat"] } }`
+  spins from the start, and an expression such as `{{spin ? -360 : 0}}` spins
+  once `spin` turns true.
+- **Rotation is an angle.** A rotation interpolates the angle in degrees, not the
+  transform, so a full turn (`0 → -360`, `0 → 720`) spins instead of standing still
+  (the start and end transforms are the same).
+- **Always running while visible.** The loop runs whenever the view is on screen:
+  after a cell is reused or scrolled away and back, after a tab switch, under and
+  after a sheet, and after the app returns from the background. A loop that was
+  stopped by the platform restarts from its start value. Loops on views off
+  screen may be paused to save power.
+- **Stopping.** A change to a value without `repeat` (or to a bare value) stops
+  the loop and animates (or jumps) to the new value. A rest-value loop (`0 → 0`)
+  does nothing.
+- Repeat applies to the per-property `animation` of `transformRotation`,
+  `transformTranslateX`, `transformTranslateY`, `transformScale` and `alpha`.
+  State transitions ignore `repeat`.
+
+A ticker that scrolls a 1200 pt strip forever (for text, `scrollView.autoScroll`
+is usually simpler):
+
+```json
+{
+  "transformTranslateX": {
+    "value": -1200,
+    "animation": { "duration": 30, "curve": "linear", "options": ["repeat"] }
   }
 }
 ```

@@ -76,6 +76,33 @@ arrays and scalars replace). On the other platform it is ignored.
 }
 ```
 
+A screen takes overrides the same way, in `content.android` / `content.ios`
+(or on the screen node). They are merged before the screen is read, so they can
+change the `navigationBar`, for example to put a sheet's close button where each
+platform has it:
+
+```json
+{
+  "type": "screen",
+  "content": {
+    "navigationBar": {
+      "leftAction": { "label": "Clear", "action": { "type": "updateVariable", "variableName": "f", "value": "" } },
+      "rightAction": { "icon": "xmark", "action": { "type": "dismiss" } }
+    },
+    "android": {
+      "navigationBar": {
+        "leftAction": { "icon": "xmark", "label": null, "action": { "type": "dismiss" } },
+        "rightAction": { "label": "Clear", "icon": null, "action": { "type": "updateVariable", "variableName": "f", "value": "" } }
+      }
+    }
+  }
+}
+```
+
+A `null` in an override removes the key. The web renderer applies screen
+overrides since 0.7.9 (it used the iOS `navigationBar` in Android mode before);
+iOS and Android always did.
+
 A node can also exist on one platform only:
 
 ```json

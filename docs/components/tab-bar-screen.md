@@ -12,6 +12,7 @@ Tab-based navigation container.
 | `unselectedColor` | Color | Unselected tab color |
 | `badgeColor` | Color | Badge background (default system red) |
 | `badgeTextColor` | Color | Badge text (default white) |
+| `selectionIndicatorColor` | Color | Platform bar only: the selected item's highlight (iOS 26 glass bar selection, Android Material 3 indicator pill, web in both modes). Any colour, alpha included (`#00000014`, `rgba(...)`). Default: black at 10% opacity on a light bar, white at 10% on a dark bar. A `barStyle` bar keeps its own `indicatorColor`. Since 0.7.9 |
 | `barStyle` | BarStyle | Optional: draw the bar differently or replace it with a component template. See [Bar style](#bar-style). Without it the platform bar is drawn (default). Since 0.7.8. |
 | `properties.isHidden` | [boolean](../variables.md#boolean-coercion)/expression | Hide component; see [Visibility](../components.md#visibility) |
 
@@ -43,10 +44,33 @@ Tab-based navigation container.
     "tintColor": "#007AFF",
     "unselectedColor": "#8E8E93",
     "badgeColor": "#2D4D3A",
-    "badgeTextColor": "#FFFFFF"
+    "badgeTextColor": "#FFFFFF",
+    "selectionIndicatorColor": "#2D4D3A1F"
   }
 }
 ```
+
+### Selection indicator colour
+
+> Since 0.7.9 on iOS, Android and the web renderer. Engines up to 0.7.8 draw
+> the platform's own highlight (a grey on iOS 26, `secondaryContainer` on
+> Android) and ignore the key.
+
+`selectionIndicatorColor` paints the highlight behind the selected item of the
+platform bar:
+
+| Platform | What it colours |
+|----------|-----------------|
+| iOS 26 | The glass bar's selection pill behind the selected item (it moves with the selection; while a finger drags across the bar the system's clear lens shows) |
+| iOS 18 and earlier | Only when the key is set: a rounded highlight behind the selected item (the bar draws none of its own, and none is added by default) |
+| Android | The Material 3 navigation bar's indicator pill |
+| Web | The selection pill in iOS mode, the indicator pill in Android mode |
+
+Without the key the highlight is black at 10% opacity when the bar is light and
+white at 10% when it is dark (dark mode, or a dark bar background), so a brand
+tint is never mixed with the platform grey. Write the colour with alpha for a
+tinted highlight (`#1D1D1D1A`), or an opaque colour for a solid pill (then pick
+`tintColor` so the selected icon reads on it).
 
 ## Bar style
 

@@ -243,7 +243,7 @@ For complex layouts, use explicit constraints.
 |----------|------|----------|-------------|
 | `type` | Attribute | Yes | Attribute to constrain |
 | `target` | Target | No | What to constrain to. **Omit** for a self-dimension constraint (only valid when `type` is `width` or `height`) |
-| `attribute` | Attribute | No | Target's attribute (defaults to same as `type`) |
+| `attribute` | Attribute | No | Target's attribute (defaults to same as `type`). See [Attribute pairs](#attribute-pairs) |
 | `constant` | number | No | Offset value |
 | `multiplier` | number | No | Multiplier for relative constraints |
 | `op` | Relation | No | Relation between the two sides: `"="` (default), `"<="`, `">="` |
@@ -271,6 +271,30 @@ For complex layouts, use explicit constraints.
 | `safeArea(id)` | Safe area layout guide of the sibling component with that ID |
 | `sibling(id)` | Another component by ID |
 | `keyboard` | Keyboard frame |
+
+### Attribute pairs
+
+`type` and `attribute` must be on the same axis. These pairs relate as written:
+
+| `type` | `attribute` |
+|--------|-------------|
+| `leading`, `trailing` | `leading`, `trailing`, `centerX` |
+| `top`, `bottom` | `top`, `bottom`, `centerY` |
+| `centerX` | `centerX`, `leading`, `trailing` |
+| `centerY` | `centerY`, `top`, `bottom` |
+| `width`, `height` | `width`, `height` |
+
+Any other pair relates like to like (`type` to the same attribute). An edge on a
+centre makes two halves without multipliers:
+
+```json
+{ "type": "trailing", "target": "superview", "attribute": "centerX", "constant": -6 }
+```
+
+> Edges on a centre (`leading`/`trailing` → `centerX`, `top`/`bottom` → `centerY`)
+> since 0.7.9 on iOS, Android and the web renderer. Engines up to 0.7.8 relate
+> them like to like (the view spans the whole superview); `width` with
+> `multiplier: 0.5` works on every version.
 
 ### Relations (`op`)
 
