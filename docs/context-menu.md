@@ -70,7 +70,7 @@ Item titles are evaluated when the menu opens.
 
 | Platform | Native |
 |----------|--------|
-| iOS | `UIContextMenuInteraction` on the component's view. `previewProvider` returns a view controller that renders `preview.component` with `preferredContentSize` = width × height. Items become `UIAction`s in one `UIMenu`. `willPerformPreviewActionForMenuWith` runs `onPreviewTap` in `animator.addCompletion`, with `preferredCommitStyle = .pop`. The lift, blur and haptic are the system ones |
+| iOS | `UIContextMenuInteraction` on the component's view. `previewProvider` returns a view controller that renders `preview.component` with `preferredContentSize` = width × height. Items become `UIAction`s in one `UIMenu`. `willPerformPreviewActionForMenuWith` runs `onPreviewTap` in `animator.addAnimations` with `preferredCommitStyle = .pop`, its navigation without a transition of its own, so the expanding preview dissolves into the new screen (since 0.7.11; before, in `addCompletion`). `preview.cornerRadius` sets the `UIPreviewParameters.visiblePath` of the lift and dismissal and the platter's corners The lift, blur and haptic are the system ones |
 | Android | Long press with `HapticFeedbackType.LongPress` opens a Material 3 `ModalBottomSheet`: the preview component on top (interactive taps run `onPreviewTap`), then each item as a list row (leading icon, title, optional subtitle). Choosing a row closes the sheet and runs its actions. Android has no peek-and-pop pattern; a quick-view sheet is the platform convention |
 | Web | iOS: the screen blurs and dims, the preview scales in above a glass menu. Android: the bottom sheet |
 
