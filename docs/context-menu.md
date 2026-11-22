@@ -42,7 +42,7 @@ The menu replaces a `longPress` action on the same component. If both are set,
 | `component` | Component | Yes | Any component (inline or `templateId`). Laid out as its own root |
 | `width` | number | No | Preview width. Default: screen width − 32 |
 | `height` | number | No | Preview height. Default: the component's fitting height at `width` (its content's own height: no stretched gaps), at most 70% of the screen height |
-| `cornerRadius` | number | No | Corner radius of the preview's platter. Default: the platform's (iOS about 13 pt). Set `0` for a square brand. Since 0.7.11; earlier engines draw the platform corners |
+| `cornerRadius` | number | No | Corner radius of the preview. Default: the platform's (iOS about 13 pt). Set `0` for a square brand. iOS applies it to the lift and the dismissal; the expanded platter keeps the system corners. Since 0.7.11; earlier engines draw the platform corners |
 
 The preview is **not interactive**: it can show any content, but taps inside it
 only run `onPreviewTap`. Put controls (add to bag, wishlist) in `items`.
@@ -70,7 +70,7 @@ Item titles are evaluated when the menu opens.
 
 | Platform | Native |
 |----------|--------|
-| iOS | `UIContextMenuInteraction` on the component's view. `previewProvider` returns a view controller that renders `preview.component` with `preferredContentSize` = width × height. Items become `UIAction`s in one `UIMenu`. `willPerformPreviewActionForMenuWith` runs `onPreviewTap` in `animator.addAnimations` with `preferredCommitStyle = .pop`, its navigation without a transition of its own, so the expanding preview dissolves into the new screen (since 0.7.11; before, in `addCompletion`). `preview.cornerRadius` sets the `UIPreviewParameters.visiblePath` of the lift and dismissal and the platter's corners The lift, blur and haptic are the system ones |
+| iOS | `UIContextMenuInteraction` on the component's view. `previewProvider` returns a view controller that renders `preview.component` with `preferredContentSize` = width × height. Items become `UIAction`s in one `UIMenu`. `willPerformPreviewActionForMenuWith` runs `onPreviewTap` in `animator.addAnimations` with `preferredCommitStyle = .pop`, its navigation without a transition of its own, so the expanding preview dissolves into the new screen (since 0.7.11; before, in `addCompletion`). The screen a preview tap pushes is built while the menu is open (when the press begins), laid out at the window size so its images load, and pushed synchronously in the commit: no frame of the old screen and no empty images between the preview and the new screen. Item actions run when the menu's dismissal ends (`willEndFor` animator completion), so a zoom an item starts grows out of the card at rest instead of over the shrinking preview. `preview.cornerRadius` sets the `UIPreviewParameters.visiblePath` of the lift and the dismissal and the preview's own corners; the expanded platter keeps the system's corners (iOS 26 draws it from a portal of the preview, with no public corner setting). The lift, blur and haptic are the system ones |
 | Android | Long press with `HapticFeedbackType.LongPress` opens a Material 3 `ModalBottomSheet`: the preview component on top (interactive taps run `onPreviewTap`), then each item as a list row (leading icon, title, optional subtitle). Choosing a row closes the sheet and runs its actions. Android has no peek-and-pop pattern; a quick-view sheet is the platform convention |
 | Web | iOS: the screen blurs and dims, the preview scales in above a glass menu. Android: the bottom sheet |
 
