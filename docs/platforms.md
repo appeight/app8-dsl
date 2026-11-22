@@ -172,7 +172,7 @@ A new DSL feature lands only when both columns are filled (see
 | `scrollView` zoom (`minimumZoomScale`, `maximumZoomScale`, `doubleTapZoom`) | ✓ | ✓ | Android: telephoto `zoomable` |
 | `scrollView` `stretchesTopChild` | ✓ | ✓ | The hero (first child, descending into containers) scales about its bottom edge to fill the pull (0.7.11) |
 | `scrollView` `contentInsetAdjustment: bottom` | ✓ | ✓ | Only the bottom edge follows the safe area (0.7.11) |
-| `tabBarScreen` `barStyle.shape: edge` | ✓ | ✓ | Full-width square stripe flush with the bottom edge, exact `height` (0.7.11) |
+| `tabBarScreen` engine-drawn bar (`shape`, `cornerRadius`, `badgePlacement`, exact `height`) | ✓ | ✓ | Non-glass background: floating (inset, any corners) or edge stripe (0.7.11) |
 | `contextMenu.preview.cornerRadius` | ✓ | ✓ | iOS `UIPreviewParameters.visiblePath`; Android sheet preview clip (0.7.11) |
 | `zoom` transition with `sourceKey` | ✓ | ✓ | iOS 18 `preferredTransition = .zoom`; Android `sharedBounds` + predictive back |
 | Persisted app variables (`persist`) | ✓ | ✓ | iOS `UserDefaults`; Android DataStore |
