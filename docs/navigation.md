@@ -348,7 +348,9 @@ button that appears only while the field is focused. Never build a search bar fr
 | `onCancel` | Action \| Action[] | | Runs when the user taps the cancel ✕, after the field clears and loses focus. A dedicated search screen pops: `{ "type": "navigation", "isBack": true }` |
 
 A screen with only `search` (no `title`) shows just the field. Do not set `hidden: true`
-— that hides the field too.
+— that hides the field too. On iOS 26 such a bar with placement `stacked` or `automatic`
+is drawn as `integrated` with `fillsBar`: the field sits in the bar itself, not in a row
+under an empty title row (since 0.7.11).
 
 While focused, the field never leaves the bar's margins: it shortens to make room for the
 ✕ instead of sliding out past the leading edge, also on a screen with `rightActions`
