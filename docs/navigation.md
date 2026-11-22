@@ -636,7 +636,7 @@ Note: `rightActions` renders right-to-left — the first item in the array appea
 
 - The bar spans the full width of the screen. `component` is pinned to the bar's `insets` horizontally and vertically; its height is its fitting height (or its own `layout.height`). Other `layout` constraints on `component` are ignored.
 - The bar sits directly above the bottom safe area. When the screen shows a tab bar, that is above the tab bar; on a pushed screen with `hidesTabBar`, it is above the home indicator or gesture bar.
-- The bar's height (from its top edge to the bottom safe area) is **added to the screen's bottom safe area**. Scroll views and collections that reach the bottom of the screen get the matching bottom content inset, so their last item scrolls up clear of the bar, and anything constrained to `safeArea` bottom stays above it. A screen's own `additionalSafeAreaInsets.bottom` adds on top; it does not move the bar.
+- The bar's height (from its top edge to the bottom safe area) is **added to the screen's bottom safe area**. Scroll views and collections that reach the bottom of the screen get the matching bottom content inset, so their last item scrolls up clear of the bar — the screen's main vertical scroll view gets it even with `contentInsetAdjustment: "never"` (since 0.7.11; before, such a scroll view could not bring its last content out from under the bar), and anything constrained to `safeArea` bottom stays above it. A screen's own `additionalSafeAreaInsets.bottom` adds on top; it does not move the bar.
 - The bar draws above the screen's `children`.
 - The keyboard does not move the bar; it covers it like the rest of the bottom of the screen. Use the [`keyboard` layout target](layout.md) for content that must stay above the keyboard.
 

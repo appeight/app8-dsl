@@ -29,7 +29,7 @@ collection cell's root view.
 |----------|------|----------|-------------|
 | `preview` | ContextMenuPreview | No | The content shown above the menu. Omit it to lift the component itself |
 | `items` | ContextMenuItem[] | No | Menu actions, top to bottom. Empty or missing: preview only |
-| `onPreviewTap` | Action[] | No | Runs when the preview is tapped (iOS commit). Usually a navigation to the full screen |
+| `onPreviewTap` | Action[] | No | Runs when the preview is tapped (iOS commit). Usually a navigation to the full screen. Since 0.7.11 it runs as the preview starts to expand, and a navigation it starts skips its own transition: the expanding preview is the transition, and it dissolves straight into the new screen (as Mail and Photos open a previewed item). Before 0.7.11 the navigation ran after the expansion ended, with its own transition |
 | `isEnabled` | [boolean](variables.md#boolean-coercion)/expression | No | Default `true`. `false` turns the long press off |
 
 The menu replaces a `longPress` action on the same component. If both are set,
@@ -41,7 +41,8 @@ The menu replaces a `longPress` action on the same component. If both are set,
 |----------|------|----------|-------------|
 | `component` | Component | Yes | Any component (inline or `templateId`). Laid out as its own root |
 | `width` | number | No | Preview width. Default: screen width − 32 |
-| `height` | number | No | Preview height. Default: the component's fitting height at `width`, at most 70% of the screen height |
+| `height` | number | No | Preview height. Default: the component's fitting height at `width` (its content's own height: no stretched gaps), at most 70% of the screen height |
+| `cornerRadius` | number | No | Corner radius of the preview's platter. Default: the platform's (iOS about 13 pt). Set `0` for a square brand. Since 0.7.11; earlier engines draw the platform corners |
 
 The preview is **not interactive**: it can show any content, but taps inside it
 only run `onPreviewTap`. Put controls (add to bag, wishlist) in `items`.
@@ -57,7 +58,7 @@ only run `onPreviewTap`. Put controls (add to bag, wishlist) in `items`.
 | `destructive` | boolean | No | Red style |
 | `isEnabled` | [boolean](variables.md#boolean-coercion)/expression | No | Default `true` |
 | `hidden` | [boolean](variables.md#boolean-coercion)/expression | No | Default `false` |
-| `actions` | Action[] | Yes | Run after the menu closes |
+| `actions` | Action[] | Yes | Run after the menu closes. A navigation here keeps its own transition (a zoom from the source element runs once the preview has shrunk back onto it), as the system "Open" item does |
 
 ### Scope
 
