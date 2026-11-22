@@ -7,7 +7,7 @@ Text display component.
 | Property | Type | Description |
 |----------|------|-------------|
 | `properties.text` | string \| LocalizedString | Text content. A plain string (supports `{{expressions}}`) or the `{"$i18n": "key"}` localization marker — see [localization.md](../localization.md) |
-| `properties.numberOfLines` | number | Max lines (`0` = unlimited). Also settable via the text style |
+| `properties.numberOfLines` | number | Max lines (`0` = unlimited). Also settable via the text style. Set `1` on every label that is a one-liner by meaning: prices, totals, quantities, badges, button titles, tab and chip labels, dates. A one-line label hugs its text and never wraps, whatever its container; give its container room (or let it hug) instead of letting it wrap. Since 0.7.11 a label whose text changes re-measures, so a longer value never wraps because the shorter one fitted |
 | `properties.backgroundColor` | color/expression | Background color. Accepts an expression or the wrapped `{ value, animation }` form |
 | `properties.isHidden` | [boolean](../variables.md#boolean-coercion)/expression | Hide via expression, e.g. `"{{!isChecked}}"` |
 | `properties.spans` | Span[] | Inline rich-text overrides on character ranges — see [Spans](#spans) |

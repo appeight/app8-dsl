@@ -300,7 +300,7 @@ Configure the navigation bar for each screen.
 | `largeTitle` | boolean | Show `title` as a large title: iOS `prefersLargeTitles` (34pt bold under the bar, moving with the content and collapsing into the inline title as it scrolls). Use it for a tab's root screen title instead of a label or a collection row. Needs a plain `title` (no `titleView`, no `search`); `titleColor` applies to the inline title only. Android ignores it: set `topAppBar: "large"` for the same role |
 | `titleView` | Component | Custom DSL component rendered as the nav bar title |
 | `titleAlignment` | string | `"left"` places `titleView` as left bar item; `"center"` (default) uses standard title area |
-| `backLabel` | string | Custom back button label (ignored when `titleView` is set). Like the default back button, it shows only on a pushed screen: the root of a stack (a tab's first screen, a flow's start screen) has none |
+| `backLabel` | string | Custom back button label (ignored when `titleView` is set); `""` shows the chevron alone. Like the default back button, it shows only on a pushed screen: the root of a stack (a tab's first screen, a flow's start screen) has none. iOS keeps the system back button with this title (since 0.7.11; before, a custom bar item, which turned iOS 26's swipe-from-anywhere back gesture off) |
 | `hidden` | boolean | Hide navigation bar |
 | `hidesBackButton` | boolean | Hide the back button on a pushed screen (back swipe still works). For a search screen whose field takes the back button's place; leave the screen with `search.onCancel` |
 | `leftAction` | BarAction | Left bar button (ignored when `titleAlignment: "left"`) |
@@ -348,7 +348,9 @@ button that appears only while the field is focused. Never build a search bar fr
 | `onCancel` | Action \| Action[] | | Runs when the user taps the cancel ✕, after the field clears and loses focus. A dedicated search screen pops: `{ "type": "navigation", "isBack": true }` |
 
 A screen with only `search` (no `title`) shows just the field. Do not set `hidden: true`
-— that hides the field too.
+— that hides the field too. On iOS 26 such a bar with placement `stacked` or `automatic`
+is drawn as `integrated` with `fillsBar`: the field sits in the bar itself, not in a row
+under an empty title row (since 0.7.11).
 
 While focused, the field never leaves the bar's margins: it shortens to make room for the
 ✕ instead of sliding out past the leading edge, also on a screen with `rightActions`
@@ -636,7 +638,7 @@ Note: `rightActions` renders right-to-left — the first item in the array appea
 
 - The bar spans the full width of the screen. `component` is pinned to the bar's `insets` horizontally and vertically; its height is its fitting height (or its own `layout.height`). Other `layout` constraints on `component` are ignored.
 - The bar sits directly above the bottom safe area. When the screen shows a tab bar, that is above the tab bar; on a pushed screen with `hidesTabBar`, it is above the home indicator or gesture bar.
-- The bar's height (from its top edge to the bottom safe area) is **added to the screen's bottom safe area**. Scroll views and collections that reach the bottom of the screen get the matching bottom content inset, so their last item scrolls up clear of the bar, and anything constrained to `safeArea` bottom stays above it. A screen's own `additionalSafeAreaInsets.bottom` adds on top; it does not move the bar.
+- The bar's height (from its top edge to the bottom safe area) is **added to the screen's bottom safe area**. Scroll views and collections that reach the bottom of the screen get the matching bottom content inset, so their last item scrolls up clear of the bar — the screen's main vertical scroll view gets it even with `contentInsetAdjustment: "never"` (since 0.7.11; before, such a scroll view could not bring its last content out from under the bar), and anything constrained to `safeArea` bottom stays above it. A screen's own `additionalSafeAreaInsets.bottom` adds on top; it does not move the bar.
 - The bar draws above the screen's `children`.
 - The keyboard does not move the bar; it covers it like the rest of the bottom of the screen. Use the [`keyboard` layout target](layout.md) for content that must stay above the keyboard.
 

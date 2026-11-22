@@ -91,7 +91,12 @@ haptic and the tab accessibility traits: only its drawing changes.
 | `selectedText` | text style ref | `text` | Label style of the selected tab. |
 | `unselectedOpacity` | number 0–1 | 0.5 | Opacity of unselected labels with `selection: opacity`. |
 | `indicatorColor` | Color | `tintColor` | Colour of the capsule, underline or box. |
-| `height` | number | platform | Bar height above the safe area, at least 44. |
+| `shape` | string | `floating` | Since 0.7.11. `floating`: a bar inset from the screen's sides and sitting on the bottom safe area, like the iOS 26 tab bar. With `background: "glass"` it is the platform bar itself (iOS 26 glass capsule; Android and earlier iOS their own bar). With any other background (`solid`, a hex colour, a fill style) the engine draws it on every platform: same side insets as the iOS 26 bar (21 pt from each screen edge, 16 dp on Android), its bottom edge where the iOS 26 bar's is: 21 pt above the screen's bottom edge on a phone with a home indicator (13 pt into its 34 pt bottom safe area; measured on iOS 26.4), 8 pt above the bottom edge without one, no glass, no shadow, `cornerRadius` corners, exact `height`. `edge`: a full-width stripe with square corners, flush with the screen's bottom edge, its background under the home indicator, exact `height`. Engines up to 0.7.10 draw the platform bar On Android with three-button navigation (a bottom inset over 40 dp) the bar sits 8 dp above the navigation bar instead of overlapping its buttons. |
+| `cornerRadius` | number | half the height | Since 0.7.11. Corner radius of an engine-drawn `floating` bar (non-glass background): `0` is a rectangle, the default a capsule. Ignored for glass and `edge` |
+| `bottomOffset` | number | platform | Since 0.7.11. Engine-drawn `floating` bar only: points between the bar's bottom edge and the bottom safe area (home indicator / gesture bar); positive sits above it, negative reaches into it. Without it the bar sits where the platform's floating bar does (see `shape`) |
+| `sideInset` | number | platform | Since 0.7.11. Engine-drawn `floating` bar only: points from each screen edge (default the platform's, 21 pt on iOS, 16 dp on Android). Match the screen margin of the app's primary buttons (a bottom bar's `insets.left`/`right`) so the bar lines up with them |
+| `badgePlacement` | string | `corner` | Since 0.7.11. `corner`: the badge sits above the end of the label (or icon), as on the system bar. `inline`: the badge follows the label on the same line, vertically centred, 4 pt after it, and the label and badge are centred together in the tab's slot. Badges stay at full opacity on every tab, whatever `selection: opacity` does to the labels. Text bars and engine-drawn bars; the platform bar keeps `corner` |
+| `height` | number | platform | Bar height. Platform (glass) bar: a request, at least 44; a platform whose system bar has a fixed height (iOS) keeps it. Engine-drawn bar (`edge`, or `floating` with a non-glass background): at least 28 and honoured exactly; the tab screens' bottom safe area grows to the bar's top edge, so scroll content ends above it |
 | `component` | string | — | A component template that draws the whole bar (see below). `variant` is ignored; `background` still applies. |
 
 The selection is instant; the indicator moves with a cubic ease-out of
@@ -104,6 +109,24 @@ at 12% opacity, a faint pill like the system's.
 Labels take their colour from `text` / `selectedText`; without a text style
 they use `tintColor` (selected) and `unselectedColor`. `height` is a request:
 a platform whose system bar has a fixed height (iOS) keeps it.
+
+### Flat bars
+
+Brands whose voice is flat and square (streetwear, editorial) get a bar the
+engine draws instead of glass. A floating black rectangle, half the system
+height, labels in white, the selected one at full opacity, badges inline:
+
+```json
+"barStyle": {
+  "variant": "text", "shape": "floating", "background": "#000000", "cornerRadius": 0,
+  "height": 32, "selection": "opacity", "unselectedOpacity": 0.3,
+  "text": { "id": "tabLabelOnDark" }, "badgePlacement": "inline"
+}
+```
+
+with `badgeColor: "#FFFFFF"` and `badgeTextColor: "#000000"` so badges read on
+the dark bar. `shape: "edge"` makes the same bar a full-width stripe flush with
+the bottom edge.
 
 ### Custom bar component
 
