@@ -176,10 +176,24 @@ platform's interactive dismissal. Works for push and for modal presentation.
 | Field | Type | Description |
 |-------|------|-------------|
 | `sourceKey` | string/expression | Matches `content.transition.key` of an element on the **presenting** screen. Evaluated in the action's scope when the transition starts, and again in the presenting screen's scope when the dismissal starts, so the zoom can return to a different element (the current gallery page) |
-| `alignmentKey` | string/expression | Optional. An element on the **incoming** screen that the source lines up with (iOS `alignmentRectProvider`). Default: the whole screen |
+| `alignmentKey` | string/expression | Optional. An element on the **incoming** screen that the source lines up with (iOS `alignmentRectProvider`). Default: the incoming element with the same key as the source when both show a photo (a full-screen photo viewer whose pages carry the gallery's keys), else the whole screen. An aspect-fit image lines up by the picture it draws, not its frame (see "Lining up a photo") |
 | `dismissGesture` | `any` / `down` / `none` | Default `any`. `any`: drag in any direction (and pinch in) shrinks the screen toward the source; `down`: vertical drag only; `none`: no interactive dismissal |
 
 Rules:
+- **Lining up a photo.** When the alignment element (explicit, or the default
+  same-key photo) is an image drawn `scaleAspectFit` that fills its element
+  (a viewer page edge to edge, with bars above and below the photo), the zoom
+  lines up with the photo it draws: the centred part of that picture with the
+  source's shape. The card's aspect-filled photo and the viewer's aspect-fit
+  photo then coincide at both ends of the zoom: no bars, no size jump. Before
+  the viewer's image has loaded, the source photo's aspect stands in.
+- **Overlays.** The incoming screen's controls floating over the alignment
+  element (painted above its branch and overlapping it: a close button, a page
+  counter, a like button) do not follow the zoom's geometry. They keep their
+  size and place and fade: in over the second half of the opening, out over
+  the first 30% of the closing, and with the finger during an interactive
+  dismissal (back in if it is cancelled). Only the zoomed content (the photo
+  and the screen behind it) grows and shrinks.
 - A key that matches nothing on the presenting screen (cell scrolled away) falls
   back to a cross-dissolve, both ways.
 - The source element is hidden while the incoming screen is up, as the system does,
@@ -202,9 +216,9 @@ Rules:
 
 | Platform | Native |
 |----------|--------|
-| iOS 18+ | `viewController.preferredTransition = .zoom(options:) { context in sourceView(for: sourceKey) }`, pushed in the navigation stack (a push, never a modal). `UIZoomTransitionOptions.interactiveDismissShouldBegin` returns `false` for `dismissGesture: none` and for vertical-only when the pan is horizontal. `alignmentRectProvider` returns the `alignmentKey` element's frame, after laying out the incoming screen so collection cells exist (since 0.7.11; before, a gallery cell was not found and the whole screen zoomed). The same API serves push and modal present. The system zoom moves geometry only: it grows the new screen out of the source's frame and never cross-fades images. Use a source smaller than the screen that shows the same image as the alignment element (a card, a thumbnail); from a full-screen source there is nothing to grow and the new screen only fades in |
+| iOS 18+ | `viewController.preferredTransition = .zoom(options:) { context in sourceView(for: sourceKey) }`, pushed in the navigation stack (a push, never a modal). `UIZoomTransitionOptions.interactiveDismissShouldBegin` returns `false` for `dismissGesture: none` and for vertical-only when the pan is horizontal. `alignmentRectProvider` returns the `alignmentKey` element's frame (without `alignmentKey`: the same-key photo's), after laying out the incoming screen so collection cells exist (since 0.7.11; before, a gallery cell was not found and the whole screen zoomed). For an aspect-fit photo it returns the source-shaped part of the drawn picture, since UIKit fits the alignment rect into the source (since 0.7.14). The overlays are hidden for the transition and still copies of them at their own size fade above it in the transition coordinator's alongside animation, which the interactive dismissal scrubs (since 0.7.14). The same API serves push and modal present. The system zoom moves geometry only: it grows the new screen out of the source's frame and never cross-fades images. Use a source smaller than the screen that shows the same image as the alignment element (a card, a thumbnail); from a full-screen source there is nothing to grow and the new screen only fades in |
 | Android | The incoming screen is drawn posed on the source (scaled so the `alignmentKey` element covers the source rect, clipped to the source's shape and corner) and eased to full screen. When the source shows an image and the alignment element exists, a box travels from the source into the alignment element (which stays hidden until it lands) and back: it shows the source's image at the source and cross-dissolves into the alignment element's image on the way (both aspect-filled in the moving box), so neither end blinks when the two images differ: a shared-element morph. Cubic ease-out, about 0.36 s in and 0.32 s out. Dismiss: predictive back scrubs the shrink; with `dismissGesture: any`, a drag on a modal follows the finger with scale and completes past 25% or a fling |
-| Web | Same pose and morph as Android; drag-to-dismiss with rubber-banded scale on iOS. A source that fills (most of) the presenting screen keeps that screen's own overlays (labels, buttons, page dots) above the zooming screen: they fade out as it opens and the screen closes under them |
+| Web | Same pose and morph as Android; drag-to-dismiss with rubber-banded scale on iOS. Same default alignment (same-key photo, aspect-fit picture) and overlay fade as iOS: the overlays are counter-scaled against the zooming screen's pose and faded. A source that fills (most of) the presenting screen keeps that screen's own overlays (labels, buttons, page dots) above the zooming screen: they fade out as it opens and the screen closes under them |
 
 ---
 
