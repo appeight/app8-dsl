@@ -807,7 +807,7 @@ Map components write their runtime state into target variables. These are **writ
         "content": {
           "properties": { "text": "Hello, {{name}}!" },
           "layout": { "constraints": [
-            { "type": "top", "target": "nameField", "attribute": "bottom", "constant": 16 },
+            { "type": "top", "target": "sibling(nameField)", "attribute": "bottom", "constant": 16 },
             { "type": "centerX", "target": "superview" }
           ]}
         }

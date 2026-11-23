@@ -650,11 +650,27 @@ assets:
 
 | Type | Description |
 |------|-------------|
-| `auto` | Automatic |
-| `multiplier` | Multiple of font size |
+| `auto` | Automatic: the font's natural line height |
+| `multiplier` | Multiple of the font's natural line height (see below) |
 | `fontSizeFraction` | Fraction of font size |
 | `fixed` | Fixed value in points |
-| `interLineSpacing` | Additional spacing between lines |
+| `interLineSpacing` | Additional spacing between lines, in points |
+
+The **natural line height** is the font's own line height at its size: ascender +
+descender + line gap (`UIFont.lineHeight` on iOS). It depends on the font: about
+1.19 × the size for the system font (SF Pro), often 1.2 to 1.5 × for other
+fonts. `multiplier` multiplies it, as UIKit's `lineHeightMultiple` does: `1.0` is
+the font's default spacing, and the extra height goes above each line's glyphs.
+
+`multiplier` is not CSS `line-height`, which is a multiple of the font size. To
+carry a CSS value over, divide it by the font's natural height in em (CSS
+`line-height: 1.5` on a font whose natural height is 1.2 em is `multiplier`
+1.25), or use `fixed` with the size × the CSS value in points.
+
+> Every engine reads `multiplier` this way: iOS, the web renderer, and Android
+> (since 0.7.12 for bundle fonts too; up to 0.7.11 Android used SF Pro's natural
+> height for every font). Up to 0.7.11 this table said "multiple of font size",
+> which no engine did.
 
 ### LineHeight Example
 

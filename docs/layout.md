@@ -272,6 +272,12 @@ For complex layouts, use explicit constraints.
 | `sibling(id)` | Another component by ID |
 | `keyboard` | Keyboard frame |
 
+A bare ID (`"target": "photo"`) is read as `sibling(photo)` by every engine,
+for compatibility with older bundles. Write `sibling(id)`: a bare ID can't be
+told apart from a keyword (a component named `superview` or `keyboard`), and
+bundle lint and the web renderer warn on it (`constraint.bareTarget`, since
+0.7.12).
+
 ### Attribute pairs
 
 `type` and `attribute` must be on the same axis. These pairs relate as written:
@@ -361,7 +367,7 @@ Use a sibling target with `width` or `height` to match dimensions across compone
 {
   "layout": {
     "constraints": [
-      { "type": "height", "target": "safeCard", "attribute": "height" }
+      { "type": "height", "target": "sibling(safeCard)", "attribute": "height" }
     ]
   }
 }
@@ -464,7 +470,7 @@ Lock multiple spacers to the same value with sibling-dimension equality so they 
       "constraints": [
         { "type": "height", "constant": 16, "op": ">=" },
         { "type": "height", "constant": 50, "priority": "defaultLow" },
-        { "type": "height", "target": "spacerA", "attribute": "height" }
+        { "type": "height", "target": "sibling(spacerA)", "attribute": "height" }
       ]
     }
   }
@@ -479,7 +485,7 @@ Use to make two side-by-side views (e.g. cards in a row) visually equal regardle
 {
   "layout": {
     "constraints": [
-      { "type": "height", "target": "safeCard", "attribute": "height" }
+      { "type": "height", "target": "sibling(safeCard)", "attribute": "height" }
     ]
   }
 }
@@ -492,7 +498,20 @@ Use to make two side-by-side views (e.g. cards in a row) visually equal regardle
 When a view is an arranged subview of a `stackView`, the stack manages its position automatically. Sizing along the cross axis follows the stack's `alignment`; sizing along the main axis follows its `distribution`. The layout fields that take effect on the child are:
 
 - Top-level `width` / `height` shorthand.
-- `constraints[]` entries with `type: width` or `type: height` — both self-dimension clamps (omit `target`) and sibling-dimension equality (`target: "<sibling-id>"`, `attribute: "width|height"`).
+- `constraints[]` entries with `type: width` or `type: height` — both self-dimension clamps (omit `target`) and sibling-dimension equality (`target: "sibling(<id>)"`, `attribute: "width|height"`).
+
+A length along the stack's axis relative to the stack's own length (`height`
+with `target: "superview"` in a vertical stack, `width` in a horizontal one) is
+circular: the stack is as long as its children. Every engine gives it a priority
+just under `defaultHigh` (749) when it is `required`, so it holds whenever it
+can and yields to the arrangement and to the children's content sizes when it
+can't. For a minimum height write `{ "type": "height", "constant": 36, "op": ">=" }`
+(no target). Relations across axes (a height from the stack's width) stay as
+written.
+
+> Since 0.7.12. Up to 0.7.11 iOS kept it required, Auto Layout broke one of the
+> stack's own constraints, and the stack's content could draw over the view
+> above it; Android squeezed the next child to zero height.
 
 This is what enables priority-bearing flexible spacers and lockstep-equal sibling sizes inside a stack:
 

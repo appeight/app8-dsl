@@ -218,7 +218,7 @@ Without `itemHeight` or `aspectRatio`, grid items size to their content (`estima
 
 <!-- @dsl-skip: constraint fragment -->
 ```json
-{ "type": "top", "target": "cardInfo", "attribute": "bottom", "constant": 14, "op": ">=" }
+{ "type": "top", "target": "sibling(cardInfo)", "attribute": "bottom", "constant": 14, "op": ">=" }
 ```
 
 An item's natural height is the smallest one its constraints allow: a `>=` gap is measured at its minimum, never stretched to `estimatedItemHeight` or to a height the item had before. There is no fixed card height to keep in sync with the content.
