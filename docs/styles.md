@@ -187,6 +187,7 @@ Hex color values with optional theme support.
 | `#RRGGBB` | `#FF5500` | Standard hex |
 | `#RRGGBBAA` | `#FF550080` | With alpha |
 | Themed | `{ "light": "#000", "dark": "#FFF" }` | Light/dark theme |
+| Token ref | `{ "light": { "id": "brand" }, "dark": { "id": "brand" } }` | A side taken from a `color` style |
 
 ### Examples
 
@@ -203,6 +204,39 @@ Hex color values with optional theme support.
   "light": "#000000",
   "dark": "#FFFFFF"
 }
+```
+
+### Themed Colors and Color Tokens
+
+- Either side of a themed color may be absent (since 0.7.12; up to 0.7.11 the engines
+  needed both). The side that is present serves both appearances:
+  `{ "light": "#F5F5F0" }` is `#F5F5F0` in light and in dark. An empty object is
+  invalid.
+- Each side is a hex or `{ "id": "<style id>" }`, a reference to a shared style of type
+  `color` (a color token in `styles.json`). The light side takes the token's light
+  side, the dark side its dark side; a one-sided token serves both, as above. A token
+  may itself be a plain hex.
+- References work wherever a Color is accepted: fill `solid`, gradient stop colors,
+  an outline's fill, shadow `color`, text `color`, `tint` / `tintColor` and the rest.
+- A reference whose id names no `color` style counts as absent: the other side is
+  used. When neither side resolves, the color is clear (fully transparent). Engines
+  may log the unresolved id.
+
+<!-- @dsl-type: Fill -->
+```json
+{
+  "solid": { "light": { "id": "surface" }, "dark": { "id": "surface" } }
+}
+```
+
+with, in `styles.json`:
+
+<!-- @dsl-skip: styles.json fragment -->
+```json
+[
+  { "id": "surface", "type": "color", "content": { "light": "#F5F5F0", "dark": "#1C1C1E" } },
+  { "id": "accent", "type": "color", "content": { "light": "#1E6FD9" } }
+]
 ```
 
 ### Color Expressions
@@ -231,8 +265,8 @@ Color on this page:
 - The result must be a hex string in one of the formats above. `null`, an empty
   string or text that is not a color leaves the field unset (as if it were absent)
   and logs a `style.color.invalid` warning.
-- A themed color (`{ "light": …, "dark": … }`) takes plain hex values only; an
-  expression cannot return a themed pair. When both the state and the appearance
+- A themed color (`{ "light": …, "dark": … }`) takes hex values or `{ "id" }` token
+  references, not expressions; an expression cannot return a themed pair. When both the state and the appearance
   matter, put a themed color in each of two [states](states.md) and pick the state
   with a `defaultStateName` expression.
 
