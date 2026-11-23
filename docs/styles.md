@@ -208,7 +208,7 @@ Hex color values with optional theme support.
 
 ### Themed Colors and Color Tokens
 
-- Either side of a themed color may be absent (since 0.7.12; up to 0.7.11 the engines
+- Either side of a themed color may be absent (since 0.7.13; up to 0.7.12 the engines
   needed both). The side that is present serves both appearances:
   `{ "light": "#F5F5F0" }` is `#F5F5F0` in light and in dark. An empty object is
   invalid.
