@@ -481,6 +481,61 @@ Use these to convert raw data values into human-readable display strings.
 "text": "{{daysUntil(vaccination.nextDueDate) < 0 ? 'Overdue' : daysUntil(vaccination.nextDueDate) < 30 ? 'Due soon' : 'Up to date'}}"
 ```
 
+#### Clock, date arithmetic and the week
+
+Dates are strings: a date `"2026-11-25"` (`yyyy-MM-dd`, a calendar day in the device time zone) or an ISO 8601 date-time with `Z` or an offset (`"2026-11-25T09:30:00Z"`, `"…+01:00"`). A date function given anything else (another string, a number, `null`) returns `null`.
+
+| Function | Description | Example output |
+|----------|-------------|----------------|
+| `now()` | The current instant, UTC, whole seconds | `"2026-11-25T09:30:00Z"` |
+| `today()` | Today's date in the device time zone | `"2026-11-25"` |
+| `addDays(date, n)` | `n` days later (`n` truncated, may be negative). Keeps the input's shape: a date gives a date (`n` calendar days on), a date-time gives a date-time `n × 24 h` later | `"2026-12-02"` |
+| `addHours(date, n)` | `n` hours later, as a UTC date-time | `"2026-11-25T11:30:00Z"` |
+| `startOfDay(date)` | Midnight of the date's day in the device time zone, as a UTC date-time | `"2026-11-24T23:00:00Z"` |
+| `startOfWeek(date)` | The first day of the date's week, where the week starts on the locale's first weekday. Keeps the input's shape like `addDays`: a date gives a date, a date-time gives the start of that day as a UTC date-time (like `startOfDay`). Since 0.7.16 | `"2026-11-23"` (de-AT), `"2026-11-22"` (en-US) |
+| `weekdayIndex(date)` | The date's position in its week, `0`–`6`, where `0` is the locale's first weekday (a Monday is `0` in de-AT, `1` in en-US). Since 0.7.16 | `2` (de-AT), `3` (en-US) |
+
+`now()` and `today()` re-evaluate when the screen appears and on every `timer` tick; there is no running clock.
+
+**First weekday.** `startOfWeek` and `weekdayIndex` follow the device's region (and the user's "first day of week" setting where the platform has one), not the app's language: Monday in most of Europe (`de-AT`, `de-DE`, `en-GB`, `fr-FR`), Sunday in the US, Canada, Brazil and Japan (`en-US`, `pt-BR`, `ja-JP`), Saturday in some Middle Eastern regions (`ar-EG`, `fa-IR`). They use the CLDR week data of each platform's calendar. The weekday of a date-time is the weekday in the device time zone. Examples for Wednesday 25 November 2026:
+
+| Expression | en-US (Sunday) | de-AT (Monday) |
+|------------|----------------|----------------|
+| `startOfWeek('2026-11-25')` | `"2026-11-22"` | `"2026-11-23"` |
+| `weekdayIndex('2026-11-25')` | `3` | `2` |
+| `startOfWeek('2026-11-29')` (a Sunday) | `"2026-11-29"` | `"2026-11-23"` |
+| `weekdayIndex('2026-11-29')` | `0` | `6` |
+| `startOfWeek('2027-01-01')` (a Friday) | `"2026-12-27"` | `"2026-12-28"` |
+
+`addDays(startOfWeek(d), weekdayIndex(d))` is always `d` for a date `d`.
+
+**Recipe: a week strip.** Seven days of the current calendar week, starting on the locale's first weekday, with today highlighted:
+
+```json
+"variables": {
+  "weekDays": { "type": "array", "computed": "{{map([0, 1, 2, 3, 4, 5, 6], addDays(startOfWeek(today()), item))}}" },
+  "todayIndex": { "type": "number", "computed": "{{weekdayIndex(today())}}" }
+}
+```
+
+```json
+{
+  "type": "collection",
+  "content": {
+    "properties": { "data": "{{weekDays}}" },
+    "template": {
+      "type": "label",
+      "content": {
+        "properties": { "text": "{{formatDate(item, 'EEE')}} {{formatDate(item, 'd')}}" },
+        "style": { "text": { "color": "{{item == today() ? '#111111' : '#9CA3AF'}}" } }
+      }
+    }
+  }
+}
+```
+
+`todayIndex` is today's slot in `weekDays` (for a selected index or a scroll position). Engines before 0.7.16 do not know these functions: the expression fails and the text or list comes out empty.
+
 #### Number & Currency
 
 | Function | Description | Example output |
