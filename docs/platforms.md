@@ -147,6 +147,7 @@ A new DSL feature lands only when both columns are filled (see
 |---|---|---|---|
 | `view`, `label`, `image`, `icon`, `button`, `shape` | ✓ | planned | |
 | `stackView`, `scrollView`, `collection`, `pageControl` | ✓ | planned | |
+| `pageControl` `style` (`automatic`, `light`, `dark`) | ✓ | ✓ | Light or dark capsule and dots; `automatic` follows the screen's appearance. iOS and the web renderer blur the capsule, Android draws it a little more opaque. See [page-control.md](components/page-control.md#light-and-dark). Since 0.7.16 |
 | `textField`, `textView` | ✓ | ✓ | Look from DSL styles on both. Android: `BasicTextField`, IME `keyboardType`/`returnKeyType`, `textContentType` → autofill hints, `focus`/`blur` triggers, Material selection handles. See [Input controls](#input-controls) |
 | `toggle`, `slider` | ✓ | ✓ | Android: Material 3 `Switch` / `Slider` tinted by the DSL colors, laid out at the iOS size (51×31, 31pt tall) |
 | `picker` | ✓ | ✓ | `menu`: pop-up button + Material 3 exposed dropdown menu; `segmented`: Material 3 segmented buttons |
