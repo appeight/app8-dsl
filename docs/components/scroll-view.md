@@ -19,7 +19,7 @@ Scrollable container.
 | `properties.minimumZoomScale` | number | 1 | Smallest pinch zoom. See [Zoom](#zoom) |
 | `properties.maximumZoomScale` | number | 1 | Largest pinch zoom. Above 1 turns zoom on |
 | `properties.doubleTapZoom` | boolean | true when zoom is on | Double tap zooms to the tap point (2.5× or `maximumZoomScale`, whichever is smaller); double tap again zooms out |
-| `properties.stretchesTopChild` | boolean | false | Vertical only. Pull-down at the top keeps the first child pinned to the top edge and grows its height by the pull distance. See [Stretchy top](#stretchy-top) |
+| `properties.stretchesTopChild` | boolean | false | Vertical only. Pull-down at the top grows the hero (the first child) by the pull with its top on the top edge; only its background scales. See [Stretchy top](#stretchy-top) |
 | `children` | Component[] | | Content components |
 | `style` | ScrollViewStyle | | Styling |
 | `layout` | Layout | | Position and size |
@@ -157,31 +157,58 @@ zoom is on. Without zoom `outputVariable` keeps the plain offset number.
 
 `stretchesTopChild: true` gives the standard iOS stretchy header: when the
 content is pulled down at the top, the **hero** grows to fill the pulled
-distance, keeping its aspect ratio. Content below moves down with the pull as
-usual. Use it for a hero image, a cover or an image carousel at the top of a
-product, profile or story screen.
+distance. Content below moves down with the pull as usual. Use it for a hero
+image, a cover, a video or an image carousel at the top of a home, product,
+profile or story screen.
 
 The hero is the scroll view's first child; when that child is a container
-(a vertical `stackView`, or a `view` whose first child is pinned to its top),
-the engine descends to its first child, then repeats, so the usual
-`scrollView > stackView > heroBox` tree stretches the hero, not the whole
-content. Since 0.7.11.
+(a vertical `stackView`, or a `view` whose first child is a container pinned
+to its top), the engine descends to its first child, then repeats, so the
+usual `scrollView > stackView > heroBox` tree stretches the hero, not the
+whole content. A leaf pinned to a view's top (an image, a video, a pager) is
+that view's background, not its hero, so the descent stops at the view.
+Since 0.7.11.
 
-The hero scales uniformly about its bottom edge's centre: at a pull of `d`
-points a hero `h` tall scales by `(h + d) / h`, so its top stays on the scroll
-view's top edge and its sides grow past the screen edges (clipped by the
-scroll view), like Photos or App Store covers. Nothing else scales. A
-horizontal pager in the hero scales with it (the current page fills the top),
-and its paging still works after the pull ends.
+### What grows and what scales
+
+At a pull of `d` points, the hero's frame grows taller by `d`: its top stays
+on the scroll view's top edge and its bottom moves down with the content.
+
+- **The background scales.** Only the hero's background scales to cover the
+  taller frame, uniformly by `(h + d) / h` about the hero's bottom centre
+  (`h` is its height at rest), so it keeps its aspect ratio and its sides
+  grow past the screen edges (clipped by the scroll view), like Photos or App
+  Store covers. The background is the hero's own `material` (fill, texture,
+  gradient) and every child that covers the whole hero at rest: a photo, a
+  video, a photo pager, a scrim. A pager keeps its paging after the pull ends.
+- **Everything else is laid out again, never scaled.** Every other child
+  (buttons, labels, a page control, badges, a text block) keeps its
+  constraints inside the taller frame:
+  - a child pinned to the top stays at the top;
+  - a centred one re-centres;
+  - one pinned to the bottom moves down with it at its own size. That also
+    holds for a child pinned to both the top (or the safe area's top) and the
+    bottom, such as a text block whose height comes from its content: it
+    keeps its rest height and stays on the bottom.
+- **The hero is all background** when it is not a `view` with children (an
+  `image`, a `video`, a pager, a `stackView` with a height of its own). It
+  then scales as a whole.
+
+The hero keeps its rest height for the length of the pull, so a hero whose
+height comes from its content (`height >= width` plus children pinned to the
+safe area) still grows. Before 0.7.14 such a hero shrank as fast as it was
+pulled on iOS: the safe area stays fixed on screen inside a scroll view. The
+content below then never moved, as if the pull did nothing.
 
 | Platform | Behavior |
 |----------|----------|
-| iOS | In `scrollViewDidScroll`, with `contentOffset.y < -adjustedContentInset.top`, the hero gets the scale transform above (anchor at its bottom centre). The scroll view must bounce (`bounces` true, the default); it does with any `contentInsetAdjustment` |
-| Android | The same scale on the hero, driven by the overscroll of the pull at the top (the system stretch overscroll is turned off for this scroll view) |
-| Web | The same scale on the hero, driven by the rubber-banded pull (iOS mode) or the overscroll (Android mode) |
+| iOS | In `scrollViewDidScroll`, with `contentOffset.y < -adjustedContentInset.top`: the hero's height is held at its rest value, its content view's top moves up by `d` (its children are laid out again), and its material and covering children get the scale transform above. The scroll view must bounce (`bounces` true, the default); it does with any `contentInsetAdjustment` |
+| Android | The same rule, driven by the overscroll of the pull at the top (the system stretch overscroll is turned off for this scroll view) |
+| Web | The same rule, driven by the rubber-banded pull (iOS mode) or the overscroll (Android mode) |
 
-Before 0.7.11 iOS moved the first child's top and height constraints instead
-(a first child that was a stack moved with the pull and nothing grew), and the
+Before 0.7.14 the whole hero scaled, its buttons and labels included. Before
+0.7.11 iOS moved the first child's top and height constraints instead (a
+first child that was a stack moved with the pull and nothing grew), and the
 web renderer scaled the whole content.
 
 ## Style: ScrollViewStyle

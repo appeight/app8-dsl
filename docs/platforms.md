@@ -170,7 +170,7 @@ A new DSL feature lands only when both columns are filled (see
 | `picker` menu look (`style.label`, `indicator`), `bindKey` | ✓ | ✓ | iOS plain `UIButton` pull-down with `UIMenu`; Android text + icon anchoring `DropdownMenu` |
 | `contextMenu` (preview, items, `onPreviewTap`) | ✓ | ✓ | iOS `UIContextMenuInteraction`; Android long press opens a quick-view `ModalBottomSheet` |
 | `scrollView` zoom (`minimumZoomScale`, `maximumZoomScale`, `doubleTapZoom`) | ✓ | ✓ | Android: telephoto `zoomable` |
-| `scrollView` `stretchesTopChild` | ✓ | ✓ | The hero (first child, descending into containers) scales about its bottom edge to fill the pull (0.7.11) |
+| `scrollView` `stretchesTopChild` | ✓ | ✓ | The hero (first child, descending into containers) grows by the pull; only its background scales, its other children keep their constraints (0.7.14; 0.7.11 scaled the whole hero) |
 | `scrollView` `contentInsetAdjustment: bottom` | ✓ | ✓ | Only the bottom edge follows the safe area (0.7.11) |
 | `tabBarScreen` engine-drawn bar (`shape`, `cornerRadius`, `badgePlacement`, exact `height`) | ✓ | ✓ | Non-glass background: floating (inset, any corners) or edge stripe (0.7.11) |
 | `contextMenu.preview.cornerRadius` | ✓ | ✓ | iOS `UIPreviewParameters.visiblePath`; Android sheet preview clip (0.7.11) |
