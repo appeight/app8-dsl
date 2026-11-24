@@ -951,7 +951,7 @@ See [components/date-picker.md](components/date-picker.md).
 | `material` | Material | Background |
 | `alpha` | number | Opacity |
 
-See [components/page-control.md](components/page-control.md).
+The tints win over the dot colors of the control's `properties.style` (`automatic`, `light`, `dark`). See [components/page-control.md](components/page-control.md).
 
 ### ActivityIndicatorStyle
 
