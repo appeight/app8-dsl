@@ -245,7 +245,7 @@ For complex layouts, use explicit constraints.
 | `target` | Target | No | What to constrain to. **Omit** for a self-dimension constraint (only valid when `type` is `width` or `height`) |
 | `attribute` | Attribute | No | Target's attribute (defaults to same as `type`). See [Attribute pairs](#attribute-pairs) |
 | `constant` | number | No | Offset value |
-| `multiplier` | number | No | Multiplier for relative constraints |
+| `multiplier` | number | No | Multiplies the target's attribute (default 1): a dimension scales the target's dimension; on a position (edges, centres) it scales the target's position measured in the superview's bounds. See [Multipliers on positions](#multipliers-on-positions) |
 | `op` | Relation | No | Relation between the two sides: `"="` (default), `"<="`, `">="` |
 | `priority` | Priority | No | Constraint priority (default: required). See [Priorities](#priorities) |
 
@@ -302,6 +302,33 @@ centre makes two halves without multipliers:
 > since 0.7.9 on iOS, Android and the web renderer. Engines up to 0.7.8 relate
 > them like to like (the view spans the whole superview); `width` with
 > `multiplier: 0.5` works on every version.
+
+### Multipliers on positions
+
+On a position (`leading`, `trailing`, `top`, `bottom`, `centerX`, `centerY`) the
+multiplier scales the target's position measured from the superview's leading
+or top edge, as UIKit does: `type = target.attribute × multiplier + constant`,
+all in the superview's bounds. So a multiplier of 2 on `centerX` to the
+superview's `centerX` puts the view's centre on the superview's trailing edge,
+and `fx × 2` puts it at the fraction `fx` of the superview's width, wherever the
+superview itself sits on screen. Hotspot markers at fractions of a frame:
+
+<!-- @dsl-skip: constraint fragment -->
+```json
+{ "type": "centerX", "target": "superview", "multiplier": 1.24 },
+{ "type": "centerY", "target": "superview", "multiplier": 0.70 }
+```
+
+This marker's centre is at 62% of the frame's width and 35% of its height. A
+sibling target is measured in the same superview's bounds. A multiplier of 0 on a
+position is ignored (UIKit rejects it), and safe-area guides take no multiplier.
+
+> Since 0.7.17 on iOS and Android. Earlier engines ignored a multiplier on a
+> position (the view sat as if it were 1: every marker in the middle); the web
+> renderer applied it but also scaled the superview's own offset on screen. To
+> support older engines, size an empty view from the frame's corner
+> (`width` × 2fx, `height` × 2fy of the frame) and centre the marker on its
+> trailing and bottom edges.
 
 ### Relations (`op`)
 

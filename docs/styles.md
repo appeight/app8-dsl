@@ -270,6 +270,29 @@ Color on this page:
   matter, put a themed color in each of two [states](states.md) and pick the state
   with a `defaultStateName` expression.
 
+### Alpha Expressions
+
+`alpha` (every component style) is a number from 0 to 1 or an expression that
+evaluates to one, like the color fields above:
+
+```json
+"style": { "alpha": "{{length(answer) > 0 ? 1 : 0.35}}" }
+```
+
+- It resolves in the scope of the component that uses the style and re-evaluates
+  when a variable it reads changes; the view fades to the new value.
+- A number in a string (`"0.5"`) is read as the number. A result outside 0…1 is
+  clamped; a result that is not a number, and any other value (an object, an
+  array), leaves `alpha` unset (1) with a `value.ignored` warning.
+- `properties.alpha` on a `view` (an expression with its own `animation`) stays
+  the way to animate opacity with a custom timing.
+
+> Since 0.7.17 on iOS and Android; the web renderer always resolved it. Older iOS
+> engines failed the style on an expression: the component lost its style, and a
+> bottom bar's component failed the whole screen, which then never opened. Older
+> Android engines drew it opaque. Set `minEngineVersion` 0.7.17 when a bundle relies
+> on it.
+
 ---
 
 ## Fill
@@ -799,7 +822,7 @@ View transformations.
 | Property | Type |
 |----------|------|
 | `material` | Material |
-| `alpha` | number |
+| `alpha` | number / expression |
 | `contentMode` | ContentMode |
 | `transform` | Transform |
 
@@ -831,7 +854,7 @@ How a view positions or scales its content within its bounds. Available on `view
 |----------|------|
 | `text` | TextModel |
 | `material` | Material |
-| `alpha` | number |
+| `alpha` | number / expression |
 
 ### ButtonStyle
 
@@ -839,7 +862,7 @@ How a view positions or scales its content within its bounds. Available on `view
 |----------|------|
 | `text` | TextModel |
 | `material` | Material |
-| `alpha` | number |
+| `alpha` | number / expression |
 
 ### ImageStyle
 
@@ -850,7 +873,7 @@ How a view positions or scales its content within its bounds. Available on `view
 | `renderingMode` | RenderingMode |
 | `corner` | Corner |
 | `material` | Material |
-| `alpha` | number |
+| `alpha` | number / expression |
 
 ### IconStyle
 
@@ -865,7 +888,7 @@ How a view positions or scales its content within its bounds. Available on `view
 | `contentMode` | ContentMode | Content alignment |
 | `transform` | Transform | Icon transform |
 | `material` | Material | Background material |
-| `alpha` | number | Opacity (0.0-1.0) |
+| `alpha` | number / expression | Opacity (0.0-1.0) |
 
 ### RenderingMode Values (for Icons)
 
@@ -883,7 +906,7 @@ How a view positions or scales its content within its bounds. Available on `view
 | `tintColor` | Color |
 | `padding` | EdgeInsets |
 | `material` | Material |
-| `alpha` | number |
+| `alpha` | number / expression |
 
 ### TextViewStyle
 
@@ -894,7 +917,7 @@ How a view positions or scales its content within its bounds. Available on `view
 | `tintColor` | Color |
 | `padding` | EdgeInsets |
 | `material` | Material |
-| `alpha` | number |
+| `alpha` | number / expression |
 
 > Every component style below also accepts the shared `contentMode`, `alpha`, and `transform` fields (omitted from the per-component tables for brevity).
 
@@ -905,7 +928,7 @@ How a view positions or scales its content within its bounds. Available on `view
 | `onTintColor` | Color | Track color when on |
 | `thumbTintColor` | Color | Thumb color |
 | `material` | Material | Background |
-| `alpha` | number | Opacity |
+| `alpha` | number / expression | Opacity |
 
 See [components/toggle.md](components/toggle.md).
 
@@ -917,7 +940,7 @@ See [components/toggle.md](components/toggle.md).
 | `maximumTrackTintColor` | Color | Unfilled track |
 | `thumbTintColor` | Color | Thumb color |
 | `material` | Material | Background |
-| `alpha` | number | Opacity |
+| `alpha` | number / expression | Opacity |
 
 See [components/slider.md](components/slider.md).
 
@@ -928,7 +951,7 @@ See [components/slider.md](components/slider.md).
 | `text` | TextModel | Menu-mode label text |
 | `selectedSegmentTintColor` | Color | Selected segment (segmented mode) |
 | `material` | Material | Background |
-| `alpha` | number | Opacity |
+| `alpha` | number / expression | Opacity |
 
 See [components/picker.md](components/picker.md).
 
@@ -938,7 +961,7 @@ See [components/picker.md](components/picker.md).
 |----------|------|-------------|
 | `tintColor` | Color | Accent color for controls |
 | `material` | Material | Background |
-| `alpha` | number | Opacity |
+| `alpha` | number / expression | Opacity |
 
 See [components/date-picker.md](components/date-picker.md).
 
@@ -949,7 +972,7 @@ See [components/date-picker.md](components/date-picker.md).
 | `pageIndicatorTintColor` | Color | Inactive dot color |
 | `currentPageIndicatorTintColor` | Color | Active dot color |
 | `material` | Material | Background |
-| `alpha` | number | Opacity |
+| `alpha` | number / expression | Opacity |
 
 The tints win over the dot colors of the control's `properties.style` (`automatic`, `light`, `dark`). See [components/page-control.md](components/page-control.md).
 
@@ -960,7 +983,7 @@ The tints win over the dot colors of the control's `properties.style` (`automati
 | `indicatorStyle` | `medium` \| `large` | Spinner size |
 | `color` | Color (hex) | Spinner tint |
 | `material` | Material | Background |
-| `alpha` | number | Opacity |
+| `alpha` | number / expression | Opacity |
 
 See [components/activity-indicator.md](components/activity-indicator.md).
 
