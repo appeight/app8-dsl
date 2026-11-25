@@ -33,6 +33,14 @@ console, `[app8] <code>: …`). Coercions the DSL defines stay in force: the
 numeric strings where a property's docs allow them. A document fails to load
 only when its root is unusable: not an object, or no `type`.
 
+The same rules hold inside a value decoded on its own: a bottom bar's component
+and a context menu's preview component (since 0.7.17; before, one mistyped value
+there failed the screen on iOS and dropped the whole bar on Android, with no
+message in a release build). A screen that still cannot be decoded (its root is
+unusable) does not open: the engine logs it at error level with the screen id and
+the JSON path, in release builds too (iOS: the system log, subsystem
+`dev.app8.engine`; Android: logcat tag `App8`, code `screen.load.failed`).
+
 Authoring tools show what was ignored: an editor preview outlines a component
 that failed to render and names the warning. Share pages and apps render
 nothing for it. On iOS, `App8.showErrors` (on in debug builds, off in release
