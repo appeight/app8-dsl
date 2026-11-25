@@ -245,7 +245,7 @@ For complex layouts, use explicit constraints.
 | `target` | Target | No | What to constrain to. **Omit** for a self-dimension constraint (only valid when `type` is `width` or `height`) |
 | `attribute` | Attribute | No | Target's attribute (defaults to same as `type`). See [Attribute pairs](#attribute-pairs) |
 | `constant` | number | No | Offset value |
-| `multiplier` | number | No | Multiplies the target's attribute (default 1). On `width` / `height` it scales the target's size; on a position (edges, centres) it scales the target's position measured in the superview's bounds. See [Multipliers on positions](#multipliers-on-positions) |
+| `multiplier` | number | No | Multiplies the target's attribute (default 1): a dimension scales the target's dimension; on a position (edges, centres) it scales the target's position measured in the superview's bounds. See [Multipliers on positions](#multipliers-on-positions) |
 | `op` | Relation | No | Relation between the two sides: `"="` (default), `"<="`, `">="` |
 | `priority` | Priority | No | Constraint priority (default: required). See [Priorities](#priorities) |
 
