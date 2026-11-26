@@ -637,7 +637,7 @@ Typography styling for text content.
 | `letterSpacing` | LetterSpacing \| number | | Letter spacing (kerning, in points) |
 | `numberOfLines` | number | 0 | Max lines (0 = unlimited) |
 | `lineBreakMode` | LineBreakMode | `truncateTail` | How text wraps/truncates on overflow |
-| `underline` | boolean | false | Draw a single underline under the text |
+| `underline` | boolean | false | Draw a single underline under the text, exactly as wide as the text (see [Underline](#underline)) |
 | `strikethrough` | boolean | false | Draw a single strikethrough line through the text |
 | `adjustsFontSizeToFitWidth` | boolean | false | Shrink font to fit width instead of truncating |
 | `minimumScaleFactor` | number | 0.5 | Smallest font scale autoshrink may use (0–1); only used when `adjustsFontSizeToFitWidth` is true |
@@ -719,6 +719,19 @@ descender + line gap (`UIFont.lineHeight` on iOS). It depends on the font: about
 fonts. `multiplier` multiplies it, as UIKit's `lineHeightMultiple` does: `1.0` is
 the font's default spacing, and the extra height goes above each line's glyphs.
 
+A `fixed` line height splits its **leading** (the line height minus the natural
+line height) evenly above and below each line's glyphs, as CSS half-leading
+does. A one-line label with a fixed line height, centred in a box, therefore
+draws its glyphs where the same label without a line height draws them, on
+every engine. The rule also holds for a line height below the natural one: the
+glyphs then overflow the line by the same amount at the top and at the bottom,
+and are not cut off. The distance between lines is the `value`, and a block of
+n lines is n × `value` tall.
+
+> Up to 0.7.18 the native engines put the whole leading of a `fixed` line above
+> the glyphs, so centred one-line text sat (line height − natural) / 2 lower
+> than on the web renderer (14 pt system text on a 22 pt line: 2.67 pt).
+
 `multiplier` is not CSS `line-height`, which is a multiple of the font size. To
 carry a CSS value over, divide it by the font's natural height in em (CSS
 `line-height: 1.5` on a font whose natural height is 1.2 em is `multiplier`
@@ -734,6 +747,22 @@ carry a CSS value over, divide it by the font's natural height in em (CSS
 ```json
 "lineHeight": { "type": "multiplier", "value": 1.4 }
 ```
+
+### Underline
+
+`underline: true` draws one line under the text, in the text's colour, at the
+font's underline position and thickness. The line is exactly as wide as the
+text: it starts at the first glyph and ends at the last glyph. Letter spacing
+adds space between glyphs, not after the last one, so with `letterSpacing` the
+line does not run past the text, and the label is as wide as its line. A link
+needs no separate rule view whose width has to be guessed:
+
+<!-- @dsl-skip: text style fragment -->
+```json
+{ "fontSize": 12, "letterSpacing": 1.44, "underline": true, "numberOfLines": 1 }
+```
+
+`strikethrough` follows the same rule.
 
 ### LetterSpacing Types
 
