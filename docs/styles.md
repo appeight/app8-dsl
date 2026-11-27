@@ -719,18 +719,23 @@ descender + line gap (`UIFont.lineHeight` on iOS). It depends on the font: about
 fonts. `multiplier` multiplies it, as UIKit's `lineHeightMultiple` does: `1.0` is
 the font's default spacing, and the extra height goes above each line's glyphs.
 
-A `fixed` line height splits its **leading** (the line height minus the natural
-line height) evenly above and below each line's glyphs, as CSS half-leading
-does. A one-line label with a fixed line height, centred in a box, therefore
-draws its glyphs where the same label without a line height draws them, on
-every engine. The rule also holds for a line height below the natural one: the
-glyphs then overflow the line by the same amount at the top and at the bottom,
-and are not cut off. The distance between lines is the `value`, and a block of
-n lines is n × `value` tall.
+A `fixed` line height splits its **leading** evenly above and below each line's
+glyphs, as CSS half-leading does. The leading is the line height minus the
+font's ascent + descent; the line gap is not part of the reference. A one-line
+label with a fixed line height, centred in a box, therefore draws its glyphs
+where the same label without a line height draws them, on every engine. The
+rule also holds for a line height below ascent + descent: the glyphs then
+overflow the line by the same amount at the top and at the bottom, and are not
+cut off, the last visible line of a text cut short by `numberOfLines` included.
+The distance between lines is the `value`, and a block of n lines is n × `value`
+tall.
+
+This rule is for `fixed` only. `multiplier` is unchanged: its extra height
+stays above each line's glyphs, as described above.
 
 > Up to 0.7.18 the native engines put the whole leading of a `fixed` line above
-> the glyphs, so centred one-line text sat (line height − natural) / 2 lower
-> than on the web renderer (14 pt system text on a 22 pt line: 2.67 pt).
+> the glyphs, so centred one-line text sat (line height − (ascent + descent)) / 2
+> lower than on the web renderer (14 pt system text on a 22 pt line: 2.67 pt).
 
 `multiplier` is not CSS `line-height`, which is a multiple of the font size. To
 carry a CSS value over, divide it by the font's natural height in em (CSS
@@ -751,16 +756,24 @@ carry a CSS value over, divide it by the font's natural height in em (CSS
 ### Underline
 
 `underline: true` draws one line under the text, in the text's colour, at the
-font's underline position and thickness. The line is exactly as wide as the
-text: it starts at the first glyph and ends at the last glyph. Letter spacing
-adds space between glyphs, not after the last one, so with `letterSpacing` the
-line does not run past the text, and the label is as wide as its line. A link
-needs no separate rule view whose width has to be guessed:
+font's underline position and thickness. On every line the underline is exactly
+as wide as that line's text: it starts at the line's first glyph and ends at
+its last glyph. That covers a wrapped line, a line that ends at a line break,
+and a truncated line, whose last glyph is the ellipsis. Letter spacing adds
+space between glyphs, not after a line's last one, so with `letterSpacing` the
+underline does not run past the text, and the label is as wide as its longest
+line. A negative `letterSpacing` does not shorten the underline either: it
+still ends under the last glyph. A link needs no separate rule view whose width
+has to be guessed:
 
 <!-- @dsl-skip: text style fragment -->
 ```json
-{ "fontSize": 12, "letterSpacing": 1.44, "underline": true, "numberOfLines": 1 }
+{ "fontSize": 14, "letterSpacing": 2, "underline": true, "numberOfLines": 1 }
 ```
+
+The rule covers text with `underline` or `strikethrough` only. Text without a
+decoration is not covered: whether the spacing after a line's last glyph counts
+in the label's width stays as each engine does it today.
 
 `strikethrough` follows the same rule.
 
